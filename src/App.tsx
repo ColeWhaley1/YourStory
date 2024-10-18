@@ -1,45 +1,18 @@
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink
-} from "@radix-ui/react-navigation-menu";
+import Layout from "./components/Layout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { MyStories } from "./pages/MyStories";
 
 function App() {
   return (
-    <NavigationMenu>
-      <NavigationMenuList className="flex justify-between w-full space-x-4">
-        {/* Nav items. Left aligned */}
-        <div className="flex space-x-4">
-          <NavigationMenuItem>
-            <NavigationMenuLink href="/">Home</NavigationMenuLink>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink href="/about">My Stories</NavigationMenuLink>
-          </NavigationMenuItem>
-        </div>
-
-        {/* Log in and Sign Up. Right aligned */}
-        <div className="flex">
-          <NavigationMenuItem>
-            <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
-              <div className="text-white">
-                Sign Up
-              </div>
-            </button>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-          <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
-              <div className="text-white">
-                Log In
-              </div>
-            </button>
-          </NavigationMenuItem>
-        </div>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <Router>
+      <Layout>
+        <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/mystories" element={<MyStories/>}/>
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 
