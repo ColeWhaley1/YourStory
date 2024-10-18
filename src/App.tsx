@@ -24,15 +24,15 @@ function App() {
         {/* Log in and Sign Up. Right aligned */}
         <div className="flex">
           <NavigationMenuItem>
-            <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3">
-              <div className="text-gray-100 shadow-lg">
+            <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
+              <div className="text-white">
                 Sign Up
               </div>
             </button>
           </NavigationMenuItem>
           <NavigationMenuItem>
-          <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3">
-              <div className="text-gray-100 shadow-lg">
+          <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
+              <div className="text-white">
                 Log In
               </div>
             </button>

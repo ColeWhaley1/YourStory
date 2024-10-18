@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			primary: ['istok-web',]
+		},
   		colors: {
   			primary: '#508CA4',
   			secondary: '#FFCA3A',
