@@ -82,13 +82,13 @@ const Carousel: React.FC<CarouselProps> = ({ title, stories }) => {
             </div>
             {showLeftArrow && (
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                    <FaAngleLeft className="h-6 w-6 text-gray-700" />
+                    <FaAngleLeft className="h-8 w-8 text-gray-700" />
                 </div>
             )}
 
             {showRightArrow && (
                 <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                    <FaAngleRight className="h-6 w-6 text-gray-700" />
+                    <FaAngleRight className="h-8 w-8 text-gray-700" />
                 </div>
             )}
         </div>
