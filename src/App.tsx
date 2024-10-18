@@ -1,17 +1,45 @@
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink
+} from "@radix-ui/react-navigation-menu";
+
 function App() {
   return (
-    <div className="text-primary text-6xl">
-      <h1 className="flex items-baseline space-x-3">
-        <span className="font-bold">Real</span>
-        <span>Criminal Cases,</span>
-      </h1>
-      <p>Publicly Sourced</p>
-      <h1 className="flex items-baseline space-x-3">
-        <span>for the Purpose of Furthering</span>
-        <span className="font-bold">Justice</span>
-        <span>.</span>
-      </h1>
-    </div>
+    <NavigationMenu>
+      <NavigationMenuList className="flex justify-between w-full space-x-4">
+        {/* Nav items. Left aligned */}
+        <div className="flex space-x-4">
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/">Home</NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/about">My Stories</NavigationMenuLink>
+          </NavigationMenuItem>
+        </div>
+
+        {/* Log in and Sign Up. Right aligned */}
+        <div className="flex">
+          <NavigationMenuItem>
+            <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3">
+              <div className="text-gray-100 shadow-lg">
+                Sign Up
+              </div>
+            </button>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+          <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3">
+              <div className="text-gray-100 shadow-lg">
+                Log In
+              </div>
+            </button>
+          </NavigationMenuItem>
+        </div>
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
 
