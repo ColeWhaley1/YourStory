@@ -3,4 +3,5 @@ export type StoryInfo = {
     title: string,
     author: string,
     img: string,
+    rating: number,
 }
