@@ -3,13 +3,20 @@ import { StoryInfo } from "../../types/story";
 
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
+import React from 'react';
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
+import RightArrow from '../../assets/lottie_animations/right_arrow.json';
+import { Link } from "react-router-dom";
+
 interface CarouselProps {
     title: string;
+    category: string;
     stories: StoryInfo[];
 }
 
-const Carousel: React.FC<CarouselProps> = ({ title, stories }) => {
+const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
     const carouselRef = useRef<HTMLDivElement>(null);
+    const rightArrowLottieRef = useRef<LottieRefCurrentProps>(null);
 
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(false);
@@ -18,7 +25,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, stories }) => {
         if (!carouselRef.current) return;
 
         const containerWidth = carouselRef.current.offsetWidth;
-        const itemWidth = 200; 
+        const itemWidth = 200;
         const totalItems = stories.length;
 
         const visibleCount = Math.floor(containerWidth / itemWidth);
@@ -51,6 +58,10 @@ const Carousel: React.FC<CarouselProps> = ({ title, stories }) => {
             carouselCurrent.addEventListener('scroll', handleScroll);
         }
 
+        if (rightArrowLottieRef.current) {
+            rightArrowLottieRef.current.setSpeed(0.75);
+        }
+
         return () => {
             if (carouselCurrent) {
                 carouselCurrent.removeEventListener('scroll', handleScroll);
@@ -65,7 +76,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, stories }) => {
                     {title}
                 </h1>
                 <div className="relative">
-                    <div className="carousel flex gap-x-10" ref={carouselRef} style={{ overflowX: "auto" }}>
+                    <div className="carousel carousel-center flex gap-x-10" ref={carouselRef} style={{ overflowX: "auto" }}>
                         {stories.map((item) => (
                             <div key={item.id} className="carousel-item max-w-xs">
                                 <div>
@@ -77,6 +88,17 @@ const Carousel: React.FC<CarouselProps> = ({ title, stories }) => {
                                 </div>
                             </div>
                         ))}
+
+                        <div className="min-w-40 content-center text-center transform -translate-y-6">
+                            <Link to={`/stories?category=${category}`}>
+                                <div className="flex justify-center items-center space-x-2">
+                                    <p>See More</p>
+                                    <div className="max-w-6 max-h-6">
+                                        <Lottie animationData={RightArrow} lottieRef={rightArrowLottieRef} />
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>

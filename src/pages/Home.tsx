@@ -119,8 +119,8 @@ export const stories: StoryInfo[] = [
 export const Home = () => {
   return (
     <>
-      <Carousel title="New Releases" stories={stories} ></Carousel>
-      <Carousel title="Top Rated" stories={stories}></Carousel>
+      <Carousel title="New Releases" category="new" stories={stories} ></Carousel>
+      <Carousel title="Top Rated" category="top" stories={stories}></Carousel>
     </>
   );
 }
