@@ -76,9 +76,9 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                     {title}
                 </h1>
                 <div className="relative">
-                    <div className="carousel carousel-center flex gap-x-10" ref={carouselRef} style={{ overflowX: "auto" }}>
+                    <div className="carousel flex gap-x-10" ref={carouselRef} style={{ overflowX: "auto", scrollSnapType: 'none' }}>
                         {stories.map((item) => (
-                            <div key={item.id} className="carousel-item max-w-xs">
+                            <div key={item.id} className="carousel-item max-w-xs" style={{ scrollSnapAlign: 'none' }}>
                                 <div>
                                     <img src={item.img} alt={item.title} className="rounded-lg h-48 w-full" />
                                     <div className="mt-3 ml-2">
