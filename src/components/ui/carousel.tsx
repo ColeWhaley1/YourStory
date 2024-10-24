@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { StoryInfo } from "../../types/story";
 
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight, FaStar } from "react-icons/fa";
 
 import React from 'react';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import RightArrow from '../../assets/lottie_animations/right_arrow.json';
+import Flame from '../../assets/lottie_animations/flame.json';
+
 import { Link } from "react-router-dom";
 
 interface CarouselProps {
@@ -80,10 +82,32 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                         {stories.map((item) => (
                             <div key={item.id} className="carousel-item max-w-xs" style={{ scrollSnapAlign: 'none' }}>
                                 <div>
-                                    <img src={item.img} alt={item.title} className="rounded-lg h-48 w-full" />
-                                    <div className="mt-3 ml-2">
-                                        <h2 className="font-bold text-lg">{item.title}</h2>
-                                        <h3 className="text-gray-400 text-sm">by {item.author}</h3>
+                                    <div className="relative">
+                                        <img src={item.img} alt={item.title} className="rounded-lg h-48 w-full" />
+                                        <div className="absolute flex justify-center items-center right-0 bottom-0 max-h-10 m-1 p-2 rounded-2xl bg-black opacity-70 text-white">
+                                            <div className="flex items-center space-x-1 max-h-10">
+                                                <div className="relative">
+                                                    {item.rating >= 4.7 && (
+                                                        <div className="absolute -z-10 transform -translate-y-9 -translate-x-1.5 w-20 overflow-visible">
+                                                            <Lottie animationData={Flame} />
+                                                        </div>
+                                                    )}
+                                                    <div className="flex items-center space-x-1.5 max-h-10">
+                                                        <div>{item.rating}</div>
+                                                        <div className={`transform -translate-y-0.5 max-h-8 max-w-8 ${item.rating >= 4.7 ? 'opacity-90' : ''}`}>
+                                                            <FaStar />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div className="flex">
+                                        <div className="mt-3 ml-2">
+                                            <h2 className="font-bold text-lg">{item.title}</h2>
+                                            <h3 className="text-gray-400 text-sm">by {item.author}</h3>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
