@@ -1,5 +1,7 @@
-export const MyStories = () => {
+const MyStoriesPage = () => {
     return (
         <div>My Stories</div>
     );
 }
+
+export default MyStoriesPage;

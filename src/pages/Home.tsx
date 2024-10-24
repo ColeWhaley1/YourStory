@@ -116,7 +116,7 @@ export const stories: StoryInfo[] = [
   },
 ];
 
-export const Home = () => {
+const HomePage = () => {
   return (
     <>
       <Carousel title="New Releases" category="new" stories={stories}></Carousel>
@@ -125,3 +125,5 @@ export const Home = () => {
     </>
   );
 }
+
+export default HomePage;

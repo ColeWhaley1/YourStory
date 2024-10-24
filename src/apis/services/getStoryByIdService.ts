@@ -12,8 +12,18 @@ const getStoryByIdService = async (
         const storySnapshot = await getDoc(storyRef);
 
         if(storySnapshot.exists()){
-            const data: Story = storySnapshot.data() as Story;
-            return data;
+            const data = storySnapshot.data();
+            
+            const story: Story = {
+                author_id: data.author_id,
+                title: data.title,
+                description: data.description,
+                rating: data.rating,
+                story_text: data.story_text,
+                thumbnail: data.thumbnail,
+            }
+
+            return story;
         }
         
         return null;
