@@ -81,7 +81,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                     <div className="carousel flex gap-x-10" ref={carouselRef} style={{ overflowX: "auto", scrollSnapType: 'none' }}>
                         {stories.map((item) => (
                             <div key={item.id} className="carousel-item max-w-xs" style={{ scrollSnapAlign: 'none' }}>
-                                <div>
+                                <Link to={`/story?id=${item.id}`}>
                                     <div className="relative">
                                         <img src={item.img} alt={item.title} className="rounded-lg h-48 w-full" />
                                         <div className="absolute flex justify-center items-center right-0 bottom-0 max-h-10 m-1 p-2 rounded-2xl bg-black opacity-70 text-white">
@@ -109,7 +109,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                                             <h3 className="text-gray-400 text-sm">by {item.author}</h3>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         ))}
 
