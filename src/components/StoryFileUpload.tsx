@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone'
 
-const FileUpload = () => {
+const StoryFileUpload = ({ setStoryFile }: { setStoryFile: (file: File | null) => void }) => {
 
-    const [file, setFile] = useState<File | null>(null);
+    const [localFile, setLocalFile] = useState<File | null>(null);
     const [error, setError] = useState<string | null>(null);
 
     const validFileTypes: string[] = ['application/pdf', 'text/plain'];
@@ -12,7 +12,8 @@ const FileUpload = () => {
     const onDrop = (acceptedFiles: File[]) => {
 
         if (acceptedFiles.length > 0) {
-            setFile(acceptedFiles[0]);
+            setStoryFile(acceptedFiles[0]);
+            setLocalFile(acceptedFiles[0]);
         }
     }
 
@@ -35,10 +36,10 @@ const FileUpload = () => {
     });
 
     return (
-        <div className="m-14 flex items-center justify-center">
-            <div {...getRootProps()} className={`w-2/5 aspect-square border-dashed border-2 rounded-lg p-4 text-center flex items-center justify-center ${isDragActive ? "bg-slate-100" : "bg-slate-50"}`}>
+        <div className="flex items-center">
+            <div {...getRootProps()} className={`max-h-96 aspect-square border-dashed border-2 rounded-lg p-16 text-center flex items-center justify-center ${isDragActive ? "bg-slate-100" : "bg-slate-50"}`}>
                 <input {...getInputProps()} />
-                <div>
+                <div className='text-xl'>
                     {
                         isDragActive ? (
                             <div className='flex flex-col items-center text-center'>
@@ -48,15 +49,15 @@ const FileUpload = () => {
                                 )}
                             </div>
                         ) : (
-                            <div>
+                            <div className='flex flex-col space-y-16'>
                                 <div>Drag and drop your story or click here to select one!</div>
                                 <div>Your story must be of type pdf or txt.</div>
                             </div>
                         )
                     }
                     {
-                        file && (
-                            <div>File: {file.name}</div>
+                        localFile && (
+                            <div>File: {localFile.name}</div>
                         )
                     }
                 </div>
@@ -65,4 +66,4 @@ const FileUpload = () => {
     );
 }
 
-export default FileUpload;
+export default StoryFileUpload;
