@@ -14,7 +14,7 @@ import {
 import { Input } from "../components/ui/input";
 import { useForm } from "react-hook-form";
 import { Textarea } from "../components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageFileUpload from "./ImageFileUpload";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
@@ -38,7 +38,6 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             message: "You must upload a cover image."
         }).refine(file => file.type.startsWith("image/"), {
             message: "Cover image must be an image file.",
-
         }),
     })
 
@@ -63,6 +62,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         if (!storyFile) {
             setFileError("You forgot the most important part! Upload your story first!");
+            return;
         }
 
         setFileError(null);
@@ -71,13 +71,23 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             ...values,
             storyFile: storyFile
         });
-
-
     }
+
+    useEffect(() => {
+        if(storyFile){
+            setFileError(null);
+        }
+    }, [storyFile]);
 
     const deleteImage = () => {
         setImagePreview(null);
+
+        // The only way I know to set cover to null without allowing cover file to be null on submit is by ignoring this type error
+        // @ts-expect-error
         form.setValue("cover", null);
+
+        // todo
+        // put storyFile null error under storyFile upload
     }
 
     return (
