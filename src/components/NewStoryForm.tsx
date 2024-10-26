@@ -77,7 +77,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     const deleteImage = () => {
         setImagePreview(null);
-        // form.setValue("cover", null);
+        form.setValue("cover", null);
     }
 
     return (

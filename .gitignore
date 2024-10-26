@@ -1,2 +1,2 @@
 .env
-firebase.ts
+./src/firebase.ts
