@@ -34,8 +34,11 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         }).max(300, {
             message: "Max 300 characters"
         }),
-        cover: z.instanceof(File).refine(file => file.type.startsWith("image/"), {
+        cover: z.instanceof(File, {
+            message: "You must upload a cover image."
+        }).refine(file => file.type.startsWith("image/"), {
             message: "Cover image must be an image file.",
+
         }),
     })
 
@@ -45,14 +48,14 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             title: "",
             genre: "",
             description: "",
-            cover: undefined
+            cover: undefined,
         },
     });
 
     const handleImageUpload = (file: File | null) => {
         if (file) {
             setImagePreview(URL.createObjectURL(file));
-            form.setValue("cover", file); 
+            form.setValue("cover", file);
         }
     };
 
@@ -60,14 +63,21 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         if (!storyFile) {
             setFileError("You forgot the most important part! Upload your story first!");
-            return;
         }
+
         setFileError(null);
 
         console.log({
             ...values,
             storyFile: storyFile
         });
+
+
+    }
+
+    const deleteImage = () => {
+        setImagePreview(null);
+        // form.setValue("cover", null);
     }
 
     return (
@@ -117,25 +127,29 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         </FormItem>
                     )}
                 />
-                <FormField 
-                    control={form.control} 
-                    name="cover" 
-                    render={() => (
-                    <FormItem>
-                        <FormLabel>Cover Image</FormLabel>
-                        <FormControl>
-                            <ImageFileUpload setImageFile={(file) => {
-                                handleImageUpload(file);
-                            }}/>
-                        </FormControl>
-                        <FormMessage />
-                        {imagePreview && (
-                            <div className="mt-4">
-                                <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover rounded-md" />
-                            </div>
-                        )}
-                    </FormItem>
-                )} />
+                {imagePreview ? (
+                    <div className="mt-4">
+                        <button onClick={deleteImage}>
+                            <div className="absolute z-10">X</div>
+                        </button>
+                        <img src={imagePreview} alt="Cover Image Preview" className="w-32 h-32 object-cover rounded-md" />
+                    </div>
+                ) : (
+                    <FormField
+                        control={form.control}
+                        name="cover"
+                        render={() => (
+                            <FormItem>
+                                <FormLabel>Cover Image</FormLabel>
+                                <FormControl>
+                                    <ImageFileUpload setImageFile={(file) => {
+                                        handleImageUpload(file);
+                                    }} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                )}
                 {
                     fileError && (
                         <div className="text-red-500">{fileError}</div>

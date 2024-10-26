@@ -51,7 +51,7 @@ const ImageFileUpload = ({ setImageFile }: { setImageFile: (file: File | null) =
 
     return (
         <div className="flex items-center">
-            <div {...getRootProps()} className={`max-h-96 aspect-square border-dashed border-2 rounded-lg p-16 text-center flex items-center justify-center ${isDragActive ? "bg-slate-100" : "bg-slate-50"}`}>
+            <div {...getRootProps()} className={`max-h-96 border-dashed border-2 rounded-lg p-16 text-center flex items-center justify-center ${isDragActive ? "bg-slate-100" : "bg-slate-50"}`}>
                 <input {...getInputProps()} />
                 <div className='text-xl'>
                     {
