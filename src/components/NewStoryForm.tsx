@@ -16,11 +16,15 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "../components/ui/textarea";
 import { useEffect, useState } from "react";
 import ImageFileUpload from "./ImageFileUpload";
+import Lottie from "lottie-react";
+import Loading from "../assets/lottie_animations/loading.json";
+import { FaCircleXmark } from "react-icons/fa6";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     const [fileError, setFileError] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreviewLoading, setImagePreviewLoading] = useState<boolean>(false);
 
     const formSchema = z.object({
         title: z.string().min(2, {
@@ -53,6 +57,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     const handleImageUpload = (file: File | null) => {
         if (file) {
+            setImagePreviewLoading(true);
             setImagePreview(URL.createObjectURL(file));
             form.setValue("cover", file);
         }
@@ -74,7 +79,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
     }
 
     useEffect(() => {
-        if(storyFile){
+        if (storyFile) {
             setFileError(null);
         }
     }, [storyFile]);
@@ -86,8 +91,10 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         // @ts-expect-error
         form.setValue("cover", null);
 
-        // todo
-        // put storyFile null error under storyFile upload
+    }
+
+    const onImagePreviewLoad = () => {
+        setImagePreviewLoading(false);
     }
 
     return (
@@ -139,10 +146,23 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                 />
                 {imagePreview ? (
                     <div className="mt-4">
-                        <button onClick={deleteImage}>
-                            <div className="absolute z-10">X</div>
-                        </button>
-                        <img src={imagePreview} alt="Cover Image Preview" className="w-32 h-32 object-cover rounded-md" />
+
+                        {imagePreviewLoading &&
+                            <div className="max-w-24">
+                                <Lottie animationData={Loading} />
+                            </div>
+                        }
+                        {
+                            !imagePreviewLoading && (
+                                <button onClick={deleteImage} className="absolute z-10 m-2 flex items-center justify-center">
+                                    <div className="w-6">
+                                        <FaCircleXmark className="w-full h-full"/>
+                                    </div>
+                                </button>
+                            )
+                        }
+                        <img src={imagePreview} alt="Cover Image Preview" className="max-w-52 object-cover rounded-md" onLoad={onImagePreviewLoad} />
+
                     </div>
                 ) : (
                     <FormField
