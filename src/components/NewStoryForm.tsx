@@ -156,7 +156,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                             !imagePreviewLoading && (
                                 <button onClick={deleteImage} className="absolute z-10 m-2 flex items-center justify-center">
                                     <div className="w-6">
-                                        <FaCircleXmark className="w-full h-full"/>
+                                        <FaCircleXmark className="w-full h-full" />
                                     </div>
                                 </button>
                             )
@@ -170,15 +170,20 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         name="cover"
                         render={() => (
                             <FormItem>
-                                <FormLabel>Cover Image</FormLabel>
+                                <FormLabel htmlFor="cover-image">Cover Image</FormLabel> 
                                 <FormControl>
-                                    <ImageFileUpload setImageFile={(file) => {
-                                        handleImageUpload(file);
-                                    }} />
+                                    <ImageFileUpload
+                                        id="cover-image"
+                                        setImageFile={(file) => {
+                                            handleImageUpload(file);
+                                        }}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
-                        )} />
+                        )}
+                    />
+
                 )}
                 {
                     fileError && (

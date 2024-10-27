@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.min.js`; //THIS IS CAUSING PROBLEMS
+import { Document, Page } from 'react-pdf';
 
 
 const StoryReader = ({ file }: { file: File | null }) => {
