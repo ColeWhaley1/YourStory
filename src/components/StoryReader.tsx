@@ -11,6 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 interface StoryReaderProps {
     file: File | null;
+    setFile: React.Dispatch<React.SetStateAction<File | null>>;
     scale?: number;
 }
 
@@ -18,7 +19,7 @@ interface DocumentLoadEvent {
     numPages: number;
 }
 
-const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
+const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) => {
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -40,7 +41,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     }, [file]);
 
     const deleteFile = () => {
-
+        setFile(null);
     }
 
     return (
