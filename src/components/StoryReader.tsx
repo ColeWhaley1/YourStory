@@ -1,50 +1,65 @@
 import { useEffect, useState } from 'react';
-import { Document, Page } from 'react-pdf';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url
+).toString();
+
+interface StoryReaderProps {
+  file: File | null;
+}
 
 
-const StoryReader = ({ file }: { file: File | null }) => {
+interface DocumentLoadEvent {
+  numPages: number;
+}
+
+const StoryReader: React.FC<StoryReaderProps> = ({ file }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
 
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+  const onDocumentLoadSuccess = ({ numPages }: DocumentLoadEvent) => {
     setNumPages(numPages);
   };
 
   useEffect(() => {
+    let url: string | null = null;
     if (file) {
-      const url = URL.createObjectURL(file);
-      setFileUrl(url);
+      url = URL.createObjectURL(file);
 
       return () => {
-        URL.revokeObjectURL(url);
+        if (url) {
+          URL.revokeObjectURL(url);
+        }
       };
-    } else {
-      setFileUrl(null);
     }
   }, [file]);
 
   return (
     <div>
-      {fileUrl ? (
+      {file ? (
         <>
-          <Document
-            file={fileUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-          >
+          <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
             <Page pageNumber={pageNumber} />
           </Document>
           <p>
             Page {pageNumber} of {numPages}
           </p>
-          <div>
-            <button disabled={pageNumber <= 1} onClick={() => setPageNumber(pageNumber - 1)}>
-              Previous
-            </button>
-            <button disabled={pageNumber >= (numPages || 0)} onClick={() => setPageNumber(pageNumber + 1)}>
-              Next
-            </button>
-          </div>
+          <button
+            disabled={pageNumber <= 1}
+            onClick={() => setPageNumber((prev) => prev - 1)}
+          >
+            Previous
+          </button>
+          <button
+            disabled={pageNumber >= (numPages ?? 0)}
+            onClick={() => setPageNumber((prev) => prev + 1)}
+          >
+            Next
+          </button>
         </>
       ) : (
         <p>Loading PDF...</p>
