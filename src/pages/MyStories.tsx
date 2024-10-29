@@ -14,7 +14,9 @@ const MyStoriesPage = () => {
             <div className="p-16">
                 {
                     storyFile ? (
-                        <StoryReader file={storyFile}></StoryReader>
+                        <div>
+                            <StoryReader file={storyFile} scale={0.8}></StoryReader>
+                        </div>
                     ) :
                     (   
                         <div className="flex flex-col items-center text-2xl font-extrabold">

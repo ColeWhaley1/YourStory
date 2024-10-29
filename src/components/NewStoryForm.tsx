@@ -154,15 +154,14 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         }
                         {
                             !imagePreviewLoading && (
-                                <button onClick={deleteImage} className="absolute z-10 m-2 flex items-center justify-center">
+                                <button onClick={deleteImage} className="absolute z-10 m-2 flex items-center justify-center opacity-80 hover:opacity-90">
                                     <div className="w-6">
-                                        <FaCircleXmark className="w-full h-full" />
+                                        <FaCircleXmark className="w-full h-full text-red-700" />
                                     </div>
                                 </button>
                             )
                         }
-                        <img src={imagePreview} alt="Cover Image Preview" className="max-w-52 object-cover rounded-md" onLoad={onImagePreviewLoad} />
-
+                        <img src={imagePreview} alt="Cover Image Preview" className="max-w-52 object-cover rounded-md outline outline-primary outline-2" onLoad={onImagePreviewLoad} />
                     </div>
                 ) : (
                     <FormField
@@ -170,7 +169,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         name="cover"
                         render={() => (
                             <FormItem>
-                                <FormLabel htmlFor="cover-image">Cover Image</FormLabel> 
+                                <FormLabel htmlFor="cover-image">Cover Image</FormLabel>
                                 <FormControl>
                                     <ImageFileUpload
                                         id="cover-image"
