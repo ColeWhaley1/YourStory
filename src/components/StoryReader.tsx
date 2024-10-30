@@ -4,6 +4,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { FaArrowCircleRight } from "react-icons/fa";
+
 import Loading from "../assets/lottie_animations/loading.json";
 import Lottie from 'lottie-react';
 
@@ -44,6 +47,13 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
 
     }, [file]);
 
+    useEffect(() => {
+        const pageNumberInput = document.getElementById("pageNumberInput");
+        if(pageNumberInput){
+            pageNumberInput.innerHTML = pageNumber.toString();
+        }
+    }, [pageNumber])
+
     const deleteFile = () => {
         setFile(null);
     }
@@ -65,22 +75,34 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                         }>
                         <Page pageNumber={pageNumber} scale={scale} />
                     </Document>
-
-                    <p>
-                        Page {pageNumber} of {numPages}
-                    </p>
-                    <button
-                        disabled={pageNumber <= 1}
-                        onClick={() => setPageNumber((prev) => prev - 1)}
-                    >
-                        Previous
-                    </button>
-                    <button
-                        disabled={pageNumber >= (numPages ?? 0)}
-                        onClick={() => setPageNumber((prev) => prev + 1)}
-                    >
-                        Next
-                    </button>
+                    
+                    <div className='flex justify-center'>
+                        <div className='flex space-x-8 justify-center bg-gray-100 rounded-full p-4'>
+                            <button
+                                disabled={pageNumber <= 1}
+                                onClick={() => setPageNumber((prev) => prev - 1)}
+                            >
+                                <FaArrowCircleLeft className='text-secondary w-6 h-6'/>
+                            </button>
+                            <div className='flex items-center'>
+                                <p>
+                                    Page 
+                                </p>
+                                <div>
+                                    <input id="pageNumberInput" type="text" className='w-8 text-center border-2 border-primary rounded-lg mx-1' defaultValue={pageNumber}/>
+                                </div>
+                                <div>
+                                    of {numPages}
+                                </div>
+                            </div>
+                            <button
+                                disabled={pageNumber >= (numPages ?? 0)}
+                                onClick={() => setPageNumber((prev) => prev + 1)}
+                            >
+                                <FaArrowCircleRight className='text-secondary w-6 h-6'/>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
