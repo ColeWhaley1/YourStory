@@ -4,6 +4,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
+import Loading from "../assets/lottie_animations/loading.json";
+import Lottie from 'lottie-react';
+
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
     import.meta.url
@@ -38,6 +41,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                 }
             };
         }
+
     }, [file]);
 
     const deleteFile = () => {
@@ -45,17 +49,23 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
     }
 
     return (
-        <div className="outline outline-primary outline-offset-8 rounded-sm outline-2">
-            {file ? (
-                <div className='relative'>
+        <div className="">
+            <div className='relative'>
+                <div className='outline outline-primary outline-offset-8 rounded-sm outline-2'>
                     <button onClick={deleteFile} className="absolute top-2 right-2 z-10 flex items-center justify-center opacity-80 rounded-full shadow-md hover:opacity-90">
                         <div className="w-6">
                             <FaCircleXmark className="w-full h-full text-red-700" />
                         </div>
                     </button>
-                    <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
+                    <Document file={file} onLoadSuccess={onDocumentLoadSuccess}
+                        loading={
+                            <div className='flex items-center justify-center w-96 h-96'>
+                                <Lottie animationData={Loading} className='max-w-24' />
+                            </div>
+                        }>
                         <Page pageNumber={pageNumber} scale={scale} />
                     </Document>
+
                     <p>
                         Page {pageNumber} of {numPages}
                     </p>
@@ -72,9 +82,8 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                         Next
                     </button>
                 </div>
-            ) : (
-                <p>Loading PDF...</p>
-            )}
+            </div>
+
         </div>
     );
 };

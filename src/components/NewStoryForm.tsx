@@ -161,7 +161,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                                 </button>
                             )
                         }
-                        <img src={imagePreview} alt="Cover Image Preview" className="max-w-52 object-cover rounded-md outline outline-primary outline-2" onLoad={onImagePreviewLoad} />
+                        <img src={imagePreview} alt="Cover Image Preview" className="max-w-52 object-cover rounded-md" onLoad={onImagePreviewLoad} />
                     </div>
                 ) : (
                     <FormField
