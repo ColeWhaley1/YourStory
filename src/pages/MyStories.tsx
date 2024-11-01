@@ -11,10 +11,10 @@ const MyStoriesPage = () => {
 
     return (
         <div className="flex m-10 space-x-12">
-            <div className="p-16">
+            <div className="pl-16 flex items-center">
                 {
                     storyFile ? (
-                        <div className="w-96">
+                        <div>
                             <StoryReader file={storyFile} scale={0.8} setFile={setStoryFile}></StoryReader>
                         </div>
                     ) :
