@@ -3,9 +3,7 @@ import { FaCircleXmark } from 'react-icons/fa6';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
-
 import Loading from "../assets/lottie_animations/loading.json";
 import Lottie from 'lottie-react';
 
@@ -28,52 +26,12 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [pageInput, setPageInput] = useState<string>('1');
-    const [preloadedPages, setPreloadedPages] = useState<(JSX.Element | null)[]>([]);
+    const [fadeIn, setFadeIn] = useState<boolean>(false);
 
     const onDocumentLoadSuccess = ({ numPages }: DocumentLoadEvent) => {
         setNumPages(numPages);
         setPageNumber(1);
-        const pages: (JSX.Element | null)[] = Array.from({ length: numPages }, (_, i) => (
-            <Page
-                key={i + 1}
-                pageNumber={i + 1}
-                scale={scale}
-                loading={<Lottie animationData={Loading} className="max-w-24" />}
-            />
-        ));
-        setPreloadedPages(pages);
     };
-
-    useEffect(() => {
-        let url: string | null = null;
-        if (file) {
-            url = URL.createObjectURL(file);
-            return () => {
-                if (url) {
-                    URL.revokeObjectURL(url);
-                }
-            };
-        }
-    }, [file]);
-
-    useEffect(() => {
-        setPageInput(pageNumber.toString());
-
-        const leftArrow = document.getElementById('left-arrow-icon');
-        const rightArrow = document.getElementById('right-arrow-icon');
-
-        if (pageNumber <= 1) {
-            leftArrow?.classList.add("opacity-50");
-        } else {
-            leftArrow?.classList.remove("opacity-50");
-        }
-
-        if (numPages && pageNumber >= numPages) {
-            rightArrow?.classList.add("opacity-50");
-        } else {
-            rightArrow?.classList.remove("opacity-50");
-        }
-    }, [pageNumber, numPages]);
 
     const deleteFile = () => {
         setFile(null);
@@ -102,13 +60,30 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
         }
     };
 
+    useEffect(() => {
+        setPageInput(pageNumber.toString());
+        transitionPages();
+    }, [pageNumber]);
+
+    const transitionPages = () => {
+        setFadeIn(true);
+        setTimeout(() => setFadeIn(false), 200);
+    };
+    
+    const goToPage = (newPage: number) => {
+        if (!fadeIn) {
+            setPageNumber(newPage);
+            transitionPages();
+        }
+    };
+    
     return (
         <div>
             <div className="relative">
                 <div className="outline outline-primary outline-offset-8 rounded-sm outline-2">
                     <button
                         onClick={deleteFile}
-                        className="absolute top-2 right-2 z-10 flex items-center justify-center opacity-80 rounded-full shadow-md hover:opacity-90"
+                        className="absolute top-2 right-2 z-30 flex items-center justify-center opacity-80 rounded-full shadow-md hover:opacity-90"
                     >
                         <FaCircleXmark className="w-6 h-6 text-red-700" />
                     </button>
@@ -121,18 +96,33 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                             </div>
                         }
                     >
-                        {preloadedPages[pageNumber - 1] || (
-                            <div className="flex items-center justify-center w-96 h-96">
-                                <Lottie animationData={Loading} className="max-w-24" />
+                        <div className="flex items-center justify-center relative">
+                            {/* Keep the current page mounted and manage visibility */}
+                            <div className={`z-20 ${fadeIn ? 'fade' : ''}`}>
+                                <Page pageNumber={pageNumber} scale={scale} />
                             </div>
-                        )}
+    
+                            {/* Previous page */}
+                            {pageNumber > 1 && (
+                                <div className="absolute z-10 opacity-0 pointer-events-none">
+                                    <Page pageNumber={pageNumber - 1} scale={scale * 0.8} />
+                                </div>
+                            )}
+    
+                            {/* Next page */}
+                            {pageNumber < (numPages ?? 0) && (
+                                <div className="absolute z-10 opacity-0 pointer-events-none">
+                                    <Page pageNumber={pageNumber + 1} scale={scale * 0.8} />
+                                </div>
+                            )}
+                        </div>
                     </Document>
-
+    
                     <div className="flex justify-center m-2">
                         <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
                             <button
                                 disabled={pageNumber <= 1}
-                                onClick={() => setPageNumber(prev => prev - 1)}
+                                onClick={() => goToPage(pageNumber - 1)}
                             >
                                 <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
                             </button>
@@ -150,7 +140,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                             </div>
                             <button
                                 disabled={pageNumber >= (numPages ?? 0)}
-                                onClick={() => setPageNumber(prev => prev + 1)}
+                                onClick={() => goToPage(pageNumber + 1)}
                             >
                                 <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
                             </button>
@@ -160,6 +150,6 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
             </div>
         </div>
     );
-};
+    };
 
 export default StoryReader;
