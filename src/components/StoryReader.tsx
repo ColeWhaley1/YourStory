@@ -26,13 +26,22 @@ interface DocumentLoadEvent {
 }
 
 const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) => {
-    const [numPages, setNumPages] = useState<number | null>(null);
+    const [numPages, setNumPages] = useState<number | null>(2);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [pageInput, setPageInput] = useState<string>('1');
+    const [preloadedPages, setPreLoadedPages] = useState<(JSX.Element | null)[]>([]);
 
     const onDocumentLoadSuccess = ({ numPages }: DocumentLoadEvent) => {
         setNumPages(numPages);
         setPageNumber(1);
+
+        const pages: (JSX.Element | null)[] = Array(numPages).fill(null);
+        for (let i = 1; i <= numPages; i++) {
+            pages[i - 1] = (
+                <Page pageNumber={i} scale={scale} />
+            )
+        }
+        setPreLoadedPages(pages);
     };
 
     useEffect(() => {
@@ -48,7 +57,22 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
     }, [file]);
 
     useEffect(() => {
-        setPageInput(pageNumber.toString()); // Sync page input field when pageNumber changes
+        setPageInput(pageNumber.toString());
+
+        const leftArrow = document.getElementById('left-arrow-icon');
+        const rightArrow = document.getElementById('right-arrow-icon');
+
+        if(pageNumber <= (1)){
+            leftArrow?.classList.add("opacity-50");
+        } else {
+            leftArrow?.classList.remove("opacity-50");
+        }
+        
+        if(pageNumber >= (numPages ?? 0)){
+            rightArrow?.classList.add("opacity-50");
+        } else {
+            rightArrow?.classList.remove("opacity-50");
+        }
     }, [pageNumber]);
 
     const deleteFile = () => {
@@ -58,9 +82,9 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
     const onPageInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
         const num = Number(input);
-        
+
         if (input === '' || (!isNaN(num) && num >= 1 && (numPages == null || num <= numPages))) {
-            setPageInput(input); 
+            setPageInput(input);
         }
     };
 
@@ -70,12 +94,12 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
         if (!isNaN(num) && num >= 1 && (numPages == null || num <= numPages)) {
             setPageNumber(num);
         } else {
-            setPageInput(pageNumber.toString()); 
+            setPageInput(pageNumber.toString());
         }
     };
 
     const onPageInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter'){
+        if (event.key === 'Enter') {
             onPageInputBlur();
         }
     }
@@ -99,8 +123,14 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                             </div>
                         }
                     >
-                        <Page pageNumber={pageNumber} scale={scale} />
-                    </Document>
+                        {preloadedPages[pageNumber - 1] ||
+                            (
+                                <div className="flex items-center justify-center w-96 h-96">
+                                    <Lottie animationData={Loading} className="max-w-24" />
+                                </div>
+                            )
+                        }
+                    </Document> 
 
                     <div className="flex justify-center m-2">
                         <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
@@ -108,7 +138,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                                 disabled={pageNumber <= 1}
                                 onClick={() => setPageNumber((prev) => prev - 1)}
                             >
-                                <FaArrowCircleLeft className="text-secondary w-6 h-6" />
+                                <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
                             </button>
                             <div className="flex items-center">
                                 <p>Page</p>
@@ -126,7 +156,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) =
                                 disabled={pageNumber >= (numPages ?? 0)}
                                 onClick={() => setPageNumber((prev) => prev + 1)}
                             >
-                                <FaArrowCircleRight className="text-secondary w-6 h-6" />
+                                <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
                             </button>
                         </div>
                     </div>
