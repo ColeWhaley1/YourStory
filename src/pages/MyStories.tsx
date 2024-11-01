@@ -14,7 +14,7 @@ const MyStoriesPage = () => {
             <div className="p-16">
                 {
                     storyFile ? (
-                        <div>
+                        <div className="w-96">
                             <StoryReader file={storyFile} scale={0.8} setFile={setStoryFile}></StoryReader>
                         </div>
                     ) :
