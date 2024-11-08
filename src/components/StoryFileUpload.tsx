@@ -50,8 +50,8 @@ const StoryFileUpload = ({ setStoryFile }: { setStoryFile: (file: File | null) =
                             </div>
                         ) : (
                             <div className='flex flex-col space-y-16'>
-                                <div>Drag and drop your story or click here to select one!</div>
-                                <div>Your story must be of type pdf or txt.</div>
+                                <div>Drag and drop your story or click here to select one.</div>
+                                <div>Must be .pdf or .txt!</div>
                             </div>
                         )
                     }

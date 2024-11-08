@@ -10,7 +10,7 @@ const MyStoriesPage = () => {
     const [storyFile, setStoryFile] = useState<File | null>(null);
 
     return (
-        <div className="flex m-10 space-x-12">
+        <div className="flex flex-row justify-center m-10 space-x-12">
             <div className="pl-16 flex items-center">
                 {
                     storyFile ? (
