@@ -126,7 +126,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         }
 
         if(genreInput){
-            setGenres([...genres, genreInput]);
+            setGenres(prevGenres => [...prevGenres, genreInput]);
             form.setValue("genre", genreInput);
             form.clearErrors("genre");
             form.setValue("genre", "");
@@ -143,6 +143,9 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         if(genres.length <= 3){
             form.clearErrors("genre");
         }
+
+        console.log(newGenres);
+        console.log(genres);
     }
 
     const onKeyDownGenre = (e: React.KeyboardEvent) => {
