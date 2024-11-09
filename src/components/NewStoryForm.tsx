@@ -19,12 +19,16 @@ import ImageFileUpload from "./ImageFileUpload";
 import Lottie from "lottie-react";
 import Loading from "../assets/lottie_animations/loading.json";
 import { FaCircleXmark } from "react-icons/fa6";
+import { StoryUpload } from "../types/story";
+import RemovableLabel from "./widgets/RemovableLabel";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     const [fileError, setFileError] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imagePreviewLoading, setImagePreviewLoading] = useState<boolean>(false);
+    const [genreInput, setGenreInput] = useState<string | null>("");
+    const [genres, setGenres] = useState<string[]>([]);
 
     const formSchema = z.object({
         title: z.string().min(2, {
@@ -72,10 +76,23 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         setFileError(null);
 
-        console.log({
-            ...values,
-            storyFile: storyFile
-        });
+
+        // 1. upload story and image to file storage, return links to both
+
+        // 2. call service to add new story row by passing in Story obj as param
+
+        const story: StoryUpload = {
+            author_id: "YduoBnw4BAKAyEVyTvTL",
+            description: values.description,
+            story_file: "link_to_story",
+            cover: "link_to_cover",
+            title: values.title,
+            genres: genres
+        }
+        console.log(story);
+        
+        // 3. display success animation
+
     }
 
     useEffect(() => {
@@ -97,6 +114,44 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         setImagePreviewLoading(false);
     }
 
+    const addGenre = () => {
+        if(genres.length >= 3){
+            form.setError("genre",
+                {
+                    type: "manual",
+                    message: "Max of 3 genres"
+                }
+            )
+            return;
+        }
+
+        if(genreInput){
+            setGenres([...genres, genreInput]);
+            form.setValue("genre", genreInput);
+            form.clearErrors("genre");
+            form.setValue("genre", "");
+        }
+
+        setGenreInput("");
+    }
+
+    const removeGenre = (index: number): void => {
+
+        const newGenres = genres.filter((_, i) => i !== index);
+        setGenres(newGenres);
+
+        if(genres.length <= 3){
+            form.clearErrors("genre");
+        }
+    }
+
+    const onKeyDownGenre = (e: React.KeyboardEvent) => {
+        if(e.key === "Enter"){
+            e.preventDefault();
+            addGenre();
+        }
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-4/5">
@@ -108,7 +163,11 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         <FormItem>
                             <FormLabel>Title</FormLabel>
                             <FormControl>
-                                <Input placeholder="ex. The Green Tree" {...field} />
+                                <Input 
+                                    placeholder="ex. The Green Tree" 
+                                    onKeyDown={(e) => {if(e.key === "Enter") { e.preventDefault(); }}}
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -120,10 +179,41 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                     name="genre"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Genre</FormLabel>
-                            <FormControl>
-                                <Input placeholder="ex. Fiction" {...field} />
-                            </FormControl>
+                            <FormLabel>Genres</FormLabel>
+                            {
+                                genres.length > 0 && (
+                                    <div className="flex flex-row space-x-2">
+                                        {
+                                            genres.map((genre, index) => {
+                                                return (
+                                                    <div key={index}>
+                                                        <RemovableLabel removeElement={() => removeGenre(index)}>{genre}</RemovableLabel>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </div>
+                                ) 
+                            }
+                            <div className="flex space-x-6">
+                                <FormControl>
+                                    <Input 
+                                        id="genre-input"
+                                        placeholder="ex. Fiction"
+                                        {...field} 
+                                        onChange={(e) => {
+                                            field.onChange(e); 
+                                            setGenreInput(e.target.value); 
+                                        }}
+                                        onKeyDown={onKeyDownGenre}
+                                    />
+                                </FormControl>
+                                <div className="flex justify-center items-center">
+                                    <Button onClick={addGenre} type="button">
+                                        Add
+                                    </Button>
+                                </div>
+                            </div>
                             <FormMessage />
                             <FormDescription>
                                 Choose up to 3 categories so others can find your story.
