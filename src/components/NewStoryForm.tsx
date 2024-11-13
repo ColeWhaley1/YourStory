@@ -136,7 +136,6 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
     }
 
     const removeGenre = (index: number): void => {
-        // FIGURE OUT WHY REMOVING ELMENETS OTHER THAN LAST ELEMENT DISPLAYS ERRORS FOR OTHER FIELDS
         const newGenres = genres.filter((_, i) => i !== index);
         setGenres(newGenres);
         
