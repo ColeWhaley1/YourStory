@@ -11,7 +11,7 @@ const MyStoriesPage = () => {
 
     return (
         <div className="flex flex-row justify-center m-10 space-x-12">
-            <div className="pl-16 flex items-center">
+            <div className="pl-16 flex items-center transform -translate-y-20">
                 {
                     storyFile ? (
                         <div>

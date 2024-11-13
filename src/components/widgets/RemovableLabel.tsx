@@ -14,7 +14,7 @@ const RemovableLabel: React.FC<RemovableLabelProps> = (props) => {
             <div>
                 {children}
             </div>
-            <button onClick={removeElement}>
+            <button onClick={removeElement} type="button">
                 <IoIosClose className="size-6"/>
             </button>
         </div>

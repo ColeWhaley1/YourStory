@@ -136,16 +136,13 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
     }
 
     const removeGenre = (index: number): void => {
-
+        // FIGURE OUT WHY REMOVING ELMENETS OTHER THAN LAST ELEMENT DISPLAYS ERRORS FOR OTHER FIELDS
         const newGenres = genres.filter((_, i) => i !== index);
         setGenres(newGenres);
-
-        if(genres.length <= 3){
+        
+        if(newGenres.length <= 3){
             form.clearErrors("genre");
         }
-
-        console.log(newGenres);
-        console.log(genres);
     }
 
     const onKeyDownGenre = (e: React.KeyboardEvent) => {
