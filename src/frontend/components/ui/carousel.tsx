@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { StoryInfo } from "../../types/story";
+import { StoryInfo } from "../../../types/story";
 
 import { FaAngleLeft, FaAngleRight, FaStar } from "react-icons/fa";
 
 import React from 'react';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
-import RightArrow from '../../assets/lottie_animations/right_arrow.json';
-import Flame from '../../assets/lottie_animations/flame.json';
+import RightArrow from '../../../assets/lottie_animations/right_arrow.json';
+import Flame from '../../../assets/lottie_animations/flame.json';
 
 import { Link } from "react-router-dom";
 

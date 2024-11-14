@@ -1,8 +1,8 @@
-import Layout from "./components/Layout";
+import Layout from "./frontend/components/Layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/Home";
-import MyStoriesPage from "./pages/MyStories";
-import Story from "./pages/Story";
+import HomePage from "./frontend/pages/Home";
+import MyStoriesPage from "./frontend/pages/MyStories";
+import Story from "./frontend/pages/Story";
 
 function App() {
   return (

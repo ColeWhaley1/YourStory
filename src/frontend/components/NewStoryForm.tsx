@@ -17,9 +17,9 @@ import { Textarea } from "../components/ui/textarea";
 import { useEffect, useState } from "react";
 import ImageFileUpload from "./ImageFileUpload";
 import Lottie from "lottie-react";
-import Loading from "../assets/lottie_animations/loading.json";
+import Loading from "../../assets/lottie_animations/loading.json";
 import { FaCircleXmark } from "react-icons/fa6";
-import { StoryUpload } from "../types/story";
+import { StoryUpload } from "../../types/story";
 import RemovableLabel from "./widgets/RemovableLabel";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {

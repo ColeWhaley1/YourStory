@@ -1,12 +1,12 @@
 import Carousel from "../components/ui/carousel";
-import { StoryInfo } from "../types/story";
+import { StoryInfo } from "../../types/story";
 
 // placeholder image imports
-import rj from "../assets/placeholder_images/rj.jpeg";
-import plane from "../assets/placeholder_images/plane.jpg";
-import whale from "../assets/placeholder_images/whale.jpg";
-import tree from "../assets/placeholder_images/tree.jpeg";
-import hacker from "../assets/placeholder_images/hacker.jpg";
+import rj from "../../assets/placeholder_images/rj.jpeg";
+import plane from "../../assets/placeholder_images/plane.jpg";
+import whale from "../../assets/placeholder_images/whale.jpg";
+import tree from "../../assets/placeholder_images/tree.jpeg";
+import hacker from "../../assets/placeholder_images/hacker.jpg";
 
 export const stories: StoryInfo[] = [
   {

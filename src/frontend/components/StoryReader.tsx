@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
-import Loading from "../assets/lottie_animations/loading.json";
+import Loading from "../../assets/lottie_animations/loading.json";
 import Lottie from 'lottie-react';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(

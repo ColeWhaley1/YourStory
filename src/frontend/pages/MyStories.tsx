@@ -2,7 +2,7 @@ import { useState } from "react";
 import StoryFileUpload from "../components/StoryFileUpload";
 import NewStoryForm from "../components/NewStoryForm";
 import Lottie from "lottie-react";
-import PointerDown from "../../src/assets/lottie_animations/pointer-down.json";
+import PointerDown from "../../../src/assets/lottie_animations/pointer-down.json";
 import StoryReader from "../components/StoryReader";
 
 const MyStoriesPage = () => {
