@@ -7,7 +7,7 @@ export interface StoryInfo {
 }
 
 // might remove or edit since this is just being used for mock stories
-export interface Story {
+export interface StoryMockData {
     author_id: string,
     description: string,
     rating: number,
@@ -16,7 +16,7 @@ export interface Story {
     title: string,
 }
 
-export interface StoryUpload {
+export interface Story {
     author_id: string,
     description: string,
     story_file: string,

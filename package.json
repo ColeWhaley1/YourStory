@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npx tsx ./src/server.ts",
-    "start:dev": "nodemon --watch ./src --exec tsx ./src/server.ts"
+    "start": "npx tsx ./src/backend/server.ts",
+    "start:dev": "nodemon --watch ./src --exec tsx ./src/backend/server.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
