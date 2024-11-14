@@ -1,10 +1,10 @@
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase.ts";
-import { Story } from "../../types/story.ts";
+import { StoryUpload } from "../../types/story.ts";
 
 const getStoryByIdService = async (
     id: string,
-): Promise<Story | null> => {
+): Promise<StoryUpload | null> => {
     try {
 
         const storyRef = doc(db, "story", id);
@@ -14,13 +14,13 @@ const getStoryByIdService = async (
         if(storySnapshot.exists()){
             const data = storySnapshot.data();
             
-            const story: Story = {
+            const story: StoryUpload = {
                 author_id: data.author_id,
                 title: data.title,
                 description: data.description,
-                rating: data.rating,
-                story_text: data.story_text,
-                thumbnail: data.thumbnail,
+                genres: data.genres,
+                story_file: data.story_file,
+                cover: data.cover,
             }
 
             return story;
@@ -28,8 +28,8 @@ const getStoryByIdService = async (
         
         return null;
         
-    } catch (error) {
-        console.error(error);
+    } catch (error: any) {
+        console.error(error.message);
         return null;
     }
 }

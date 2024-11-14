@@ -3,7 +3,7 @@ interface NewStoryReturnType {
     error: string | null;
 }
 
-const addNewStory = (
+const uploadNewStory = (
     author_id: string,
 ): NewStoryReturnType => {
     try {
@@ -24,4 +24,4 @@ const addNewStory = (
     }
 }
 
-export default addNewStory;
+export default uploadNewStory;
