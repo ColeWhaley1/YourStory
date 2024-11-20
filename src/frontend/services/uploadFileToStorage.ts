@@ -12,7 +12,15 @@ const uploadFileToStorage = async (
         const formData = new FormData(); 
         formData.append("file", file);
 
-        const response = await fetch(`${process.env.VITE_API_BASE_URL}/file/${bucket}`, {
+        const base_url = import.meta.env.VITE_API_BASE_URL;
+
+        if(!base_url){
+            throw new Error("base url not defined");
+        }
+
+        console.log(formData);
+
+        const response = await fetch(`${base_url}/file/${bucket}`, {
             method: "POST",
             body: formData
         });

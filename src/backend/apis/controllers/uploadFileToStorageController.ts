@@ -10,6 +10,7 @@ const uploadFileToStorageController = async (
     res: Response,
 ) => {
     try {
+        console.log("we're in the controller!");
         const file = req.file;
         const {bucket} = req.params;
 

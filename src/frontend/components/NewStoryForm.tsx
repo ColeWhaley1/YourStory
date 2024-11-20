@@ -19,8 +19,9 @@ import ImageFileUpload from "./ImageFileUpload";
 import Lottie from "lottie-react";
 import Loading from "../../assets/lottie_animations/loading.json";
 import { FaCircleXmark } from "react-icons/fa6";
-import { StoryUpload } from "../../types/story";
+import { Story } from "../../types/story";
 import RemovableLabel from "./widgets/RemovableLabel";
+import uploadFileToStorage from "../services/uploadFileToStorage";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
@@ -67,7 +68,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         }
     };
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
 
         if (!storyFile) {
             setFileError("You forgot the most important part! Upload your story first!");
@@ -79,13 +80,41 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         // 1. upload story and image to file storage, return links to both
 
+        const storyResponse = await uploadFileToStorage(storyFile, "story");
+        const storyLink = storyResponse.link;
+        const storyUploadError = storyResponse.error;
+
+        if(storyUploadError){
+            setFileError(storyUploadError);
+            return;
+        }
+
+        if(!storyLink){
+            setFileError("Something went wrong uploading your story!");
+            return;
+        }
+
+        const coverResponse = await uploadFileToStorage(form.getValues("cover"), "cover");
+        const coverLink = coverResponse.link;
+        const coverUploadError = coverResponse.error;
+
+        if(coverUploadError){
+            setFileError(coverUploadError);
+            return;
+        }
+
+        if(!coverLink){
+            setFileError("Something went wrong uploading your cover!");
+            return;
+        }
+
         // 2. call service to add new story row by passing in Story obj as param
 
-        const story: StoryUpload = {
-            author_id: "YduoBnw4BAKAyEVyTvTL",
+        const story: Story = {
+            author_id: "YduoBnw4BAKAyEVyTvTL", // THIS NEEDS TO CHANGE TO AUTHENTICATED USER ID
             description: values.description,
-            story_file: "link_to_story",
-            cover: "link_to_cover",
+            story_file: storyLink,
+            cover: coverLink,
             title: values.title,
             genres: genres
         }
