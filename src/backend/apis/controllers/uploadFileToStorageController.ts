@@ -17,9 +17,9 @@ const uploadFileToStorageController = async (
             throw new Error("File object has no content. Upload failed.");
         }
 
-        const result = await uploadFileToStorageService(file, bucket);
+        const response = await uploadFileToStorageService(file, bucket);
 
-        res.status(200).json(result);
+        res.status(200).json(response);
         
     } catch (error) {
         console.error(error);

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 const uploadFileToStorageService = async (
     file: Express.Multer.File,
     bucket: string
-) => {
+): Promise<string | null> => {
     try {
         const fileExtension = file.originalname.split(".").pop();
         const randomString = uuidv4(); // ensure filenames are unique

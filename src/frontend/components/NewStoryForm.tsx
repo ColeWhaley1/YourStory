@@ -22,6 +22,7 @@ import { FaCircleXmark } from "react-icons/fa6";
 import { Story } from "../../types/story";
 import RemovableLabel from "./widgets/RemovableLabel";
 import uploadFileToStorage from "../services/uploadFileToStorage";
+import uploadNewStory from "../services/uploadNewStory";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
@@ -119,6 +120,8 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             genres: genres
         }
         console.log(story);
+
+        uploadNewStory(story);
         
         // 3. display success animation
 
