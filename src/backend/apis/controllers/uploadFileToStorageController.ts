@@ -1,24 +1,19 @@
 import { Request, Response } from "express";
 import uploadFileToStorageService from "../services/uploadFileToStorageService";
-import multer from "multer";
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
 
 const uploadFileToStorageController = async (
     req: Request,
     res: Response,
 ) => {
     try {
-        console.log("we're in the controller!");
-        const file = req.file;
+        const file: Express.Multer.File | undefined = req.file;
         const {bucket} = req.params;
 
-        if(file == null){
-            throw new Error("File object is null. Upload failed.");
+        if(file == null || file == undefined){
+            throw new Error(`File object is ${file}. Upload failed.`);
         }
 
-        if(file.size > 0){
+        if(file.size === 0){
             throw new Error("File object has no content. Upload failed.");
         }
 
@@ -32,4 +27,4 @@ const uploadFileToStorageController = async (
     }
 }
 
-export { upload, uploadFileToStorageController };
+export { uploadFileToStorageController };

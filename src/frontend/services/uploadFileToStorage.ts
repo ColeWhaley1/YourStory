@@ -18,11 +18,9 @@ const uploadFileToStorage = async (
             throw new Error("base url not defined");
         }
 
-        console.log(formData);
-
         const response = await fetch(`${base_url}/file/${bucket}`, {
             method: "POST",
-            body: formData
+            body: formData,
         });
 
         if(!response.ok){

@@ -3,7 +3,11 @@ import cors from "cors";
 
 import { Request, Response } from "express";
 import getStoryByIdController from "./apis/controllers/getStoryByIdController";
-import { uploadFileToStorageController, upload } from "./apis/controllers/uploadFileToStorageController";
+import { uploadFileToStorageController } from "./apis/controllers/uploadFileToStorageController";
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
