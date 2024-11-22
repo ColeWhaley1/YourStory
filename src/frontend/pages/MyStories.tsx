@@ -11,7 +11,7 @@ const MyStoriesPage = () => {
 
     return (
         <div className="flex flex-row justify-center m-10 space-x-12">
-            <div className="pl-16 flex items-center transform -translate-y-20">
+            <div className="pl-16 flex items-center">
                 {
                     storyFile ? (
                         <div>
@@ -19,7 +19,7 @@ const MyStoriesPage = () => {
                         </div>
                     ) :
                     (   
-                        <div className="flex flex-col items-center text-2xl font-extrabold">
+                        <div className="flex flex-col items-center text-2xl font-extrabold transform -translate-y-10">
                             <p className="text-tertiary">Your Story!</p>
                             <div className="max-w-32 max-h-32">
                                 <Lottie animationData={PointerDown}/>
