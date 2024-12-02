@@ -4,6 +4,7 @@ import { Story } from "../../types/story";
 import RightArrowWhite from "../../assets/lottie_animations/right_arrow_white.json";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import NotFound from "../../assets/lottie_animations/not_found.json"
+import Loading from "../../assets/lottie_animations/loading.json"
 
 import {
     Carousel,
@@ -64,9 +65,12 @@ const StoryPage: React.FC = () => {
         </div>
     )
 
-    // make nicer loading
     if (isLoading) return (
-        <div>Loading ...</div>
+        <div className="flex justify-center items-center flex-grow h-screen text-3xl">
+            <div className="flex-col transform -translate-y-20">
+                <Lottie className="h-48" animationData={Loading}/>
+            </div>
+        </div>
     )
 
     return (
