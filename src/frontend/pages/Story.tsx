@@ -54,7 +54,7 @@ const StoryPage: React.FC = () => {
     }, [id]);
 
     if (couldNotLoadStory) return (
-        <div className="flex justify-center items-center h-screen text-3xl">
+        <div className="flex justify-center items-center h-screen text-3xl transform -translate-y-20">
             <div className="flex-col">
                 <Lottie className="h-48" animationData={NotFound}/>
                 <div>
