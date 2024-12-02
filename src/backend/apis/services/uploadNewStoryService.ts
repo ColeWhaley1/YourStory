@@ -5,7 +5,6 @@ const uploadNewStoryService = async (
     story: Story
 ): Promise<boolean> => {
     try {
-
         const { data, error } = await supabase
             .from("story")
             .insert([

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Story } from "../../types/story";
 import RightArrowWhite from "../../assets/lottie_animations/right_arrow_white.json";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
+import NotFound from "../../assets/lottie_animations/not_found.json"
 
 import {
     Carousel,
@@ -18,7 +19,10 @@ const StoryPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [story, setStory] = useState<Story | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
     const rightLottieArrowRef = useRef<LottieRefCurrentProps>(null);
+
+    const [couldNotLoadStory, setCouldNotLoadStory] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -27,6 +31,17 @@ const StoryPage: React.FC = () => {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stories/${id}`);
             const storyResponse = await response.json();
             const story = storyResponse.story;
+            const error = storyResponse.error;
+
+            if (error) {
+                setCouldNotLoadStory(true);
+                return;
+            }
+
+            if (!story.cover) {
+                story.cover = "../../assets/static_images/noCoverAvailable.png";
+            }
+
             setStory(story);
             setIsLoading(false);
         }
@@ -37,6 +52,17 @@ const StoryPage: React.FC = () => {
 
         fetchStory(id);
     }, [id]);
+
+    if (couldNotLoadStory) return (
+        <div className="flex justify-center items-center h-screen text-3xl">
+            <div className="flex-col">
+                <Lottie className="h-48" animationData={NotFound}/>
+                <div>
+                    This story does not exist. 
+                </div>
+            </div>
+        </div>
+    )
 
     if (isLoading) return (
         <div>Loading ...</div>
@@ -52,8 +78,14 @@ const StoryPage: React.FC = () => {
                         <div className="py-16 px-24 bg-slate-100 rounded-md shadow-md">
                             <div className="flex space-x-10 items-center">
                                 <div>
+                                    {isImageLoading && (
+                                        <div>
+                                            Loading...
+                                        </div>
+                                    )}
                                     <img
                                         src={story?.cover}
+                                        onLoad={() => setIsImageLoading(false)}
                                         alt={`cover image for ${story?.title}`}
                                         className="max-h-96 rounded-xl shadow-lg"
                                     />
