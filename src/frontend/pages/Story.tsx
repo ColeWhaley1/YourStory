@@ -54,8 +54,8 @@ const StoryPage: React.FC = () => {
     }, [id]);
 
     if (couldNotLoadStory) return (
-        <div className="flex justify-center items-center h-screen text-3xl transform -translate-y-20">
-            <div className="flex-col">
+        <div className="flex justify-center items-center flex-grow h-screen text-3xl">
+            <div className="flex-col text-center transform -translate-y-20">
                 <Lottie className="h-48" animationData={NotFound}/>
                 <div>
                     This story does not exist. 
@@ -64,6 +64,7 @@ const StoryPage: React.FC = () => {
         </div>
     )
 
+    // make nicer loading
     if (isLoading) return (
         <div>Loading ...</div>
     )
