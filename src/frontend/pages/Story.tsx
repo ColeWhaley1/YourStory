@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import { Story } from "../../types/story";
 import RightArrowWhite from "../../assets/lottie_animations/right_arrow_white.json";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
-import NotFound from "../../assets/lottie_animations/not_found.json"
-import Loading from "../../assets/lottie_animations/loading.json"
+import NotFound from "../../assets/lottie_animations/not_found.json";
+import Loading from "../../assets/lottie_animations/loading.json";
+import noCoverAvailableImage from "../../assets/static_images/noCoverAvailable.png";
 
 import {
     Carousel,
@@ -40,7 +41,7 @@ const StoryPage: React.FC = () => {
             }
 
             if (!story.cover) {
-                story.cover = "../../assets/static_images/noCoverAvailable.png";
+                story.cover = noCoverAvailableImage;
             }
 
             setStory(story);
@@ -85,12 +86,18 @@ const StoryPage: React.FC = () => {
                                 <div>
                                     {isImageLoading && (
                                         <div>
-                                            Loading...
+                                            <Lottie className="h-12" animationData={Loading}/>
                                         </div>
                                     )}
                                     <img
                                         src={story?.cover}
                                         onLoad={() => setIsImageLoading(false)}
+                                        onError={() =>{
+                                                setStory((prevStory) =>
+                                                    prevStory ? { ...prevStory, cover: noCoverAvailableImage } : null
+                                                );
+                                            }
+                                        }
                                         alt={`cover image for ${story?.title}`}
                                         className="max-h-96 rounded-xl shadow-lg"
                                     />
