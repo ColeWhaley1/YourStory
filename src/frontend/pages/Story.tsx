@@ -17,20 +17,33 @@ import {
 import React from "react";
 
 const StoryPage: React.FC = () => {
-
     const { id } = useParams<{ id: string }>();
     const [story, setStory] = useState<Story | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
     const rightLottieArrowRef = useRef<LottieRefCurrentProps>(null);
+    const nextButtonRef = useRef<HTMLButtonElement | null>(null);
+    const prevButtonRef = useRef<HTMLButtonElement | null>(null);
 
     const [couldNotLoadStory, setCouldNotLoadStory] = useState<boolean>(false);
 
-    useEffect(() => {
+    const readMore = () => {
+        if (nextButtonRef.current) {
+            nextButtonRef.current.click();
+        }
+    };
 
-        // give default value of not_found in case id is undefined
+    const toDescription = () => {
+        if (prevButtonRef.current) {
+            prevButtonRef.current.click();
+        }
+    }
+
+    useEffect(() => {
         const fetchStory = async (id: string = "not_found") => {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stories/${id}`);
+            const response = await fetch(
+                `${import.meta.env.VITE_API_BASE_URL}/stories/${id}`
+            );
             const storyResponse = await response.json();
             const story = storyResponse.story;
             const error = storyResponse.error;
@@ -46,7 +59,7 @@ const StoryPage: React.FC = () => {
 
             setStory(story);
             setIsLoading(false);
-        }
+        };
 
         if (rightLottieArrowRef.current) {
             rightLottieArrowRef.current.setSpeed(0.75);
@@ -55,29 +68,30 @@ const StoryPage: React.FC = () => {
         fetchStory(id);
     }, [id]);
 
-    if (couldNotLoadStory) return (
-        <div className="flex justify-center items-center flex-grow h-screen text-3xl">
-            <div className="flex-col text-center transform -translate-y-20">
-                <Lottie className="h-48" animationData={NotFound}/>
-                <div>
-                    This story does not exist. 
+    if (couldNotLoadStory)
+        return (
+            <div className="flex justify-center items-center flex-grow h-screen text-3xl">
+                <div className="flex-col text-center transform -translate-y-20">
+                    <Lottie className="h-48" animationData={NotFound} />
+                    <div>This story does not exist.</div>
                 </div>
             </div>
-        </div>
-    )
+        );
 
-    if (isLoading) return (
-        <div className="flex justify-center items-center flex-grow h-screen text-3xl">
-            <div className="flex-col transform -translate-y-20">
-                <Lottie className="h-48" animationData={Loading}/>
+    if (isLoading)
+        return (
+            <div className="flex justify-center items-center flex-grow h-screen text-3xl">
+                <div className="flex-col transform -translate-y-20">
+                    <Lottie className="h-48" animationData={Loading} />
+                </div>
             </div>
-        </div>
-    )
+        );
 
     return (
         <Carousel
             className="h-full"
-            style={{ transition: "transform 0.5s ease-in-out" }}>
+            style={{ transition: "transform 0.5s ease-in-out" }}
+        >
             <CarouselContent>
                 <CarouselItem>
                     <div className="flex justify-center pt-8">
@@ -86,17 +100,21 @@ const StoryPage: React.FC = () => {
                                 <div>
                                     {isImageLoading && (
                                         <div>
-                                            <Lottie className="h-12" animationData={Loading}/>
+                                            <Lottie className="h-12" animationData={Loading} />
                                         </div>
                                     )}
                                     <img
                                         src={story?.cover}
                                         onLoad={() => setIsImageLoading(false)}
-                                        onError={() =>{
-                                                setStory((prevStory) =>
-                                                    prevStory ? { ...prevStory, cover: noCoverAvailableImage } : null
-                                                );
-                                            }
+                                        onError={() =>
+                                            setStory((prevStory) =>
+                                                prevStory
+                                                    ? {
+                                                        ...prevStory,
+                                                        cover: noCoverAvailableImage,
+                                                    }
+                                                    : null
+                                            )
                                         }
                                         alt={`cover image for ${story?.title}`}
                                         className="max-h-96 rounded-xl shadow-lg"
@@ -104,18 +122,21 @@ const StoryPage: React.FC = () => {
                                 </div>
                                 <div className="text-black pt-4">
                                     <h1 className="text-2xl">{story?.title}</h1>
-                                    <h2 className="opacity-70 text-sm">by {story?.author_id}</h2>
+                                    <h2 className="opacity-70 text-sm">
+                                        by {story?.author_id}
+                                    </h2>
                                     <div className="pt-2">
                                         <p>{story?.description}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="py-4">
-                                <button className="bg-primary p-4 rounded-xl text-white shadow-md">
+                                <button
+                                    onClick={readMore}
+                                    className="bg-primary p-4 rounded-xl text-white shadow-md"
+                                >
                                     <div className="flex space-x-2 justify-center items-center">
-                                        <div>
-                                            Start Reading
-                                        </div>
+                                        <div>Start Reading</div>
                                         <Lottie
                                             animationData={RightArrowWhite}
                                             className="w-8 h-8"
@@ -128,11 +149,25 @@ const StoryPage: React.FC = () => {
                     </div>
                 </CarouselItem>
                 <CarouselItem>
-                    File Reader
+                    <div className="flex p-12">
+                        <div>
+
+                        </div>
+                        <button
+                            onClick={toDescription}
+                            className="bg-gray-400 p-4 rounded-xl text-white shadow-md"
+                        >
+                            <div className="flex space-x-2 justify-center items-center">
+                                <div>Back</div>
+                            </div>
+                        </button>
+                    </div>
                 </CarouselItem>
             </CarouselContent>
+            <CarouselNext ref={nextButtonRef} />
+            <CarouselPrevious ref={prevButtonRef} />
         </Carousel>
     );
-}
+};
 
 export default StoryPage;
