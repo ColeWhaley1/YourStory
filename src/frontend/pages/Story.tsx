@@ -6,6 +6,8 @@ import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import NotFound from "../../assets/lottie_animations/not_found.json";
 import Loading from "../../assets/lottie_animations/loading.json";
 import noCoverAvailableImage from "../../assets/static_images/noCoverAvailable.png";
+import StoryReader from "../components/StoryReader";
+import { ArrowLeftIcon } from "@radix-ui/react-icons"
 
 import {
     Carousel,
@@ -155,9 +157,10 @@ const StoryPage: React.FC = () => {
                         </div>
                         <button
                             onClick={toDescription}
-                            className="bg-gray-400 p-4 rounded-xl text-white shadow-md"
+                            className="bg-primary p-2 rounded-xl text-white shadow-md"
                         >
-                            <div className="flex space-x-2 justify-center items-center">
+                            <div className="flex justify-center items-center space-x-1">
+                                <ArrowLeftIcon className="max-h-6 transform -translate-y-0.5" />
                                 <div>Back</div>
                             </div>
                         </button>
