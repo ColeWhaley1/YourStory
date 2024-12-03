@@ -26,6 +26,7 @@ const StoryPage: React.FC = () => {
     const rightLottieArrowRef = useRef<LottieRefCurrentProps>(null);
     const nextButtonRef = useRef<HTMLButtonElement | null>(null);
     const prevButtonRef = useRef<HTMLButtonElement | null>(null);
+    const [storyFile, setStoryFile] = useState<File | null>(null);
 
     const [couldNotLoadStory, setCouldNotLoadStory] = useState<boolean>(false);
 
@@ -151,24 +152,26 @@ const StoryPage: React.FC = () => {
                     </div>
                 </CarouselItem>
                 <CarouselItem>
-                    <div className="flex p-12">
-                        <div>
-
-                        </div>
-                        <button
-                            onClick={toDescription}
-                            className="bg-primary p-2 rounded-xl text-white shadow-md"
-                        >
-                            <div className="flex justify-center items-center space-x-1">
-                                <ArrowLeftIcon className="max-h-6 transform -translate-y-0.5" />
-                                <div>Back</div>
+                    <div className="flex items-center justify-center h-full w-full">
+                        <div className="p-12">
+                            <div className="w-1/2">
+                                <StoryReader/>
                             </div>
-                        </button>
+                            <button
+                                onClick={toDescription}
+                                className="bg-primary p-2 m-4 rounded-xl text-white shadow-md"
+                            >
+                                <div className="flex justify-center items-center space-x-1">
+                                    <ArrowLeftIcon className="max-h-6 transform -translate-y-0.5" />
+                                    <div>Back</div>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </CarouselItem>
             </CarouselContent>
-            <CarouselNext ref={nextButtonRef} />
-            <CarouselPrevious ref={prevButtonRef} />
+            <CarouselNext className="hidden" ref={nextButtonRef} />
+            <CarouselPrevious className="hidden" ref={prevButtonRef} />
         </Carousel>
     );
 };
