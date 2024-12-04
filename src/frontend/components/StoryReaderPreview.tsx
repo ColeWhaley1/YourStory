@@ -97,7 +97,6 @@ const StoryReaderPreview: React.FC<StoryReaderProps> = ({ file, setFile, scale =
                         }
                     >
                         <div className="flex items-center justify-center relative">
-                            {/* Keep the current page mounted and manage visibility */}
                             <div className={`z-20 ${fadeIn ? 'fade' : ''}`}>
                                 <Page pageNumber={pageNumber} scale={scale} />
                             </div>

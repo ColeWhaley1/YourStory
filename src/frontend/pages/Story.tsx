@@ -67,27 +67,28 @@ const StoryPage: React.FC = () => {
         }
     }
 
+    const fetchStory = async (id: string = "not_found") => {
+        const response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/stories/${id}`
+        );
+        const storyResponse = await response.json();
+        const story = storyResponse.story;
+        const error = storyResponse.error;
+
+        if (error) {
+            setCouldNotLoadStory(true);
+            return;
+        }
+
+        if (!story.cover) {
+            story.cover = noCoverAvailableImage;
+        }
+
+        setStory(story);
+        setIsLoading(false);
+    };
+    
     useEffect(() => {
-        const fetchStory = async (id: string = "not_found") => {
-            const response = await fetch(
-                `${import.meta.env.VITE_API_BASE_URL}/stories/${id}`
-            );
-            const storyResponse = await response.json();
-            const story = storyResponse.story;
-            const error = storyResponse.error;
-
-            if (error) {
-                setCouldNotLoadStory(true);
-                return;
-            }
-
-            if (!story.cover) {
-                story.cover = noCoverAvailableImage;
-            }
-
-            setStory(story);
-            setIsLoading(false);
-        };
 
         if (rightLottieArrowRef.current) {
             rightLottieArrowRef.current.setSpeed(0.75);
