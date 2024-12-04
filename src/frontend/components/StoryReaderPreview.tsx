@@ -14,6 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 interface StoryReaderProps {
     file: File | null;
+    setFile: React.Dispatch<React.SetStateAction<File | null>>;
     scale?: number;
 }
 
@@ -21,7 +22,7 @@ interface DocumentLoadEvent {
     numPages: number;
 }
 
-const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
+const StoryReaderPreview: React.FC<StoryReaderProps> = ({ file, setFile, scale = 1 }) => {
     const [numPages, setNumPages] = useState<number | null>(null);
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [pageInput, setPageInput] = useState<string>('1');
@@ -30,6 +31,10 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     const onDocumentLoadSuccess = ({ numPages }: DocumentLoadEvent) => {
         setNumPages(numPages);
         setPageNumber(1);
+    };
+
+    const deleteFile = () => {
+        setFile(null);
     };
 
     const onPageInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,6 +81,12 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
         <div>
             <div className="relative">
                 <div className="outline outline-primary outline-offset-8 rounded-sm outline-2">
+                    <button
+                        onClick={deleteFile}
+                        className="absolute top-2 right-2 z-30 flex items-center justify-center opacity-80 rounded-full shadow-md hover:opacity-90"
+                    >
+                        <FaCircleXmark className="w-6 h-6 text-red-700" />
+                    </button>
                     <Document
                         file={file}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -141,4 +152,4 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     );
     };
 
-export default StoryReader;
+export default StoryReaderPreview;

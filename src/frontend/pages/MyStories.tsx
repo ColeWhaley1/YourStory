@@ -3,7 +3,7 @@ import StoryFileUpload from "../components/StoryFileUpload";
 import NewStoryForm from "../components/NewStoryForm";
 import Lottie from "lottie-react";
 import PointerDown from "../../../src/assets/lottie_animations/pointer-down.json";
-import StoryReader from "../components/StoryReader";
+import StoryReaderPreview from "../components/StoryReaderPreview";
 
 const MyStoriesPage = () => {
 
@@ -15,7 +15,7 @@ const MyStoriesPage = () => {
                 {
                     storyFile ? (
                         <div>
-                            <StoryReader file={storyFile} scale={0.8} setFile={setStoryFile}></StoryReader>
+                            <StoryReaderPreview file={storyFile} scale={0.8} setFile={setStoryFile}></StoryReaderPreview>
                         </div>
                     ) :
                     (   

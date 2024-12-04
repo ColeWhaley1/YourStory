@@ -42,6 +42,31 @@ const StoryPage: React.FC = () => {
         }
     }
 
+    const fetchStoryFile = async (): Promise<void> => {
+        try {
+            if(!story || !story.story_file){
+                return;
+            }
+            
+            const story_link = story?.story_file;
+
+            if(!story_link){
+                throw new Error("story file not found.");
+            }
+            
+            const file_response = await fetch(story_link);
+
+            const blob = await file_response.blob();
+
+            const file: File = new File([blob], story.title, {type: blob.type})
+
+            setStoryFile(file);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
         const fetchStory = async (id: string = "not_found") => {
             const response = await fetch(
@@ -70,6 +95,10 @@ const StoryPage: React.FC = () => {
 
         fetchStory(id);
     }, [id]);
+
+    useEffect(() => {
+        fetchStoryFile();
+    }, [story]);
 
     if (couldNotLoadStory)
         return (
@@ -155,7 +184,7 @@ const StoryPage: React.FC = () => {
                     <div className="flex items-center justify-center h-full w-full">
                         <div className="p-12">
                             <div className="w-1/2">
-                                <StoryReader/>
+                                <StoryReader file={storyFile}/>
                             </div>
                             <button
                                 onClick={toDescription}
