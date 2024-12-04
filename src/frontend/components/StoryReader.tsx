@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { FaCircleXmark } from 'react-icons/fa6';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
