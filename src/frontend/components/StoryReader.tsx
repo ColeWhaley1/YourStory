@@ -63,14 +63,14 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
         setFadeIn(true);
         setTimeout(() => setFadeIn(false), 200);
     };
-    
+
     const goToPage = (newPage: number) => {
         if (!fadeIn) {
             setPageNumber(newPage);
             transitionPages();
         }
     };
-    
+
     return (
         <div>
             <div className="relative">
@@ -78,6 +78,11 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                     <Document
                         file={file}
                         onLoadSuccess={onDocumentLoadSuccess}
+                        onLoadError={() => (
+                            <div className="text-center text-red-500">
+                                <p>Failed to load the story file. Please try again.</p>
+                            </div>
+                        )}
                         loading={
                             <div className="flex items-center justify-center w-96 h-96">
                                 <Lottie animationData={Loading} className="max-w-24" />
@@ -89,14 +94,14 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                             <div className={`z-20 ${fadeIn ? 'fade' : ''}`}>
                                 <Page pageNumber={pageNumber} scale={scale} />
                             </div>
-    
+
                             {/* Previous page */}
                             {pageNumber > 1 && (
                                 <div className="absolute z-10 opacity-0 pointer-events-none">
                                     <Page pageNumber={pageNumber - 1} scale={scale * 0.8} />
                                 </div>
                             )}
-    
+
                             {/* Next page */}
                             {pageNumber < (numPages ?? 0) && (
                                 <div className="absolute z-10 opacity-0 pointer-events-none">
@@ -105,7 +110,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                             )}
                         </div>
                     </Document>
-    
+
                     <div className="flex justify-center m-2">
                         <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
                             <button
@@ -138,6 +143,6 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
             </div>
         </div>
     );
-    };
+};
 
 export default StoryReader;
