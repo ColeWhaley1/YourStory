@@ -41,7 +41,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
 
     const onPageInputBlur = () => {
         const num = Number(pageInput);
-        if (!isNaN(num) && num >= 1 && (numPages == null || num <= numPages)) {
+        if (!isNaN(num) && num >= 1 && num <= (numPages ?? 0)) {
             setPageNumber(num);
         } else {
             setPageInput(pageNumber.toString());
@@ -65,11 +65,20 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     };
 
     const goToPage = (newPage: number) => {
+        if(!numPages){
+            return;
+        }
+        if(newPage > numPages || newPage < 1){
+            return;
+        }
         if (!fadeIn) {
             setPageNumber(newPage);
             transitionPages();
         }
     };
+
+    const isNextPageAvailable = pageNumber + 1 <= (numPages ?? 0);
+    const isPreviousPageAvailable = pageNumber > 1;
 
     return (
         <div>
@@ -90,22 +99,30 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                         }
                     >
                         <div className="flex items-center justify-center relative">
-                            {/* Keep the current page mounted and manage visibility */}
-                            <div className={`z-20 ${fadeIn ? 'fade' : ''}`}>
-                                <Page pageNumber={pageNumber} scale={scale} />
+                            {/* Show current and next page side by side */}
+                            <div className={`z-20 ${fadeIn ? 'fade' : ''}`} style={{ display: 'flex', flexDirection: 'row' }}>
+                                <div className="w-1/2">
+                                    <Page pageNumber={pageNumber} scale={scale} />
+                                </div>
+                                {isNextPageAvailable && (
+                                    <div className="w-1/2">
+                                        <Page pageNumber={pageNumber + 1} scale={scale} />
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Previous page */}
-                            {pageNumber > 1 && (
+                            {/* Previous and next page placeholders (off-screen) */}
+                            {isPreviousPageAvailable && (
                                 <div className="absolute z-10 opacity-0 pointer-events-none">
                                     <Page pageNumber={pageNumber - 1} scale={scale * 0.8} />
+                                    <Page pageNumber={pageNumber} scale={scale * 0.8} />
                                 </div>
                             )}
 
-                            {/* Next page */}
-                            {pageNumber < (numPages ?? 0) && (
+                            {isNextPageAvailable && (
                                 <div className="absolute z-10 opacity-0 pointer-events-none">
                                     <Page pageNumber={pageNumber + 1} scale={scale * 0.8} />
+                                    <Page pageNumber={pageNumber + 2} scale={scale * 0.8} />
                                 </div>
                             )}
                         </div>
@@ -114,8 +131,8 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                     <div className="flex justify-center m-2">
                         <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
                             <button
-                                disabled={pageNumber <= 1}
-                                onClick={() => goToPage(pageNumber - 1)}
+                                disabled={!isPreviousPageAvailable}
+                                onClick={() => goToPage(pageNumber - 2)}
                             >
                                 <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
                             </button>
@@ -132,8 +149,8 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                                 <p>of {numPages}</p>
                             </div>
                             <button
-                                disabled={pageNumber >= (numPages ?? 0)}
-                                onClick={() => goToPage(pageNumber + 1)}
+                                disabled={!isNextPageAvailable}
+                                onClick={() => goToPage(pageNumber + 2)}
                             >
                                 <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
                             </button>
