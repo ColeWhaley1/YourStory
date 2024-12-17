@@ -74,7 +74,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     return (
         <div>
             <div className="relative">
-                <div className="outline outline-primary outline-offset-8 rounded-sm outline-2">
+                <div className="outline outline-primary outline-offset-8 rounded-sm outline-2 w-fit">
                     <Document
                         file={file}
                         onLoadSuccess={onDocumentLoadSuccess}
