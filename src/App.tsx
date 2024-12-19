@@ -8,11 +8,15 @@ function App() {
   return (
     <Router>
       <Layout>
-        <Routes>
-            <Route path="/" element={<HomePage/>}/>
-            <Route path="/mystories" element={<MyStoriesPage/>}/>
-            <Route path="/stories/:id" element={<Story/>}></Route>
-        </Routes>
+        {
+          ({ hideNav, showNav }) => (
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/mystories" element={<MyStoriesPage />} />
+              <Route path="/stories/:id" element={<Story hideNav = {hideNav} showNav = {showNav} />}></Route>
+            </Routes>
+          )
+        }
       </Layout>
     </Router>
   );

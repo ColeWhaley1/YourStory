@@ -18,7 +18,12 @@ import {
 } from "../components/ui/shadcnCarousel";
 import React from "react";
 
-const StoryPage: React.FC = () => {
+interface StoryPageProps {
+    hideNav: () => void;
+    showNav: () => void;
+}
+
+const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
     const { id } = useParams<{ id: string }>();
     const [story, setStory] = useState<Story | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,12 +39,16 @@ const StoryPage: React.FC = () => {
         if (nextButtonRef.current) {
             nextButtonRef.current.click();
         }
+
+        // slide nav up
+        hideNav();
     };
 
     const toDescription = () => {
         if (prevButtonRef.current) {
             prevButtonRef.current.click();
         }
+        showNav();
     }
 
     const fetchStoryFile = async (): Promise<void> => {

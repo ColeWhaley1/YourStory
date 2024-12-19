@@ -83,7 +83,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     return (
         <div>
             <div className="relative">
-                <div className="outline outline-primary outline-offset-8 rounded-sm outline-2 w-fit">
+                <div className="outline outline-primary outline-offset-8 rounded-sm outline-2 w-screen max-w-[95vw]">
                     <Document
                         file={file}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -93,7 +93,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                             </div>
                         )}
                         loading={
-                            <div className="flex items-center justify-center w-96 h-96">
+                            <div className="flex items-center justify-center">
                                 <Lottie animationData={Loading} className="max-w-24" />
                             </div>
                         }
