@@ -104,6 +104,21 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         fetchStoryFile();
     }, [story]);
 
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+                e.preventDefault();
+            }
+        };
+    
+        document.addEventListener("keydown", handleKeyDown);
+    
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+    
+
     if (couldNotLoadStory)
         return (
             <div className="flex justify-center items-center flex-grow h-screen text-3xl">
