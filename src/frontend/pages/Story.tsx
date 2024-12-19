@@ -7,8 +7,7 @@ import NotFound from "../../assets/lottie_animations/not_found.json";
 import Loading from "../../assets/lottie_animations/loading.json";
 import noCoverAvailableImage from "../../assets/static_images/noCoverAvailable.png";
 import StoryReader from "../components/StoryReader";
-import { ArrowLeftIcon } from "@radix-ui/react-icons"
-
+import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import {
     Carousel,
     CarouselContent,
@@ -32,10 +31,11 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
     const nextButtonRef = useRef<HTMLButtonElement | null>(null);
     const prevButtonRef = useRef<HTMLButtonElement | null>(null);
     const [storyFile, setStoryFile] = useState<File | null>(null);
-
     const [couldNotLoadStory, setCouldNotLoadStory] = useState<boolean>(false);
+    const [isPullingBookUp, setIsPullingBookUp] = useState<boolean>(false);
 
     const readMore = () => {
+        setIsPullingBookUp(true);   
         if (nextButtonRef.current) {
             nextButtonRef.current.click();
         }
@@ -43,36 +43,34 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
     };
 
     const toDescription = () => {
+        setIsPullingBookUp(false);
         if (prevButtonRef.current) {
             prevButtonRef.current.click();
         }
         showNav();
-    }
+        window.scrollTo(0, 0);
+    };
 
     const fetchStoryFile = async (): Promise<void> => {
         try {
-            if(!story || !story.story_file){
+            if(!story || !story.story_file) {
                 return;
             }
-            
+
             const story_link = story?.story_file;
 
-            if(!story_link){
+            if(!story_link) {
                 throw new Error("story file not found.");
             }
-            
+
             const file_response = await fetch(story_link);
-
             const blob = await file_response.blob();
-
-            const file: File = new File([blob], story.title, {type: blob.type})
-
+            const file: File = new File([blob], story.title, { type: blob.type });
             setStoryFile(file);
-
         } catch (error) {
             console.error(error);
         }
-    }
+    };
 
     const fetchStory = async (id: string = "not_found") => {
         const response = await fetch(
@@ -94,13 +92,8 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         setStory(story);
         setIsLoading(false);
     };
-    
+
     useEffect(() => {
-
-        if (rightLottieArrowRef.current) {
-            rightLottieArrowRef.current.setSpeed(0.75);
-        }
-
         fetchStory(id);
     }, [id]);
 
@@ -189,10 +182,14 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
                     </div>
                 </CarouselItem>
                 <CarouselItem>
-                    <div className="flex items-center justify-center h-full w-full">
+                    <div
+                        className={`flex items-center justify-center h-full w-full transform transition-transform duration-700 ease-in-out ${
+                            isPullingBookUp ? "translate-y-0" : "translate-y-[150%]"
+                        }`}
+                    >
                         <div className="p-12">
                             <div className="w-1/2">
-                                <StoryReader file={storyFile}/>
+                                <StoryReader file={storyFile} />
                             </div>
                             <button
                                 onClick={toDescription}
