@@ -65,10 +65,10 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     };
 
     const goToPage = (newPage: number) => {
-        if(!numPages){
+        if (!numPages) {
             return;
         }
-        if(newPage > numPages || newPage < 1){
+        if (newPage > numPages || newPage < 1) {
             return;
         }
         if (!fadeIn) {
@@ -82,7 +82,36 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
 
     return (
         <div>
+            <div className="flex justify-center pb-5">
+                <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
+                    <button
+                        disabled={!isPreviousPageAvailable}
+                        onClick={() => goToPage(pageNumber - 2)}
+                    >
+                        <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
+                    </button>
+                    <div className="flex items-center">
+                        <p>Page</p>
+                        <input
+                            type="text"
+                            className="w-8 text-center border-2 border-primary rounded-lg mx-1 focus:outline-none"
+                            value={pageInput}
+                            onChange={onPageInputChange}
+                            onBlur={onPageInputBlur}
+                            onKeyDown={onPageInputKeyDown}
+                        />
+                        <p>of {numPages}</p>
+                    </div>
+                    <button
+                        disabled={!isNextPageAvailable}
+                        onClick={() => goToPage(pageNumber + 2)}
+                    >
+                        <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
+                    </button>
+                </div>
+            </div>
             <div className="relative">
+
                 <div className="outline outline-primary outline-offset-8 rounded-sm outline-2 w-screen max-w-[95vw]">
                     <Document
                         file={file}
@@ -127,35 +156,6 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                             )}
                         </div>
                     </Document>
-
-                    <div className="flex justify-center m-2">
-                        <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
-                            <button
-                                disabled={!isPreviousPageAvailable}
-                                onClick={() => goToPage(pageNumber - 2)}
-                            >
-                                <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
-                            </button>
-                            <div className="flex items-center">
-                                <p>Page</p>
-                                <input
-                                    type="text"
-                                    className="w-8 text-center border-2 border-primary rounded-lg mx-1 focus:outline-none"
-                                    value={pageInput}
-                                    onChange={onPageInputChange}
-                                    onBlur={onPageInputBlur}
-                                    onKeyDown={onPageInputKeyDown}
-                                />
-                                <p>of {numPages}</p>
-                            </div>
-                            <button
-                                disabled={!isNextPageAvailable}
-                                onClick={() => goToPage(pageNumber + 2)}
-                            >
-                                <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

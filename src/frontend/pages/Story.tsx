@@ -44,11 +44,14 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
 
     const toDescription = () => {
         setIsPullingBookUp(false);
-        if (prevButtonRef.current) {
-            prevButtonRef.current.click();
-        }
-        showNav();
-        window.scrollTo(0, 0);
+
+        setTimeout(() => {
+            if (prevButtonRef.current) {
+                prevButtonRef.current.click();
+            }
+            showNav();
+            window.scrollTo(0, 0);
+        }, 300)
     };
 
     const fetchStoryFile = async (): Promise<void> => {
@@ -187,19 +190,19 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
                             isPullingBookUp ? "translate-y-0" : "translate-y-[150%]"
                         }`}
                     >
-                        <div className="p-12">
-                            <div className="w-1/2">
-                                <StoryReader file={storyFile} />
-                            </div>
+                        <div className="p-2 relative">
                             <button
                                 onClick={toDescription}
-                                className="bg-primary p-2 m-4 rounded-xl text-white shadow-md"
+                                className="bg-primary p-2 m-4 rounded-xl text-white shadow-md absolute"
                             >
                                 <div className="flex justify-center items-center space-x-1">
                                     <ArrowLeftIcon className="max-h-6 transform -translate-y-0.5" />
                                     <div>Back</div>
                                 </div>
                             </button>
+                            <div>
+                                <StoryReader file={storyFile} />
+                            </div>
                         </div>
                     </div>
                 </CarouselItem>

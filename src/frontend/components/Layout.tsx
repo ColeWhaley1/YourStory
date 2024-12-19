@@ -28,7 +28,6 @@ const Layout: React.FC<props> = ({ children }) => {
             } else {
               setIsNavBarRemoved(false)
             }
-            
           }}
         >
           <NavigationMenu>
