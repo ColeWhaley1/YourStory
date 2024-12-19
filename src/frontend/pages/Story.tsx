@@ -39,8 +39,6 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         if (nextButtonRef.current) {
             nextButtonRef.current.click();
         }
-
-        // slide nav up
         hideNav();
     };
 
