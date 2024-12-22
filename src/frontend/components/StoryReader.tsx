@@ -77,12 +77,22 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        console.log("key")
+        if(e.key === "ArrowLeft"){
+            console.log('left')
+        }
+        if(e.key === "ArrowRight"){
+            console.log('Right')
+        }
+    }
+
     const isNextPageAvailable = pageNumber + 1 <= (numPages ?? 0);
     const isPreviousPageAvailable = pageNumber > 1;
 
     return (
-        <div>
-            <div className="flex justify-center pb-5">
+        <div onKeyDown={handleKeyDown}>
+            <div className="flex justify-center pb-4">
                 <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
                     <button
                         disabled={!isPreviousPageAvailable}
@@ -112,7 +122,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
             </div>
             <div className="relative">
 
-                <div className="outline outline-primary outline-offset-8 rounded-sm outline-2 w-screen max-w-[95vw]">
+                <div className="border-2 border-primary border-offset-8 rounded-sm w-screen max-w-[95vw] max-h-[88vh] bg-gray-200 overflow-hidden">
                     <Document
                         file={file}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -131,7 +141,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                             {/* Show current and next page side by side */}
                             <div className={`z-20 ${fadeIn ? 'fade' : ''}`} style={{ display: 'flex', flexDirection: 'row' }}>
                                 <div className="w-1/2">
-                                    <Page pageNumber={pageNumber} scale={scale} />
+                                    <Page pageNumber={pageNumber} scale={scale}/>
                                 </div>
                                 {isNextPageAvailable && (
                                     <div className="w-1/2">

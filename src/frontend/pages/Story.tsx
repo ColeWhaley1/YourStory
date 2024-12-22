@@ -35,11 +35,14 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
     const [isPullingBookUp, setIsPullingBookUp] = useState<boolean>(false);
 
     const readMore = () => {
-        setIsPullingBookUp(true);   
         if (nextButtonRef.current) {
             nextButtonRef.current.click();
         }
         hideNav();
+        setTimeout(() => {
+            setIsPullingBookUp(true);   
+
+        }, 200)
     };
 
     const toDescription = () => {
@@ -51,7 +54,7 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
             }
             showNav();
             window.scrollTo(0, 0);
-        }, 300)
+        }, 500)
     };
 
     const fetchStoryFile = async (): Promise<void> => {
