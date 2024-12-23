@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../components/ui/button";
@@ -51,11 +51,20 @@ const SignUpPage = () => {
         setIsPasswordVisible(isPasswordVisible => !isPasswordVisible)
     }
 
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        const { pen_name, email, password } = values;
+
+        alert(`pen: ${pen_name}, email: ${email}, password: ${password}`)
+    }
+
     return (
         <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-88px)]">
-            <div className="bg-gray-100 w-4/5 sm:w-3/5 md:w-1/2 lg:w-1/2 xl:w-1/3 h-fit flex items-center justify-center rounded-lg shadow-lg">
+            <div className="flex-col bg-gray-100 w-4/5 sm:w-3/5 md:w-1/2 lg:w-1/2 xl:w-1/3 h-fit flex items-center justify-center rounded-lg shadow-lg p-12">
+                <div className="text-2xl pb-4 text-primary">
+                    Sign Up
+                </div>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(() => { })} className="space-y-8 w-4/5">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-4/5">
                         <FormField
                             control={form.control}
                             name="pen_name"
@@ -107,7 +116,7 @@ const SignUpPage = () => {
                                         <div className="flex relative items-center justify-center">
                                             <Input
                                                 type={`${isPasswordVisible ? "" : "password"}`}
-                                                placeholder="● ● ● ● ● ● ● ● ● ● ● ● ● ●"
+                                                placeholder="● ● ● ● ● ● ● ●"
                                                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); } }}
                                                 {...field}
                                             />
@@ -140,7 +149,7 @@ const SignUpPage = () => {
                                     <FormControl>
                                         <Input
                                             type={`${isPasswordVisible ? "" : "password"}`}
-                                            placeholder="● ● ● ● ● ● ● ● ● ● ● ● ● ●"
+                                            placeholder="● ● ● ● ● ● ● ●"
                                             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); } }}
                                             {...field}
                                         />
@@ -150,17 +159,15 @@ const SignUpPage = () => {
 
                             )}
                         />
-
-
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
             </div>
-            <div className="flex space-x-2 mt-2">
+            <div className="flex space-x-2 mt-4">
                 <div>
                     Already have an account?
                 </div>
-                <a href="/log_in">Log In</a>
+                <a href="/log_in" className="text-primary">Log In</a>
             </div>
         </div>
     );
