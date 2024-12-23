@@ -151,6 +151,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                                 <Lottie animationData={Loading} className="max-w-24" />
                             </div>
                         }
+                        className="transform -translate-y-5"
                     >
                         <div className="flex items-center justify-center relative">
                             {/* Show current and next page side by side */}
