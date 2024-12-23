@@ -147,8 +147,8 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         >
             <CarouselContent>
                 <CarouselItem>
-                    <div className="flex justify-center pt-8">
-                        <div className="py-16 px-24 bg-slate-100 rounded-md shadow-md">
+                    <div className="flex justify-center pt-8 w-screen">
+                        <div className="py-16 px-24 bg-slate-100 rounded-md shadow-md w-3/5">
                             <div className="flex space-x-10 items-center">
                                 <div>
                                     {isImageLoading && (
@@ -170,7 +170,7 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
                                             )
                                         }
                                         alt={`cover image for ${story?.title}`}
-                                        className="max-h-96 rounded-xl shadow-lg"
+                                        className="rounded-xl shadow-lg"
                                     />
                                 </div>
                                 <div className="text-black pt-4">
