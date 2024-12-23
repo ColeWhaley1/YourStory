@@ -6,6 +6,8 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
+import { Author } from "../../types/story";
+import createNewUser from "../services/createNewUser";
 
 const SignUpPage = () => {
 
@@ -52,9 +54,18 @@ const SignUpPage = () => {
     }
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
+
         const { pen_name, email, password } = values;
 
+        
         alert(`pen: ${pen_name}, email: ${email}, password: ${password}`)
+        
+        const sign_up_info: Author = {
+            pen_name,
+            email,
+            password
+        }
+        createNewUser(sign_up_info)
     }
 
     return (

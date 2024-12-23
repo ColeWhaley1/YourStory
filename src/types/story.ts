@@ -25,3 +25,9 @@ export interface Story {
     title: string,
     genres: string[]
 }
+
+export interface Author {
+    pen_name: string,
+    email: string,
+    password: string
+}
