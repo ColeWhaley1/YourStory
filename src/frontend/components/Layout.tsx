@@ -47,16 +47,16 @@ const Layout: React.FC<props> = ({ children }) => {
               </div>
 
               {/* Log in and Sign Up. Right aligned */}
-              <div className="flex">
+              <div className="flex space-x-2 md:space-x-4 m-8 pr-4">
                 <NavigationMenuItem>
-                  <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
-                    <div className="text-white">Sign Up</div>
-                  </button>
+                  <NavigationMenuLink href="/sign_up" className="text-xs text-white bg-tertiary rounded-3xl p-1 sm:p-2 md:p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
+                      Sign Up
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <button className="bg-tertiary rounded-3xl my-6 mr-6 p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
-                    <div className="text-white">Log In</div>
-                  </button>
+                  <NavigationMenuLink href="/log_in" className="text-xs text-white bg-tertiary rounded-3xl p-1 sm:p-2 md:p-3 hover:shadow-2xl hover:ring-1 hover:ring-tertiary">
+                    Log In
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               </div>
             </NavigationMenuList>
