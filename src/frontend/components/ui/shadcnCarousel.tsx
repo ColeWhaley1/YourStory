@@ -74,6 +74,10 @@ const Carousel = React.forwardRef<
       setCanScrollNext(api.canScrollNext())
     }, [])
 
+    const preventDrag = React.useCallback((e: React.SyntheticEvent) => {
+      e.preventDefault()
+    }, [])
+
     const scrollPrev = React.useCallback(() => {
       api?.scrollPrev()
     }, [api])
@@ -86,10 +90,10 @@ const Carousel = React.forwardRef<
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === "ArrowLeft") {
           event.preventDefault()
-
+          // removed ability to use left arrow key
         } else if (event.key === "ArrowRight") {
           event.preventDefault()
-
+          // removed ability to use right arrow key
         }
       },
       [scrollPrev, scrollNext]
@@ -137,6 +141,9 @@ const Carousel = React.forwardRef<
           className={cn("relative", className)}
           role="region"
           aria-roledescription="carousel"
+          onPointerDownCapture={preventDrag}
+          onDragStart={preventDrag}
+          onTouchMove={preventDrag}
           {...props}
         >
           {children}

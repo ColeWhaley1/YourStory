@@ -41,7 +41,6 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         hideNav();
         setTimeout(() => {
             setIsPullingBookUp(true);   
-
         }, 200)
     };
 
@@ -120,7 +119,7 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
             document.removeEventListener("keydown", handleKeyDown);
         };
     }, []);
-    
+
 
     if (couldNotLoadStory)
         return (
