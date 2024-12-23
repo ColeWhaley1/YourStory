@@ -77,21 +77,36 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
         }
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        console.log("key")
-        if(e.key === "ArrowLeft"){
-            console.log('left')
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if(e.key === "ArrowLeft"){
+                if(pageNumber == 2){
+                    goToPage(pageNumber - 1);
+                    return;
+                }
+                goToPage(pageNumber - 2);
+            }
+            if(e.key === "ArrowRight"){
+                if(numPages && pageNumber == (numPages - 1)){
+                    goToPage(numPages)
+                }
+                goToPage(pageNumber + 2);
+            }
         }
-        if(e.key === "ArrowRight"){
-            console.log('Right')
-        }
-    }
+
+        document.addEventListener("keydown", handleKeyDown)
+
+        return (() => {
+            document.removeEventListener("keydown", handleKeyDown)
+        })
+    })
+
 
     const isNextPageAvailable = pageNumber + 1 <= (numPages ?? 0);
     const isPreviousPageAvailable = pageNumber > 1;
 
     return (
-        <div onKeyDown={handleKeyDown}>
+        <div>
             <div className="flex justify-center pb-4">
                 <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
                     <button
