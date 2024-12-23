@@ -4,9 +4,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { useState } from "react";
 
 const SignUpPage = () => {
+
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
     const formSchema = z.object({
         pen_name: z.string().min(5, {
@@ -15,14 +18,21 @@ const SignUpPage = () => {
             message: "Must be 30 or less characters"
         }),
         email: z.string().email("Not a valid email"),
-        password: z.string(),
+        password: z.string().min(8, {
+            message: "Must be 8 or more characters"
+        }).max(20, "Must not exceed 20 characters")
+            .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+            .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+            .regex(/[0-9]/, 'Password must contain at least one number')
+            .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character')
+        ,
         confirm_password: z.string()
     }).superRefine(({ password, confirm_password }, ctx) => {
         if (password !== confirm_password) {
             ctx.addIssue({
                 code: "custom",
                 message: "Passwords do not match",
-                path: [confirm_password]
+                path: ["confirm_password"]
             })
         }
     })
@@ -36,6 +46,10 @@ const SignUpPage = () => {
             confirm_password: ""
         },
     });
+
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(isPasswordVisible => !isPasswordVisible)
+    }
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-88px)]">
@@ -90,11 +104,25 @@ const SignUpPage = () => {
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            placeholder="ex. john_doe@gmail.com"
-                                            onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); } }}
-                                            {...field}
-                                        />
+                                        <div className="flex relative items-center justify-center">
+                                            <Input
+                                                type={`${isPasswordVisible ? "" : "password"}`}
+                                                placeholder="● ● ● ● ● ● ● ● ● ● ● ● ● ●"
+                                                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); } }}
+                                                {...field}
+                                            />
+                                            <div className="absolute right-2 scale-125">
+                                                <button type="button" onClick={togglePasswordVisibility} className="flex justify-center items-center">
+                                                    {
+                                                        isPasswordVisible ? (
+                                                            <IoMdEyeOff />
+                                                        ) : (
+                                                            <IoMdEye />
+                                                        )
+                                                    }
+                                                </button>
+                                            </div>
+                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -111,7 +139,8 @@ const SignUpPage = () => {
                                     <FormLabel>Confirm Password</FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="ex. john_doe@gmail.com"
+                                            type={`${isPasswordVisible ? "" : "password"}`}
+                                            placeholder="● ● ● ● ● ● ● ● ● ● ● ● ● ●"
                                             onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); } }}
                                             {...field}
                                         />
