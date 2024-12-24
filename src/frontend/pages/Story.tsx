@@ -147,10 +147,10 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         >
             <CarouselContent>
                 <CarouselItem>
-                    <div className="flex justify-center pt-8 w-screen">
-                        <div className="py-16 px-24 bg-slate-100 rounded-md shadow-md w-3/5">
+                    <div className="flex justify-center pt-8 w-screen h-screen">
+                        <div className="py-16 px-24 bg-slate-100 rounded-md shadow-md w-3/5 h-fit">
                             <div className="flex space-x-10 items-center">
-                                <div>
+                                <div className="w-full">
                                     {isImageLoading && (
                                         <div>
                                             <Lottie className="h-12" animationData={Loading} />
@@ -170,10 +170,10 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
                                             )
                                         }
                                         alt={`cover image for ${story?.title}`}
-                                        className="rounded-xl shadow-lg"
+                                        className="rounded-xl shadow-lg max-h-[25rem]"
                                     />
                                 </div>
-                                <div className="text-black pt-4">
+                                <div className="text-black pt-4 w-2/3">
                                     <h1 className="text-2xl">{story?.title}</h1>
                                     <h2 className="opacity-70 text-sm">
                                         by {story?.author_id}
