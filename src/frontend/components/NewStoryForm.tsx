@@ -111,13 +111,15 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         // 2. call service to add new story row by passing in Story obj as param
 
+        genres.forEach(genre => genre.trim());
+
         const story: Story = {
             author_id: "YduoBnw4BAKAyEVyTvTL", // THIS NEEDS TO CHANGE TO AUTHENTICATED USER ID
-            description: values.description,
+            description: values.description.trim(),
             story_file: storyLink,
             cover: coverLink,
-            title: values.title,
-            genres: genres
+            title: values.title.trim(),
+            genres: genres,
         }
         console.log(story);
 
@@ -163,6 +165,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             form.clearErrors("genre");
             form.setValue("genre", "");
         }
+        console.log(genreInput);
 
         setGenreInput("");
     }
