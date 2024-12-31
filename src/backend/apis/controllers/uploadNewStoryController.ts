@@ -14,16 +14,22 @@ const uploadNewStoryController = async (
 
         const { story } = req.body as unknown as Request_params;
 
-        const response = await uploadNewStoryService(story);
+        const response: string | null = await uploadNewStoryService(story);
+
+        if(response === null){
+            throw new Error("Could not upload story to DB.");
+        }
 
         res.status(200).json({
-            success: response
+            id: response,
+            error: null
         });
         
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
         res.status(500).json({
-            success: false
+            id: null,
+            error: error.message
         });
     }
 }

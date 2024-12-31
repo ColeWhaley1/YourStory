@@ -125,16 +125,18 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             genres: genres,
         }
 
-        const res = await uploadNewStory(story);
+        const response = await uploadNewStory(story);
 
-        if(res.error){
-            setFileError(res.error);
+        if(response.error){
+            setFileError(response.error);
             return;
         }
         
         // 3. display success animation
 
-        navigate("/success_screen", { state: { reroute_to: "/my_stories" } });
+        const new_story_id = response.id;
+
+        navigate("/success_screen", { state: { reroute_to: `/stories/${new_story_id}` } });
     }
 
     useEffect(() => {

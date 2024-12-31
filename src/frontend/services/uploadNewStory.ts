@@ -1,7 +1,7 @@
 import { Story } from "../../types/story";
 
 interface NewStoryReturnType {
-    success: "success" | "failure"; // IDEA: may change to return id of new story instead
+    id: string | null;
     error: string | null;
 }
 
@@ -25,14 +25,14 @@ const uploadNewStory = async (
         }
 
         return {
-            success: "success",
+            id: (await response.json()).id,
             error: null
         }
         
     } catch (error: any) {
         console.error(error.message);
         return {
-            success: "failure",
+            id: null,
             error: error.message
         }
     }
