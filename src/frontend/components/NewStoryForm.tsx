@@ -82,7 +82,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         setFileError(null);
 
-        // 1. upload story and image to file storage, return links to both
+        // 1. upload story and image to file storage, return both links
 
         const storyResponse = await uploadFileToStorage(storyFile, "story");
         const storyLink = storyResponse.link;
