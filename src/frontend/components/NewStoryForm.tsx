@@ -94,7 +94,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
         }
 
         if(!storyLink){
-            setFileError("Something went wrong uploading your story!");
+            setFileError("Something went wrong uploading your story! Please try again!");
             return;
         }
 
