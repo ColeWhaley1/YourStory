@@ -10,7 +10,7 @@ const uploadNewStoryService = async (
             .insert([
                 story
             ]);
-
+        
         if (error) {
             throw new Error("Could not upload story to DB.");
         }

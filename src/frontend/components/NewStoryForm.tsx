@@ -24,7 +24,11 @@ import RemovableLabel from "./widgets/RemovableLabel";
 import uploadFileToStorage from "../services/uploadFileToStorage";
 import uploadNewStory from "../services/uploadNewStory";
 
+import { useNavigate } from 'react-router-dom';
+
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
+
+    const navigate = useNavigate();
 
     const [fileError, setFileError] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -78,7 +82,6 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         setFileError(null);
 
-
         // 1. upload story and image to file storage, return links to both
 
         const storyResponse = await uploadFileToStorage(storyFile, "story");
@@ -121,12 +124,17 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             title: values.title.trim(),
             genres: genres,
         }
-        console.log(story);
 
-        uploadNewStory(story);
+        const res = await uploadNewStory(story);
+
+        if(res.error){
+            setFileError(res.error);
+            return;
+        }
         
         // 3. display success animation
 
+        navigate("/success_screen", { state: { reroute_to: "/my_stories" } });
     }
 
     useEffect(() => {

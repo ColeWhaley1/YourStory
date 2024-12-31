@@ -29,7 +29,6 @@ const uploadFileToStorage = async (
 
         const data: string = await response.json();
 
-        console.log(data);
         return {
             link: data || null,
             error: null

@@ -40,7 +40,7 @@ const Layout: React.FC<props> = ({ children }) => {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuLink href="/mystories" className={`${navigationMenuTriggerStyle()} text-lg`}>
+                  <NavigationMenuLink href="/my_stories" className={`${navigationMenuTriggerStyle()} text-lg`}>
                     My Stories
                   </NavigationMenuLink>
                 </NavigationMenuItem>

@@ -5,6 +5,7 @@ import MyStoriesPage from "./frontend/pages/MyStories";
 import Story from "./frontend/pages/Story";
 import SignUpPage from "./frontend/pages/SignUp";
 import LogInPage from "./frontend/pages/LogIn";
+import SuccessPage from "./frontend/pages/Success";
 
 function App() {
   return (
@@ -16,8 +17,9 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/sign_up" element={<SignUpPage />} />
               <Route path="/log_in" element={<LogInPage />} />
-              <Route path="/mystories" element={<MyStoriesPage />} />
+              <Route path="/my_stories" element={<MyStoriesPage />} />
               <Route path="/stories/:id" element={<Story hideNav = {hideNav} showNav = {showNav} />}></Route>
+              <Route path="/success_screen" element={<SuccessPage/>}></Route>
             </Routes>
           )
         }
