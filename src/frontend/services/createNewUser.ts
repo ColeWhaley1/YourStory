@@ -16,8 +16,7 @@ const createNewUser = async (sign_up_info: Author): Promise<string | undefined |
         const id = data.user?.id;
 
         // create new author with this id?
-        
-        console.log(id);
+
         return id;
     } catch (error: any) {
         console.error(error.message);

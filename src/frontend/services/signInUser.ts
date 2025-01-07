@@ -14,7 +14,6 @@ const signInUser = async (sign_in_info: SignIn): Promise<string | undefined | nu
         }
 
         const id = data.user?.id;
-        console.log(id);
         return id;
     } catch (error: any) {
         console.error(error.message);
