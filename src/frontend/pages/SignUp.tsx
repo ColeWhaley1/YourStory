@@ -58,14 +58,14 @@ const SignUpPage = () => {
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
 
-        // const { pen_name, email, password } = values;
+        const { pen_name, email, password } = values;
         
-        // const sign_up_info: Author = {
-        //     pen_name,
-        //     email,
-        //     password
-        // }
-        // createNewUser(sign_up_info)
+        const sign_up_info: Author = {
+            pen_name,
+            email,
+            password
+        }
+        createNewUser(sign_up_info)
 
         setShowMessage(true);
     }
