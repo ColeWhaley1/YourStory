@@ -6,9 +6,18 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
+import signInUser from "../services/signInUser";
+import { useNavigate } from "react-router-dom";
+import { Alert, AlertTitle } from "../components/ui/alert";
 
 const LogInPage = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+
+    const [isError, setIsError] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>("");
+    const [showMessage, setShowMessage] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const formSchema = z.object({
         email: z.string().email("Not a valid email"),
@@ -27,9 +36,22 @@ const LogInPage = () => {
         setIsPasswordVisible(!isPasswordVisible);
     };
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const { email, password } = values;
-        alert(`email: ${email}, password: ${password}`);
+
+        const id = await signInUser({ email, password });
+
+        if (id !== null && id !== undefined) {
+            setIsError(false);
+            setMessage("Success! Redirecting...");
+            setTimeout(() => {
+                navigate("/");
+            }, 2000);
+        } else {
+            setIsError(true);
+            setMessage("Invalid email or password");
+        }
+        setShowMessage(true);
     };
 
     return (
@@ -89,6 +111,14 @@ const LogInPage = () => {
                                 </FormItem>
                             )}
                         />
+
+                        {
+                            showMessage ? (
+                                <Alert className={`bg-green-100 border-green-400 text-green-700 text-center ${isError ? "bg-red-100 border-red-400 text-red-700" : ""}`}>
+                                    <AlertTitle>{message}</AlertTitle>
+                                </Alert>
+                            ) : null
+                        }
 
                         <Button type="submit">Log In</Button>
                     </form>

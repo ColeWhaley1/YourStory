@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form";
-import { z } from "zod";
+import { set, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -9,9 +9,12 @@ import { useState } from "react";
 import { Author } from "../../types/story";
 import createNewUser from "../services/createNewUser";
 
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
+
 const SignUpPage = () => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+    const [showMessage, setShowMessage] = useState<boolean>(false);
 
     const formSchema = z.object({
         pen_name: z.string().min(5, {
@@ -56,9 +59,6 @@ const SignUpPage = () => {
     const onSubmit = (values: z.infer<typeof formSchema>) => {
 
         const { pen_name, email, password } = values;
-
-        
-        alert(`pen: ${pen_name}, email: ${email}, password: ${password}`)
         
         const sign_up_info: Author = {
             pen_name,
@@ -66,6 +66,8 @@ const SignUpPage = () => {
             password
         }
         createNewUser(sign_up_info)
+
+        setShowMessage(true);
     }
 
     return (
@@ -170,6 +172,16 @@ const SignUpPage = () => {
 
                             )}
                         />
+                        {
+                            showMessage ? (
+                                <Alert className="bg-green-100 border-green-400 text-green-700 text-center space-y-2">
+                                    <AlertTitle className="font-extrabold text-lg">Success!</AlertTitle>
+                                    <AlertDescription>
+                                        Check your email to verify your account!
+                                    </AlertDescription>
+                                </Alert>
+                            ) : null
+                        }
                         <Button type="submit">Submit</Button>
                     </form>
                 </Form>
