@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabase";
 
-const useAuthStatus = (): boolean => {
+const useAuthStatus = (): boolean | null => {
 
-    const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+    const [isSignedIn, setIsSignedIn] = useState<boolean | null>(null);
 
     useEffect(() => {
         const checkSession = async () => {
