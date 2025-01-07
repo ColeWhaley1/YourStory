@@ -56,9 +56,6 @@ const SignUpPage = () => {
     const onSubmit = (values: z.infer<typeof formSchema>) => {
 
         const { pen_name, email, password } = values;
-
-        
-        alert(`pen: ${pen_name}, email: ${email}, password: ${password}`)
         
         const sign_up_info: Author = {
             pen_name,

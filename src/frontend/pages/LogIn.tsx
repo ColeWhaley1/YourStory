@@ -6,6 +6,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
+import signInUser from "../services/signInUser";
 
 const LogInPage = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -29,7 +30,9 @@ const LogInPage = () => {
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         const { email, password } = values;
-        alert(`email: ${email}, password: ${password}`);
+
+        signInUser({ email, password });
+
     };
 
     return (
