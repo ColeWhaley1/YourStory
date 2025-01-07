@@ -8,10 +8,13 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
 import { Author } from "../../types/story";
 import createNewUser from "../services/createNewUser";
+import { useNavigate } from "react-router-dom";
 
 const SignUpPage = () => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const formSchema = z.object({
         pen_name: z.string().min(5, {
@@ -63,6 +66,8 @@ const SignUpPage = () => {
             password
         }
         createNewUser(sign_up_info)
+
+        navigate("/");
     }
 
     return (

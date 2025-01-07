@@ -7,9 +7,12 @@ import { Input } from "../components/ui/input";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useState } from "react";
 import signInUser from "../services/signInUser";
+import { useNavigate } from "react-router-dom";
 
 const LogInPage = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const formSchema = z.object({
         email: z.string().email("Not a valid email"),
@@ -32,6 +35,8 @@ const LogInPage = () => {
         const { email, password } = values;
 
         signInUser({ email, password });
+        
+        navigate("/");
 
     };
 
