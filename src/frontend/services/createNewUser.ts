@@ -1,23 +1,25 @@
 import { Author } from "../../types/story";
-import supabase from "../supabase";
 
 const createNewUser = async (sign_up_info: Author): Promise<string | undefined | null> => {
     try {
-        
-        const { data, error } = await supabase.auth.signUp({
-            email: sign_up_info.email,
-            password: sign_up_info.password
+
+        const base_url = import.meta.env.VITE_API_BASE_URL
+
+        const response = await fetch(`${base_url}/sign_up`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: sign_up_info.email, password: sign_up_info.password }),
         });
 
-        if (error) {
-            throw new Error(error.message);
+        if (!response.ok) {
+            throw new Error("Failed to create new user");
         }
 
-        const id = data.user?.id;
+        const data = await response.json();
 
-        // create new author with this id?
-
-        return id;
+        return data.id;
     } catch (error: any) {
         console.error(error.message);
         return null;

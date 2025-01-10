@@ -6,6 +6,7 @@ import Story from "./frontend/pages/Story";
 import SignUpPage from "./frontend/pages/SignUp";
 import LogInPage from "./frontend/pages/LogIn";
 import SuccessPage from "./frontend/pages/Success";
+import ProfilePage from "./frontend/pages/Profile";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
               <Route path="/my_stories" element={<MyStoriesPage />} />
               <Route path="/stories/:id" element={<Story hideNav = {hideNav} showNav = {showNav} />}></Route>
               <Route path="/success_screen" element={<SuccessPage/>}></Route>
+              <Route path="/profile" element = {<ProfilePage/>}></Route>
             </Routes>
           )
         }
