@@ -12,8 +12,6 @@ const createNewUserService = async (email: string, password: string): Promise<Cr
             email, password
         });
 
-        console.log("supabase error", error);
-
         if (error) {
             throw new Error(error.message);
         }
