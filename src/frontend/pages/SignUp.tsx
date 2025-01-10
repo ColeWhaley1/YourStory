@@ -57,7 +57,7 @@ const SignUpPage = () => {
         setIsPasswordVisible(isPasswordVisible => !isPasswordVisible)
     }
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
         const { pen_name, email, password } = values;
         
@@ -66,9 +66,9 @@ const SignUpPage = () => {
             email,
             password
         }
-        const id = createNewUser(sign_up_info);
+        const response = await createNewUser(sign_up_info);
 
-        if (id === null) {
+        if (response.error) {
             setShowSuccessMessage(false);
             setShowErrorMessage(true);
             return;

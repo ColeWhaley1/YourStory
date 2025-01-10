@@ -1,6 +1,11 @@
 import { Author } from "../../types/story";
 
-const createNewUser = async (sign_up_info: Author): Promise<string | undefined | null> => {
+interface CreateNewUserResponse {
+    id: string | null;
+    error: string | null;
+}
+
+const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserResponse> => {
     try {
 
         const base_url = import.meta.env.VITE_API_BASE_URL
@@ -19,10 +24,16 @@ const createNewUser = async (sign_up_info: Author): Promise<string | undefined |
 
         const data = await response.json();
 
-        return data.id;
+        return {
+            id: data.id,
+            error: null,
+        };
     } catch (error: any) {
         console.error(error.message);
-        return null;
+        return {
+            id: null,
+            error: "Failed to create new user",
+        };
     }
 }
 
