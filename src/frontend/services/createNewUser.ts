@@ -24,6 +24,10 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
 
         const data = await response.json();
 
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
         return {
             id: data.id,
             error: null,
@@ -32,7 +36,7 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
         console.error(error.message);
         return {
             id: null,
-            error: "Failed to create new user",
+            error: error.message,
         };
     }
 }

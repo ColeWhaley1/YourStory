@@ -4,23 +4,26 @@ import createNewUserService from '../services/createNewUserService';
 const createNewUserController = async (req: Request, res: Response) => {
     try {
 
+        // create rate limit
+
         const { email, password } = req.body;
 
-        const response = createNewUserService(email, password);
+        const response = await createNewUserService(email, password);
 
-        if (!response) {
-            throw new Error("Failed to create new user");
+        if (response.error) {
+            throw new Error(response.error);
         }
 
         res.status(200).send({
-            id: response
+            id: response,
+            error: null
         });
         
     } catch (error: any) {
         console.error(error.message);
         res.status(500).send({
             id: null,
-            error: "Failed to create new user"
+            error: error.message
         });
     }
 }

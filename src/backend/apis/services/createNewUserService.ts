@@ -1,13 +1,18 @@
 import supabase from "../../supabase";
 
-const createNewUserService = async (email: string, password: string): Promise<string | null> => {
-    try {
+interface CreateNewUserServiceResponse {
+    id: string | null;
+    error: string | null;
+}
 
-        // check if user already exists
+const createNewUserService = async (email: string, password: string): Promise<CreateNewUserServiceResponse> => {
+    try {
 
         const { data, error } = await supabase.auth.signUp({
             email, password
         });
+
+        console.log("supabase error", error);
 
         if (error) {
             throw new Error(error.message);
@@ -21,11 +26,17 @@ const createNewUserService = async (email: string, password: string): Promise<st
             throw new Error("Failed to create new user");
         }
 
-        return id;
+        return {
+            id: id,
+            error: null
+        };
         
     } catch (error: any) {
         console.error(error.message);
-        return null;
+        return {
+            id: null,
+            error: error.message
+        };
     }
 }
 
