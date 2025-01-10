@@ -18,7 +18,10 @@ const createNewUserController = async (req: Request, res: Response) => {
         
     } catch (error: any) {
         console.error(error.message);
-        res.status(500).send("Failed to create new user");
+        res.status(500).send({
+            id: null,
+            error: "Failed to create new user"
+        });
     }
 }
 

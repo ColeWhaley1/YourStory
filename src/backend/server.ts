@@ -7,6 +7,7 @@ import { uploadFileToStorageController } from "./apis/controllers/uploadFileToSt
 import multer from "multer";
 import { uploadNewStoryController } from "./apis/controllers/uploadNewStoryController";
 import createNewUserController from "./apis/controllers/createNewUserController";
+import signInUserController from "./apis/controllers/signInUserController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -34,6 +35,7 @@ app.post("/api/file/:bucket", upload.single("file"), uploadFileToStorageControll
 // user auth
 
 app.post("/api/sign_up", createNewUserController);
+app.post("/api/sign_in", signInUserController);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
