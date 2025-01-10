@@ -6,19 +6,19 @@ const signInUserController = async (req: Request, res: Response) => {
 
         const { email, password } = req.body;
 
-        const response = signInUserService(email, password);
+        const response = await signInUserService(email, password);
 
-        if (response == null) {
-            throw new Error("Failed to sign in user");
+        if (response.error) {
+            throw new Error(response.error);
         }
 
-        res.status(200).json({ id: response });
+        res.status(200).json({ id: response, error: null });
 
     } catch (error: any) {
         console.error(error.message);
         res.status(500).json({ 
             id: null, 
-            error: "Failed to sign in user" 
+            error: error.message
         });
     }
 }

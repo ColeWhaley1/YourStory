@@ -1,12 +1,17 @@
 import supabase from "../../supabase";
 
-const signInUserService = async (email: string, password: string): Promise<string | null> => {
+interface SignInUserResponse {
+    id: string | null;
+    error: string | null;
+}
+
+const signInUserService = async (email: string, password: string): Promise<SignInUserResponse> => {
     try {
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email, password
         });
-        
+        console.log(error);
         if (error) {
             throw new Error(error.message);
         }
@@ -16,11 +21,18 @@ const signInUserService = async (email: string, password: string): Promise<strin
         if (!id) {
             throw new Error("Failed to sign in user");
         }
-        return id;
+
+        return {
+            id: id,
+            error: null
+        };
         
     } catch (error: any) {
         console.error(error.message);
-        return null;
+        return {
+            id: null,
+            error: error.message
+        };
     }
 }
 

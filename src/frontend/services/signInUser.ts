@@ -1,6 +1,11 @@
 import { SignIn } from "../../types/story";
 
-const signInUser = async (sign_in_info: SignIn): Promise<string | undefined | null> => {
+interface SignInResponse {
+    id: string | null;
+    error: string | null;
+}
+
+const signInUser = async (sign_in_info: SignIn): Promise<SignInResponse> => {
     try {
 
         const base_url = import.meta.env.VITE_API_BASE_URL
@@ -13,16 +18,25 @@ const signInUser = async (sign_in_info: SignIn): Promise<string | undefined | nu
             body: JSON.stringify({ email: sign_in_info.email, password: sign_in_info.password }),
         });
         
+        const data = await response.json();
+
         if (!response.ok) {
+            if (data.error == "Invalid login credentials") {
+                throw new Error(data.error);
+            }
             throw new Error("Failed to sign in user");
         }
 
-        const data = await response.json()
-
-        return data.id;
+        return { 
+            id: data.id,
+            error: data.error
+        };
     } catch (error: any) {
         console.error(error.message);
-        return null;
+        return {
+            id: null,
+            error: error.message
+        };
     }
 }
 
