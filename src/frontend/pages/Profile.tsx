@@ -22,9 +22,10 @@ const ProfilePage = () => {
     })
 
     const handleSignOut = async () => {
-        setLoading(true);
+        // setLoading(true);
         const response = await signOut();
-        setLoading(false);
+        console.log(response);
+        // setLoading(false);
     }
 
     return (

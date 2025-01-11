@@ -12,6 +12,7 @@ const Layout: React.FC<props> = ({ children }) => {
   const [isNavBarRemoved, setIsNavBarRemoved] = useState<boolean>(false);
 
   const isSignedIn = useAuthStatus();
+  console.log("user signed in: ", isSignedIn);
 
   const showNav = () => {
     setIsNavBarRemoved(false);
