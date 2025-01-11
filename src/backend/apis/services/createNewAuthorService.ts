@@ -4,15 +4,14 @@ interface CreateNewAuthorResponse {
     error: string | null
 }
 
-const createNewAuthorService = async (id: string, pen_name: string = "Anonymous"): Promise<CreateNewAuthorResponse> => {
+const createNewAuthorService = async (id: string, email: string, pen_name: string = "Anonymous"): Promise<CreateNewAuthorResponse> => {
     try {
-
-        console.log(id, pen_name)
         
         const { error } = await supabase
                                 .from("author")
                                 .insert([{
                                     id,
+                                    email,
                                     pen_name
                                 }])
 
