@@ -25,9 +25,9 @@ const signOut = async (): Promise<SignOutResponse> => {
             throw new Error(data.error);
         }
 
-        if (typeof window !== "undefined" && window.localStorage) {
-            localStorage.removeItem('sb-ukkarufgugovsopasjud-auth-token');
-        }
+        // if (typeof window !== "undefined" && window.localStorage) {
+        //     localStorage.removeItem('sb-ukkarufgugovsopasjud-auth-token');
+        // }
 
         return {
             success: true,

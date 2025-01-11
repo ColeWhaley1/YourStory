@@ -16,34 +16,35 @@ const createNewUserService = async (email: string, password: string): Promise<Cr
             throw new Error(userExistsResponse.error.message)
         }
 
-        if (userExistsResponse.userExists) {
+        if (!userExistsResponse.userExists) {
+            const { data, error } = await supabase.auth.signUp({
+                email, password
+            });
+    
+            if (error) {
+                throw new Error(error.message);
+            }
+    
+            const id = data.user?.id;
+            console.log(id);
+    
+            if (!id) {
+                throw new Error("Failed to create new user");
+            }
+    
+            const newAuthorResponse = await createNewAuthorService(id, email);
+    
+            if (newAuthorResponse.error) {
+                throw new Error("Failed to create new author")
+            }
+            
+            return {
+                id: id,
+                error: null
+            };
+        } else {
             throw new Error("There is already an account associated with this email.")
         }
-
-        const { data, error } = await supabase.auth.signUp({
-            email, password
-        });
-
-        if (error) {
-            throw new Error(error.message);
-        }
-
-        const id = data.user?.id;
-
-        if (!id) {
-            throw new Error("Failed to create new user");
-        }
-
-        const newAuthorResponse = await createNewAuthorService(id, email);
-
-        if (newAuthorResponse.error) {
-            throw new Error("Failed to create new author")
-        }
-        
-        return {
-            id: id,
-            error: null
-        };
 
     } catch (error: any) {
         return {
