@@ -20,7 +20,6 @@ const createNewUserController = async (req: Request, res: Response) => {
         });
         
     } catch (error: any) {
-        console.error(error.message);
         res.status(500).send({
             id: null,
             error: error.message

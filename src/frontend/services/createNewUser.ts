@@ -18,11 +18,11 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
             body: JSON.stringify({ email: sign_up_info.email, password: sign_up_info.password }),
         });
 
-        if (!response.ok) {
-            throw new Error("Failed to create new user");
-        }
-
         const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error);
+        }
 
         if (data.error) {
             throw new Error(data.error);

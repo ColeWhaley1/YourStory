@@ -16,6 +16,7 @@ const SignUpPage = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("Failed to create new user.");
 
     const formSchema = z.object({
         pen_name: z.string().min(5, {
@@ -70,6 +71,7 @@ const SignUpPage = () => {
 
         if (response.error) {
             setShowSuccessMessage(false);
+            setErrorMessage(response.error);
             setShowErrorMessage(true);
             return;
         }
@@ -195,7 +197,7 @@ const SignUpPage = () => {
                                 <Alert className="bg-red-100 border-red-400 text-red-700 text-center space-y-2">
                                     <AlertTitle className="font-extrabold text-lg">Error</AlertTitle>
                                     <AlertDescription>
-                                        Failed to create new user.
+                                        {errorMessage}
                                     </AlertDescription>
                                 </Alert>
                             ) : null
