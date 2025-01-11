@@ -39,9 +39,7 @@ const createNewUserService = async (email: string, password: string): Promise<Cr
         if (newAuthorResponse.error) {
             throw new Error("Failed to create new author")
         }
-
-
-
+        
         return {
             id: id,
             error: null
