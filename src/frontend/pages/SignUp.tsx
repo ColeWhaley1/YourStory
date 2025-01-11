@@ -14,7 +14,9 @@ import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 const SignUpPage = () => {
 
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-    const [showMessage, setShowMessage] = useState<boolean>(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+    const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("Failed to create new user.");
 
     const formSchema = z.object({
         pen_name: z.string().min(5, {
@@ -56,7 +58,7 @@ const SignUpPage = () => {
         setIsPasswordVisible(isPasswordVisible => !isPasswordVisible)
     }
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
 
         const { pen_name, email, password } = values;
         
@@ -65,9 +67,17 @@ const SignUpPage = () => {
             email,
             password
         }
-        createNewUser(sign_up_info)
+        const response = await createNewUser(sign_up_info);
 
-        setShowMessage(true);
+        if (response.error) {
+            setShowSuccessMessage(false);
+            setErrorMessage(response.error);
+            setShowErrorMessage(true);
+            return;
+        }
+
+        setShowErrorMessage(false);
+        setShowSuccessMessage(true);
     }
 
     return (
@@ -173,11 +183,21 @@ const SignUpPage = () => {
                             )}
                         />
                         {
-                            showMessage ? (
+                            showSuccessMessage ? (
                                 <Alert className="bg-green-100 border-green-400 text-green-700 text-center space-y-2">
                                     <AlertTitle className="font-extrabold text-lg">Success!</AlertTitle>
                                     <AlertDescription>
                                         Check your email to verify your account!
+                                    </AlertDescription>
+                                </Alert>
+                            ) : null
+                        }
+                        {
+                            showErrorMessage ? (
+                                <Alert className="bg-red-100 border-red-400 text-red-700 text-center space-y-2">
+                                    <AlertTitle className="font-extrabold text-lg">Error</AlertTitle>
+                                    <AlertDescription>
+                                        {errorMessage}
                                     </AlertDescription>
                                 </Alert>
                             ) : null

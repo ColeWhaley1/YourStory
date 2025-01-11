@@ -39,18 +39,19 @@ const LogInPage = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const { email, password } = values;
 
-        const id = await signInUser({ email, password });
+        const response = await signInUser({ email, password });
 
-        if (id !== null && id !== undefined) {
+        if(response.error){
+            setIsError(true);
+            setMessage(response.error);
+        } else {
             setIsError(false);
             setMessage("Success! Redirecting...");
             setTimeout(() => {
                 navigate("/");
             }, 2000);
-        } else {
-            setIsError(true);
-            setMessage("Invalid email or password");
         }
+
         setShowMessage(true);
     };
 
