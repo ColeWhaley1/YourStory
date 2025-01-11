@@ -9,7 +9,7 @@ const ProfilePage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isSignedIn == null || isSignedIn == false) {
+        if (isSignedIn == false) {
             navigate("/sign_up");
         }
     })
