@@ -1,4 +1,5 @@
 import supabase from "../../supabase";
+import createNewAuthorService from "./createNewAuthorService";
 
 interface CreateNewUserServiceResponse {
     id: string | null;
@@ -17,11 +18,15 @@ const createNewUserService = async (email: string, password: string): Promise<Cr
         }
 
         const id = data.user?.id;
-
-        // create new author with this id?
-
+        
         if (!id) {
             throw new Error("Failed to create new user");
+        }
+
+        const newAuthorResponse = await createNewAuthorService(id);
+
+        if (newAuthorResponse.error){
+            throw new Error("Failed to create new author")
         }
 
         return {

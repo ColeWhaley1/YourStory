@@ -14,7 +14,9 @@ const ProfilePage = () => {
         }
     })
 
-    // when user signs up, they must confirm their email. A default Author row is created for them with Anonymous pen_name and auto-generated id
+    // need a sign out button
+
+    // when user signs up, they must confirm their email. A default Author row is created for them with Anonymous pen_name and id given in user creation
     // redirect link will take them to profile page with Anonymous pen_name, they can choose to change it with pencil beside name. 
     // when redirected, there should be a hint box to show user how to change name and other info
 

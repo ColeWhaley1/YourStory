@@ -192,10 +192,10 @@ const SignUpPage = () => {
                         }
                         {
                             showErrorMessage ? (
-                                <Alert className="bg-green-100 border-red-400 text-red-700 text-center space-y-2">
+                                <Alert className="bg-red-100 border-red-400 text-red-700 text-center space-y-2">
                                     <AlertTitle className="font-extrabold text-lg">Error</AlertTitle>
                                     <AlertDescription>
-                                        Failed to create new user. Please try again.
+                                        Failed to create new user.
                                     </AlertDescription>
                                 </Alert>
                             ) : null
