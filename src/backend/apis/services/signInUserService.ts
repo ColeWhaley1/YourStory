@@ -11,7 +11,7 @@ const signInUserService = async (email: string, password: string): Promise<SignI
         const { data, error } = await supabase.auth.signInWithPassword({
             email, password
         });
-        console.log(error);
+
         if (error) {
             throw new Error(error.message);
         }
