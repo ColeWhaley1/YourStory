@@ -12,6 +12,10 @@ if(!supabaseKey){
     throw new Error("Supabase key not initialized!");
 }
 
-const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
+const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey, {
+    auth: {
+        persistSession: true
+    }
+});
 
 export default supabase;

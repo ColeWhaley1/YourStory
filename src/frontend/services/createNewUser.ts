@@ -35,7 +35,6 @@ const createNewUser = async (sign_up_info: Author, allowAccess: () => void): Pro
             error: null,
         };
     } catch (error: any) {
-        console.error(error.message);
         return {
             id: null,
             error: error.message,
