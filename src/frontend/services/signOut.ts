@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 interface SignOutResponse {
     success: boolean,
     error: string | null
@@ -6,6 +8,8 @@ interface SignOutResponse {
 const signOut = async (revokeAccess: () => void): Promise<SignOutResponse> => {
     
     try {
+
+        const navigate = useNavigate();
         
         const base_url = import.meta.env.VITE_API_BASE_URL;
 
@@ -28,6 +32,8 @@ const signOut = async (revokeAccess: () => void): Promise<SignOutResponse> => {
 
         // set accessRevoked flag to true in local storage
         revokeAccess();
+
+        navigate('/log_in')
 
         return {
             success: true,

@@ -9,6 +9,7 @@ import { useState } from "react";
 import signInUser from "../services/signInUser";
 import { useNavigate } from "react-router-dom";
 import { Alert, AlertTitle } from "../components/ui/alert";
+import useAccessControl from "../helpers/useAccessControl";
 
 const LogInPage = () => {
     const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
@@ -18,6 +19,7 @@ const LogInPage = () => {
     const [showMessage, setShowMessage] = useState<boolean>(false);
 
     const navigate = useNavigate();
+    const { allowAccess } = useAccessControl();
 
     const formSchema = z.object({
         email: z.string().email("Not a valid email"),
@@ -39,7 +41,7 @@ const LogInPage = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const { email, password } = values;
 
-        const response = await signInUser({ email, password });
+        const response = await signInUser({ email, password }, allowAccess);
 
         if(response.error){
             setIsError(true);

@@ -5,7 +5,7 @@ interface SignInResponse {
     error: string | null;
 }
 
-const signInUser = async (sign_in_info: SignIn): Promise<SignInResponse> => {
+const signInUser = async (sign_in_info: SignIn, allowAccess: () => void): Promise<SignInResponse> => {
     try {
 
         const base_url = import.meta.env.VITE_API_BASE_URL
@@ -26,6 +26,8 @@ const signInUser = async (sign_in_info: SignIn): Promise<SignInResponse> => {
             }
             throw new Error("Failed to sign in user");
         }
+
+        allowAccess();
 
         return { 
             id: data.id,

@@ -5,7 +5,7 @@ interface CreateNewUserResponse {
     error: string | null;
 }
 
-const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserResponse> => {
+const createNewUser = async (sign_up_info: Author, allowAccess: () => void): Promise<CreateNewUserResponse> => {
     try {
 
         const base_url = import.meta.env.VITE_API_BASE_URL
@@ -27,6 +27,8 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
         if (data.error) {
             throw new Error(data.error);
         }
+
+        allowAccess();
         
         return {
             id: data.id,
