@@ -33,12 +33,6 @@ app.post("/api/stories/new", uploadNewStoryController);
 
 app.post("/api/file/:bucket", upload.single("file"), uploadFileToStorageController);
 
-// user auth
-
-app.post("/api/sign_up", createNewUserController);
-app.post("/api/sign_in", signInUserController);
-app.post("/api/sign_out", signOutUserController);
-
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
