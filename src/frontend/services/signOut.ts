@@ -3,10 +3,11 @@ interface SignOutResponse {
     error: string | null
 }
 
-const signOut = async (): Promise<SignOutResponse> => {
+const signOut = async (revokeAccess: () => void): Promise<SignOutResponse> => {
+    
     try {
         
-        const base_url = import.meta.env.VITE_API_BASE_URL
+        const base_url = import.meta.env.VITE_API_BASE_URL;
 
         const response = await fetch(`${base_url}/sign_out`, {
             method: "POST",
@@ -25,9 +26,8 @@ const signOut = async (): Promise<SignOutResponse> => {
             throw new Error(data.error);
         }
 
-        // if (typeof window !== "undefined" && window.localStorage) {
-        //     localStorage.removeItem('sb-ukkarufgugovsopasjud-auth-token');
-        // }
+        // set accessRevoked flag to true in local storage
+        revokeAccess();
 
         return {
             success: true,

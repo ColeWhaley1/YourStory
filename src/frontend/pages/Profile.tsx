@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import useAuthStatus from "../helpers/useAuthStatus";
 import { useNavigate } from "react-router-dom";
 import signOut from "../services/signOut";
+import useAccessControl from "../helpers/useAccessControl";
 
 const ProfilePage = () => {
 
     const isSignedIn = useAuthStatus();
 
     const navigate = useNavigate();
+    const { revokeAccess } = useAccessControl();
 
     useEffect(() => {
         if (isSignedIn == false) {
@@ -23,8 +25,7 @@ const ProfilePage = () => {
 
     const handleSignOut = async () => {
         // setLoading(true);
-        const response = await signOut();
-        console.log(response);
+        const response = await signOut(revokeAccess);
         // setLoading(false);
     }
 

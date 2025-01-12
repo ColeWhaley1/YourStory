@@ -26,7 +26,6 @@ const createNewUserService = async (email: string, password: string): Promise<Cr
             }
     
             const id = data.user?.id;
-            console.log(id);
     
             if (!id) {
                 throw new Error("Failed to create new user");
