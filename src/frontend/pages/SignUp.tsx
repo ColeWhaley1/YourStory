@@ -10,7 +10,6 @@ import { Author } from "../../types/story";
 import createNewUser from "../services/createNewUser";
 
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
-import useAccessControl from "../helpers/useAccessControl";
 
 const SignUpPage = () => {
 
@@ -18,8 +17,6 @@ const SignUpPage = () => {
     const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
     const [showErrorMessage, setShowErrorMessage] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("Failed to create new user.");
-
-    const { allowAccess } = useAccessControl();
 
     const formSchema = z.object({
         pen_name: z.string().min(5, {
@@ -70,7 +67,7 @@ const SignUpPage = () => {
             email,
             password
         }
-        const response = await createNewUser(sign_up_info, allowAccess);
+        const response = await createNewUser(sign_up_info);
 
         if (response.error) {
             setShowSuccessMessage(false);

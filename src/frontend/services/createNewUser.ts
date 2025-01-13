@@ -1,37 +1,46 @@
 import { Author } from "../../types/story";
+import supabase from "../supabase";
 
 interface CreateNewUserResponse {
     id: string | null;
     error: string | null;
 }
 
-const createNewUser = async (sign_up_info: Author, allowAccess: () => void): Promise<CreateNewUserResponse> => {
+const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserResponse> => {
     try {
 
-        const base_url = import.meta.env.VITE_API_BASE_URL
+        // const userExistsResponse = await userExistsService(email);
 
-        const response = await fetch(`${base_url}/sign_up`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: sign_up_info.email, password: sign_up_info.password }),
+        // if (userExistsResponse.error) {
+        //     throw new Error(userExistsResponse.error.message)
+        // }
+
+        // if (!userExistsResponse.userExists) {
+        // }
+
+        const { data, error } = await supabase.auth.signUp({
+            email: sign_up_info.email, 
+            password: sign_up_info.password
         });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error);
+        if (error) {
+            throw new Error(error.message);
         }
 
-        if (data.error) {
-            throw new Error(data.error);
+        const id = data.user?.id;
+
+        if (!id) {
+            throw new Error("Failed to create new user");
         }
 
-        allowAccess();
+        // const newAuthorResponse = await createNewAuthorService(id, email);
+
+        // if (newAuthorResponse.error) {
+        //     throw new Error("Failed to create new author")
+        // }
         
         return {
-            id: data.id,
+            id,
             error: null,
         };
     } catch (error: any) {

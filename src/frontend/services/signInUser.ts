@@ -6,7 +6,7 @@ interface SignInResponse {
     error: string | null;
 }
 
-const signInUser = async (sign_in_info: SignIn, allowAccess: () => void): Promise<SignInResponse> => {
+const signInUser = async (sign_in_info: SignIn): Promise<SignInResponse> => {
     try {
 
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -17,8 +17,6 @@ const signInUser = async (sign_in_info: SignIn, allowAccess: () => void): Promis
         if (error){
             throw new Error(error.message);
         }
-
-        allowAccess();
 
         return {
             id: data.user.id,

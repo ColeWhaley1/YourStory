@@ -5,7 +5,7 @@ interface SignOutResponse {
     error: string | null
 }
 
-const signOut = async (revokeAccess: () => void): Promise<SignOutResponse> => {
+const signOut = async (): Promise<SignOutResponse> => {
     
     try {
         
@@ -14,9 +14,6 @@ const signOut = async (revokeAccess: () => void): Promise<SignOutResponse> => {
         if (error) {
             throw new Error(error.message);
         }
-
-        // set accessRevoked flag to true in local storage
-        revokeAccess();
 
         return {
             success: true,
