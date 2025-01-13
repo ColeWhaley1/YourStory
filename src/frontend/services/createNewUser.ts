@@ -11,7 +11,7 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
 
         let id = null;
 
-        const base_url = import.meta.env.VITE_API_BASE_URL
+        const base_url = import.meta.env.VITE_API_BASE_URL;
         
         const userExistsResponse = await fetch(`${base_url}/auth/user_exists`, {
             method: "POST",
@@ -51,12 +51,6 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
             if (!id) {
                 throw new Error("Failed to create new user");
             }
-    
-            // const newAuthorResponse = await createNewAuthorService(id, email);
-    
-            // if (newAuthorResponse.error) {
-            //     throw new Error("Failed to create new author")
-            // }
         }
         
         return {

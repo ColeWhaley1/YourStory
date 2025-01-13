@@ -7,6 +7,7 @@ import { uploadFileToStorageController } from "./apis/controllers/uploadFileToSt
 import multer from "multer";
 import { uploadNewStoryController } from "./apis/controllers/uploadNewStoryController";
 import userExistsController from "./apis/controllers/userExistsController";
+import createNewAuthorController from "./apis/controllers/createNewAuthorController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -31,9 +32,14 @@ app.post("/api/stories/new", uploadNewStoryController);
 
 app.post("/api/file/:bucket", upload.single("file"), uploadFileToStorageController);
 
-// auth
+// authentication
 
 app.post("/api/auth/user_exists", userExistsController);
+
+// author
+
+app.post("/api/author/new", createNewAuthorController);
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
