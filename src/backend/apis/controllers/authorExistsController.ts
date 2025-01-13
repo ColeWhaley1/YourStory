@@ -1,32 +1,32 @@
 import { Request, Response } from "express"
-import userExistsService from "../services/userExistsService"
+import authorExistsService from "../services/authorExistsService"
 
-const userExistsController = async (req: Request, res: Response) => {
+const authorExistsController = async (req: Request, res: Response) => {
     try {
 
         const { email } = req.body
 
-        if (!email){
+        if (!email) {
             throw new Error("Email missing.")
         }
 
-        const response = await userExistsService(email);
+        const response = await authorExistsService(email);
 
-        if(response.error){
+        if (response.error) {
             throw new Error(response.error.message)
         }
 
         res.status(200).json({
-            userExists: response.userExists,
+            authorExists: response.authorExists,
             error: null
         })
-        
+
     } catch (error: any) {
         res.status(500).json({
-            userExists: false,
+            authorExists: false,
             error: error.message
         })
     }
 }
 
-export default userExistsController;
+export default authorExistsController;

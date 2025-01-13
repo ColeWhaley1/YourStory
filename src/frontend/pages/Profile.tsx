@@ -16,10 +16,10 @@ const ProfilePage = () => {
 
         // check if user has confirmed their email. If they have, call createNewAuthorService
 
-        // if userExists:
+        // if authorExists:
         // display profile
 
-        // if !userExists:
+        // if !authorExists:
         // setLoading(true)
         // createNewAuthorService
         // setLoading(false)

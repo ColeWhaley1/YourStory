@@ -6,7 +6,7 @@ import getStoryByIdController from "./apis/controllers/getStoryByIdController";
 import { uploadFileToStorageController } from "./apis/controllers/uploadFileToStorageController";
 import multer from "multer";
 import { uploadNewStoryController } from "./apis/controllers/uploadNewStoryController";
-import userExistsController from "./apis/controllers/userExistsController";
+import authorExistsController from "./apis/controllers/authorExistsController";
 import createNewAuthorController from "./apis/controllers/createNewAuthorController";
 
 const storage = multer.memoryStorage();
@@ -34,7 +34,7 @@ app.post("/api/file/:bucket", upload.single("file"), uploadFileToStorageControll
 
 // authentication
 
-app.post("/api/auth/user_exists", userExistsController);
+app.post("/api/auth/user_exists", authorExistsController);
 
 // author
 

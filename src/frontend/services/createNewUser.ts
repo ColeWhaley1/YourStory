@@ -13,7 +13,7 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
 
         const base_url = import.meta.env.VITE_API_BASE_URL;
         
-        const userExistsResponse = await fetch(`${base_url}/auth/user_exists`, {
+        const authorExistsResponse = await fetch(`${base_url}/auth/user_exists`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -21,21 +21,21 @@ const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserRespons
             body: JSON.stringify({ email: sign_up_info.email })
         });
 
-        if (!userExistsResponse.ok){
-            throw new Error("Failed to create new user.")
+        if (!authorExistsResponse.ok){
+            throw new Error("Failed to create new author.")
         }
 
-        const userExistsData = await userExistsResponse.json();
+        const authorExistsData = await authorExistsResponse.json();
 
-        if (userExistsData.error){
-            throw new Error(userExistsData.error.message);
+        if (authorExistsData.error){
+            throw new Error(authorExistsData.error.message);
         }
 
-        if (userExistsData.userExists){
-            throw new Error("User already exists.")
+        if (authorExistsData.authorExists){
+            throw new Error("Author already exists.")
         }
 
-        if (!userExistsData.userExists) {
+        if (!authorExistsData.authorExists) {
             
             const { data, error } = await supabase.auth.signUp({
                 email: sign_up_info.email, 
