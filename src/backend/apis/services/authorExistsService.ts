@@ -1,6 +1,6 @@
 import supabase from "../../supabase";
 
-const userExistsService = async (email: string) => {
+const authorExistsService = async (email: string) => {
     try {
 
         const { data, error } = await supabase.from("author").select("email").eq("email", email)
@@ -10,16 +10,16 @@ const userExistsService = async (email: string) => {
         }
 
         return {
-            userExists: data.length != 0,
+            authorExists: data.length != 0,
             error: null
         }
         
     } catch (error: any) {
         return {
-            userExists: true,
+            authorExists: true,
             error: error.message
         }
     }
 }
 
-export default userExistsService;
+export default authorExistsService;

@@ -1,4 +1,5 @@
 import { Author } from "../../types/story";
+import supabase from "../supabase";
 
 interface CreateNewUserResponse {
     id: string | null;
@@ -8,32 +9,55 @@ interface CreateNewUserResponse {
 const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserResponse> => {
     try {
 
-        const base_url = import.meta.env.VITE_API_BASE_URL
+        let id = null;
 
-        const response = await fetch(`${base_url}/sign_up`, {
+        const base_url = import.meta.env.VITE_API_BASE_URL;
+        
+        const authorExistsResponse = await fetch(`${base_url}/auth/user_exists`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email: sign_up_info.email, password: sign_up_info.password }),
+            body: JSON.stringify({ email: sign_up_info.email })
         });
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error);
+        if (!authorExistsResponse.ok){
+            throw new Error("Failed to create new author.")
         }
 
-        if (data.error) {
-            throw new Error(data.error);
+        const authorExistsData = await authorExistsResponse.json();
+
+        if (authorExistsData.error){
+            throw new Error(authorExistsData.error.message);
+        }
+
+        if (authorExistsData.authorExists){
+            throw new Error("Author already exists.")
+        }
+
+        if (!authorExistsData.authorExists) {
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: sign_up_info.email, 
+                password: sign_up_info.password
+            });
+    
+            if (error) {
+                throw new Error(error.message);
+            }
+    
+            id = data.user?.id;
+    
+            if (!id) {
+                throw new Error("Failed to create new user");
+            }
         }
         
         return {
-            id: data.id,
+            id,
             error: null,
         };
     } catch (error: any) {
-        console.error(error.message);
         return {
             id: null,
             error: error.message,
