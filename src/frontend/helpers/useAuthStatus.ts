@@ -6,6 +6,7 @@ const useAuthStatus = (): boolean | null => {
     const [isSignedIn, setIsSignedIn] = useState<boolean | null>(null);
 
     useEffect(() => {
+
         const checkSession = async () => {
             const { data } = await supabase.auth.getSession();
             setIsSignedIn(!!data.session);

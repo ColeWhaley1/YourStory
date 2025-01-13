@@ -28,7 +28,6 @@ const signInUserService = async (email: string, password: string): Promise<SignI
         };
         
     } catch (error: any) {
-        console.error(error.message);
         return {
             id: null,
             error: error.message

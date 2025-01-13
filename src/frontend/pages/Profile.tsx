@@ -15,6 +15,16 @@ const ProfilePage = () => {
         }
 
         // check if user has confirmed their email. If they have, call createNewAuthorService
+
+        // if authorExists:
+        // display profile
+
+        // if !authorExists:
+        // setLoading(true)
+        // createNewAuthorService
+        // setLoading(false)
+
+
         // once created, return the new Author object so that it can be displayed
         // when first viewing profile, give helpful hints
         
@@ -24,7 +34,6 @@ const ProfilePage = () => {
     const handleSignOut = async () => {
         // setLoading(true);
         const response = await signOut();
-        console.log(response);
         // setLoading(false);
     }
 
