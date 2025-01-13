@@ -10,7 +10,7 @@ const uploadFileToStorageService = async (
         const randomString = uuidv4(); // ensure filenames are unique
         const newFileName = `${Date.now()}-${randomString}.${fileExtension}`;
     
-        const { data, error } = await supabase.storage
+        const { error } = await supabase.storage
             .from(bucket)
             .upload( newFileName, file.buffer);
     
@@ -24,7 +24,6 @@ const uploadFileToStorageService = async (
     
         return linkToFile || null;
     } catch (error: any) {
-        console.error(error.message);
         return null;   
     }
 }

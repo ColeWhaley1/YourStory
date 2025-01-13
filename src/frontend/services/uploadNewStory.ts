@@ -10,7 +10,7 @@ const uploadNewStory = async (
 ): Promise<NewStoryReturnType> => {
     try {
 
-        const base_url = import.meta.env.VITE_API_BASE_URL
+        const base_url = import.meta.env.VITE_API_BASE_URL;
         
         const response = await fetch(`${base_url}/stories/new`, {
             method: "POST",
@@ -30,7 +30,6 @@ const uploadNewStory = async (
         }
         
     } catch (error: any) {
-        console.error(error.message);
         return {
             id: null,
             error: error.message
