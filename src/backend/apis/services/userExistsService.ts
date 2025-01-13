@@ -9,6 +9,8 @@ const userExistsService = async (email: string) => {
             throw new Error(error.message)
         }
 
+        console.log(data, email)
+
         return {
             userExists: data.length != 0,
             error: null

@@ -9,35 +9,55 @@ interface CreateNewUserResponse {
 const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserResponse> => {
     try {
 
-        // const userExistsResponse = await userExistsService(email);
+        let id = null;
 
-        // if (userExistsResponse.error) {
-        //     throw new Error(userExistsResponse.error.message)
-        // }
-
-        // if (!userExistsResponse.userExists) {
-        // }
-
-        const { data, error } = await supabase.auth.signUp({
-            email: sign_up_info.email, 
-            password: sign_up_info.password
+        const base_url = import.meta.env.VITE_API_BASE_URL
+        
+        const userExistsResponse = await fetch(`${base_url}/auth/user_exists`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: sign_up_info.email })
         });
 
-        if (error) {
-            throw new Error(error.message);
+        if (!userExistsResponse.ok){
+            throw new Error("Failed to create new user.")
         }
 
-        const id = data.user?.id;
+        const userExistsData = await userExistsResponse.json();
 
-        if (!id) {
-            throw new Error("Failed to create new user");
+        if (userExistsData.error){
+            throw new Error(userExistsData.error.message);
         }
 
-        // const newAuthorResponse = await createNewAuthorService(id, email);
+        if (userExistsData.userExists){
+            throw new Error("User already exists.")
+        }
 
-        // if (newAuthorResponse.error) {
-        //     throw new Error("Failed to create new author")
-        // }
+        if (!userExistsData.userExists) {
+            
+            const { data, error } = await supabase.auth.signUp({
+                email: sign_up_info.email, 
+                password: sign_up_info.password
+            });
+    
+            if (error) {
+                throw new Error(error.message);
+            }
+    
+            id = data.user?.id;
+    
+            if (!id) {
+                throw new Error("Failed to create new user");
+            }
+    
+            // const newAuthorResponse = await createNewAuthorService(id, email);
+    
+            // if (newAuthorResponse.error) {
+            //     throw new Error("Failed to create new author")
+            // }
+        }
         
         return {
             id,

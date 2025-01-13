@@ -6,6 +6,7 @@ import getStoryByIdController from "./apis/controllers/getStoryByIdController";
 import { uploadFileToStorageController } from "./apis/controllers/uploadFileToStorageController";
 import multer from "multer";
 import { uploadNewStoryController } from "./apis/controllers/uploadNewStoryController";
+import userExistsController from "./apis/controllers/userExistsController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -29,6 +30,10 @@ app.post("/api/stories/new", uploadNewStoryController);
 // Supabase storage routes
 
 app.post("/api/file/:bucket", upload.single("file"), uploadFileToStorageController);
+
+// auth
+
+app.post("/api/auth/user_exists", userExistsController);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
