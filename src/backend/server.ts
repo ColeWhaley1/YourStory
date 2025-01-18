@@ -34,7 +34,7 @@ app.post("/api/file/:bucket", upload.single("file"), uploadFileToStorageControll
 
 // authentication
 
-app.post("/api/auth/author_exists", authorExistsController);
+app.get("/api/auth/author_exists", authorExistsController);
 
 // author
 

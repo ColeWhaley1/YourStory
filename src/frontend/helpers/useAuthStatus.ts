@@ -16,22 +16,7 @@ const useAuthStatus = (): boolean | null => {
 
         checkSession();
 
-        const { data: subscription } = supabase.auth.onAuthStateChange(async (event, session) => {
-
-            // check during sign in events if user has a matching author. If not, create one
-            if(event == "SIGNED_IN"){
-
-                const id = session?.user.id;
-                const email = session?.user.email;
-
-                if(id && email){
-                    const authorExistsResponse = await authorExists(email);
-                    if(!authorExistsResponse.authorExists){
-                        createNewAuthor(id, email);
-                    }
-                } 
-
-            }
+        const { data: subscription } = supabase.auth.onAuthStateChange(async (_event, session) => {
             setIsSignedIn(!!session);
         });
 
