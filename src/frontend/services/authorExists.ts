@@ -32,7 +32,7 @@ const authorExists = async (email: string): Promise<AuthorExistsResponse> => {
         
     } catch (error: any) {
         return {
-            authorExists: null,
+            authorExists: true,
             error: error.message
         };
     }

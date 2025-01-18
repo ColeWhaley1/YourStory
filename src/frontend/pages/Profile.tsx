@@ -2,38 +2,14 @@ import { useEffect, useState } from "react";
 import useAuthStatus from "../helpers/useAuthStatus";
 import { useNavigate } from "react-router-dom";
 import signOut from "../services/signOut";
-import getUserSession from "../services/getUserSession";
-import { Session } from "@supabase/supabase-js";
 
 const ProfilePage = () => {
 
     const isSignedIn = useAuthStatus();
     const navigate = useNavigate();
-    const [userSession, setUserSession] = useState<Session | null>(null);
     const [showProfile, setShowProfile] = useState<boolean>(false);
 
     const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-
-        const fetchSession = async () => {
-            const response = await getUserSession();
-
-            if(response.error){
-                setError(response.error);
-                return;
-            }
-
-            setUserSession(response.session);
-        }
-
-        fetchSession();
-
-    }, []);
-
-    useEffect(() => {
-       
-    }, [userSession])
 
     useEffect(() => {
         if (isSignedIn == false) {
