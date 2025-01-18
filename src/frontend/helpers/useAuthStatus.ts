@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import supabase from "../supabase";
-import authorExists from "../services/authorExists";
-import createNewAuthor from "../services/createNewAuthor";
 
 const useAuthStatus = (): boolean | null => {
 
