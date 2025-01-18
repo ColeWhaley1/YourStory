@@ -48,13 +48,13 @@ const ProfilePage = () => {
         // setLoading(false);
     }
 
-    if (!showProfile){
-        return (
-            <div>
-                Loading...
-            </div>
-        )
-    }
+    // if (!showProfile){
+    //     return (
+    //         <div>
+    //             Loading...
+    //         </div>
+    //     )
+    // }
 
     return (
         <div>

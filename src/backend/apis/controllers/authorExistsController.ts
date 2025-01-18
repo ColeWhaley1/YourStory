@@ -1,10 +1,14 @@
 import { Request, Response } from "express"
 import authorExistsService from "../services/authorExistsService"
 
+interface QueryParams {
+    email: string
+}
+
 const authorExistsController = async (req: Request, res: Response) => {
     try {
 
-        const { email } = req.body
+        const { email } = req.query as unknown as QueryParams;
 
         if (!email) {
             throw new Error("Email missing.")
