@@ -8,6 +8,7 @@ import multer from "multer";
 import { uploadNewStoryController } from "./apis/controllers/uploadNewStoryController";
 import authorExistsController from "./apis/controllers/authorExistsController";
 import createNewAuthorController from "./apis/controllers/createNewAuthorController";
+import getAuthorController from "./apis/controllers/getAuthorController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -39,6 +40,7 @@ app.get("/api/auth/author_exists", authorExistsController);
 // author
 
 app.post("/api/author/new", createNewAuthorController);
+app.get("/api/auth/author", getAuthorController);
 
 
 app.listen(PORT, () => {

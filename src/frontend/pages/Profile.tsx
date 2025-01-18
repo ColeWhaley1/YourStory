@@ -52,8 +52,11 @@ const ProfilePage = () => {
                     return;
                 }
 
+                console.log(authorExistsResponse)
+
                 if(authorExistsResponse.authorExists){
                     const authorResponse = await getAuthor(email);
+                    console.log(authorResponse)
 
                     if(authorResponse.error){
                         setError(authorResponse.error);
@@ -76,18 +79,18 @@ const ProfilePage = () => {
         // setLoading(false);
     }
 
-    // if (!author){
-    //     return (
-    //         <div>
-    //             Loading...
-    //         </div>
-    //     )
-    // }
+    if (!author){
+        return (
+            <div>
+                Loading...
+            </div>
+        )
+    }
 
     return (
         <div>
             <div>
-                <h1>Cole Whaley</h1>
+                <h1>{ author.pen_name }</h1>
             </div>
 
             <div className="flex items-center justify-center">
