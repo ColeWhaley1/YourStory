@@ -1,5 +1,6 @@
 import { Author } from "../../types/story";
 import supabase from "../supabase";
+import authorExists from "./authorExists";
 
 interface CreateNewUserResponse {
     id: string | null;
@@ -9,33 +10,19 @@ interface CreateNewUserResponse {
 const createNewUser = async (sign_up_info: Author): Promise<CreateNewUserResponse> => {
     try {
 
-        let id = null;
+        let id = null;    
 
-        const base_url = import.meta.env.VITE_API_BASE_URL;
-        
-        const authorExistsResponse = await fetch(`${base_url}/auth/user_exists`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: sign_up_info.email })
-        });
+        const authorExistsResponse = await authorExists(sign_up_info.email);
 
-        if (!authorExistsResponse.ok){
-            throw new Error("Failed to create new author.")
+        if (authorExistsResponse.error){
+            throw new Error(authorExistsResponse.error);
         }
 
-        const authorExistsData = await authorExistsResponse.json();
-
-        if (authorExistsData.error){
-            throw new Error(authorExistsData.error.message);
-        }
-
-        if (authorExistsData.authorExists){
+        if (authorExistsResponse.authorExists){
             throw new Error("Author already exists.")
         }
 
-        if (!authorExistsData.authorExists) {
+        if (!authorExistsResponse.authorExists) {
             
             const { data, error } = await supabase.auth.signUp({
                 email: sign_up_info.email, 
