@@ -16,7 +16,7 @@ const StatBox: React.FC<StatBoxProps> = ({ title, count, redirect }) => {
     return (
         <button
             onClick={handleClick}
-            className="p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 w-full group bg-white"
+            className="p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 w-full group bg-white border border-primary min-w-28"
         >
             <div className="flex flex-col space-y-2">
 
