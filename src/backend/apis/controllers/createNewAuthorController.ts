@@ -24,6 +24,7 @@ const createNewAuthorController = async (req: Request, res: Response) => {
         })
         
     } catch (error: any) {
+        console.log(error);
         res.status(500).json({
             error: error.message
         })

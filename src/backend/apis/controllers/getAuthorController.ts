@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
-import authorExistsService from "../services/authorExistsService"
+import getAuthorService from "../services/getAuthorService";
 
 interface QueryParams {
     email: string
 }
 
-const authorExistsController = async (req: Request, res: Response) => {
+const getAuthorController = async (req: Request, res: Response) => {
     try {
 
         const { email } = req.query as unknown as QueryParams;
@@ -14,23 +14,23 @@ const authorExistsController = async (req: Request, res: Response) => {
             throw new Error("Email missing.")
         }
 
-        const response = await authorExistsService(email);
+        const response = await getAuthorService(email);
 
         if (response.error) {
-            throw new Error(response.error.message)
+            throw new Error(response.error)
         }
 
         res.status(200).json({
-            authorExists: response.authorExists,
+            author: response.author,
             error: null
         })
 
     } catch (error: any) {
         res.status(500).json({
-            authorExists: false,
+            author: null,
             error: error.message
         })
     }
 }
 
-export default authorExistsController;
+export default getAuthorController;

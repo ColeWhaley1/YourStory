@@ -14,7 +14,7 @@ const useAuthStatus = (): boolean | null => {
 
         checkSession();
 
-        const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+        const { data: subscription } = supabase.auth.onAuthStateChange(async (_event, session) => {
             setIsSignedIn(!!session);
         });
 

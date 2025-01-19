@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
 import useAuthStatus from "../helpers/useAuthStatus";
+import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
 
 interface props {
   children: (controls: { hideNav: () => void; showNav: () => void }) => React.ReactNode;
@@ -71,10 +72,10 @@ const Layout: React.FC<props> = ({ children }) => {
                 {/* Profile. Right aligned */}
                 {
                   isSignedIn && (
-                    <div className="flex space-x-2 md:space-x-4 m-8 pr-4">
+                    <div className="flex space-x-2 md:space-x-4 m-6 pr-4">
                       <NavigationMenuItem>
                         <NavigationMenuLink href="/profile" className="">
-                          Profile Image Placeholder
+                          <img src={DefaultAvatar} alt="avatar" className="max-h-10"/>
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     </div>
