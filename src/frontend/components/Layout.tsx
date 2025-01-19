@@ -74,7 +74,7 @@ const Layout: React.FC<props> = ({ children }) => {
                   isSignedIn && (
                     <div className="flex space-x-2 md:space-x-4 m-6 pr-4">
                       <NavigationMenuItem>
-                        <NavigationMenuLink href="/profile" className="">
+                        <NavigationMenuLink href="/my_profile">
                           <img src={DefaultAvatar} alt="avatar" className="max-h-10"/>
                         </NavigationMenuLink>
                       </NavigationMenuItem>

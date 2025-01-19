@@ -11,7 +11,7 @@ import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
 import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
 
-const ProfilePage = () => {
+const MyProfilePage = () => {
 
     const isSignedIn = useAuthStatus();
     const navigate = useNavigate();
@@ -123,4 +123,4 @@ const ProfilePage = () => {
     )
 }
 
-export default ProfilePage;
+export default MyProfilePage;
