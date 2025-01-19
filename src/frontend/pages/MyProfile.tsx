@@ -6,7 +6,7 @@ import { Session } from "@supabase/supabase-js";
 import getUserSession from "../services/getUserSession";
 import authorExists from "../services/authorExists";
 import { Author } from "../../types/story";
-import getAuthor from "../services/getAuthor";
+import { getAuthorByEmail } from "../services/getAuthor";
 import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
 import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
@@ -56,7 +56,7 @@ const MyProfilePage = () => {
                 }
 
                 if (authorExistsResponse.authorExists) {
-                    const authorResponse = await getAuthor(email);
+                    const authorResponse = await getAuthorByEmail(email);
 
                     if (authorResponse.error) {
                         setError(authorResponse.error);

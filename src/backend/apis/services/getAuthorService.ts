@@ -6,18 +6,35 @@ interface AuthorResponse {
     error: string | null
 }
 
-const getAuthorService = async (email: string): Promise<AuthorResponse> => {
+const getAuthorService = async (user_id?: string, email?: string): Promise<AuthorResponse> => {
     try {
 
-        const { data, error } = await supabase.from("author").select("*").eq("email", email);
-
-        if(error){
-            throw new Error(error.message)
+        if (!email && !user_id) {
+            throw new Error("Email and user id missing.")
         }
 
-        return {
-            author: data[0],
-            error: null
+        if(user_id){
+            const { data, error } = await supabase.from("author").select("*").eq("user_id", user_id);
+            
+            if(error){
+                throw new Error(error.message)
+            }
+    
+            return {
+                author: data[0],
+                error: null
+            }
+        } else {
+            const { data, error } = await supabase.from("author").select("*").eq("email", email);
+    
+            if(error){
+                throw new Error(error.message)
+            }
+    
+            return {
+                author: data[0],
+                error: null
+            }
         }
         
     } catch (error: any) {
