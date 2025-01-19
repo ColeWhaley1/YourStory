@@ -7,6 +7,7 @@ import SignUpPage from "./frontend/pages/SignUp";
 import LogInPage from "./frontend/pages/LogIn";
 import SuccessPage from "./frontend/pages/Success";
 import MyProfilePage from "./frontend/pages/MyProfile";
+import ProfilePage from "./frontend/pages/ProfilePage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/stories/:id" element={<Story hideNav = {hideNav} showNav = {showNav} />}></Route>
               <Route path="/success_screen" element={<SuccessPage/>}></Route>
               <Route path="/my_profile" element = {<MyProfilePage/>}></Route>
+              <Route path="/profile" element = {<ProfilePage/>}></Route>
             </Routes>
           )
         }
