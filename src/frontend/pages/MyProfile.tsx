@@ -10,6 +10,7 @@ import { getAuthorByEmail } from "../services/getAuthor";
 import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
 import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
+import { useLoading } from "../contexts/loadingContext";
 
 const MyProfilePage = () => {
 
@@ -19,6 +20,8 @@ const MyProfilePage = () => {
     const [error, setError] = useState<string | null>(null);
     const [author, setAuthor] = useState<Author | null>(null);
 
+    const { setLoading } = useLoading();
+
     useEffect(() => {
         if (isSignedIn == false) {
             navigate("/sign_up");
@@ -27,6 +30,7 @@ const MyProfilePage = () => {
     }, [isSignedIn]);
 
     useEffect(() => {
+        setLoading(true);
         const fetchSession = async () => {
             const sessionResponse = await getUserSession();
 
@@ -65,7 +69,7 @@ const MyProfilePage = () => {
 
                     setAuthor(authorResponse.author);
                 } else {
-                    // else provide screen for creating profile
+                    // else provide component for creating profile
                 }
             }
         }
@@ -79,6 +83,7 @@ const MyProfilePage = () => {
         // setLoading(false);
     }
 
+    // change to global loading screen
     if (!author) {
         return (
             <div>
