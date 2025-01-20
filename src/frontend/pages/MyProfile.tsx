@@ -78,9 +78,9 @@ const MyProfilePage = () => {
     }, [session]);
 
     const handleSignOut = async () => {
-        // setLoading(true);
+        setLoading(true);
         const response = await signOut();
-        // setLoading(false);
+        setLoading(false);
     }
 
     // change to global loading screen
