@@ -11,6 +11,8 @@ import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
 import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
 import { useLoading } from "../contexts/loadingContext";
+import Loading from "../components/Loading";
+import CreateProfile from "../components/createProfile";
 
 const MyProfilePage = () => {
 
@@ -19,8 +21,7 @@ const MyProfilePage = () => {
     const [session, setSession] = useState<Session | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [author, setAuthor] = useState<Author | null>(null);
-
-    const { setLoading } = useLoading();
+    const [showCreateProfile, setShowCreateProfile] = useState<boolean>(false);
 
     useEffect(() => {
         if (isSignedIn == false) {
@@ -30,7 +31,6 @@ const MyProfilePage = () => {
     }, [isSignedIn]);
 
     useEffect(() => {
-        setLoading(true);
         const fetchSession = async () => {
             const sessionResponse = await getUserSession();
 
@@ -69,7 +69,7 @@ const MyProfilePage = () => {
 
                     setAuthor(authorResponse.author);
                 } else {
-                    // else provide component for creating profile
+                    setShowCreateProfile(true);
                 }
             }
         }
@@ -78,18 +78,18 @@ const MyProfilePage = () => {
     }, [session]);
 
     const handleSignOut = async () => {
-        setLoading(true);
         const response = await signOut();
-        setLoading(false);
     }
 
-    // change to global loading screen
-    if (!author) {
+
+    if (showCreateProfile) {
         return (
-            <div>
-                Loading...
-            </div>
+            <CreateProfile setShowCreateProfile={setShowCreateProfile}/>
         )
+    }
+
+    if (!author) {
+        return <Loading />
     }
 
     return (
@@ -116,7 +116,7 @@ const MyProfilePage = () => {
 
                 </div>
             </div>
-            
+
             <button className="fixed bottom-6 right-6 rounded-full border-2 p-4 bg-white shadow-lg hover:shadow-2xl transition">
                 <MdEdit className="w-8 h-8" />
             </button>

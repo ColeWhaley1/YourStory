@@ -175,7 +175,6 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             form.clearErrors("genre");
             form.setValue("genre", "");
         }
-        console.log(genreInput);
 
         setGenreInput("");
     }
