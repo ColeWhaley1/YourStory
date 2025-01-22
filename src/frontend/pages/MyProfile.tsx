@@ -10,9 +10,8 @@ import { getAuthorByEmail } from "../services/getAuthor";
 import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
 import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
-import { useLoading } from "../contexts/loadingContext";
 import Loading from "../components/Loading";
-import CreateProfile from "../components/createProfile";
+import CreateProfile from "../components/CreateProfile";
 
 const MyProfilePage = () => {
 
@@ -94,8 +93,7 @@ const MyProfilePage = () => {
 
     return (
         <div className="px-12 py-2">
-            <div className="bg-stone-50 p-16 rounded-lg min-h-[680px]">
-
+            <div className="bg-stone-50 p-16 rounded-lg min-h-[85vh]">
 
                 <div className="flex-col space-y-8">
                     <div className="flex items-center justify-center text-4xl space-x-4">

@@ -4,26 +4,35 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
+import { useEffect, useState } from "react";
 
 interface CreateProfileProps {
     setShowCreateProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-
 const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) => {
 
-
+    const [ avatarLocalFile, setAvatarLocalFile ] = useState<File | null>(null);
+    
     const formSchema = z.object({
-        pen_name: z.string()
+        penName: z.string().max(30, {
+            message: "Max of 30 characters!"
+        }),
+        avatarFile: z.instanceof(File).nullable(),
     });
-
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            pen_name: "Anonymous"
+            penName: "",
+            avatarFile: null,
         },
     });
-
+    
+    useEffect(() => {
+        form.setValue("avatarFile", avatarLocalFile);
+    }, [avatarLocalFile]);
+    
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setShowCreateProfile(false);
         // may need to re-fetch author
@@ -32,12 +41,12 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
 
     return (
         <div className="px-12 py-2">
-            <div className="bg-stone-50 p-16 rounded-lg min-h-[680px] flex justify-center">
+            <div className="bg-stone-50 p-16 rounded-lg min-h-[85vh] flex justify-center">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-1/2">
                         <FormField
                             control={form.control}
-                            name="pen_name"
+                            name="penName"
                             render={({ field }) => (
 
                                 <FormItem>
