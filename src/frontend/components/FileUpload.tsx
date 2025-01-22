@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
+import { CiImageOn } from "react-icons/ci";
 
 interface FileUploadProps {
     fileTypes: string[],
@@ -18,7 +19,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileTypes, message, setFile }) 
             setLocalFile(acceptedFiles[0]);
         }
     };
-    
+
     const onDragEnter = (event: React.DragEvent<HTMLElement>) => {
         const fileType = event.dataTransfer?.items[0]?.type;
         const isNotValidFileType = fileType && !fileTypes.includes(fileType);
@@ -30,41 +31,53 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileTypes, message, setFile }) 
         }
     };
 
+    // convert input prop files to accept format
+    const accept = fileTypes.reduce((acc, fileType) => {
+        const [extension] = fileType.split("/");
+        if (acc[fileType]) {
+            acc[fileType].push(`.${extension}`);
+        } else {
+            acc[fileType] = [`.${extension}`];
+        }
+        return acc;
+    }, {} as Record<string, string[]>);
+
+    console.log(accept);
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         onDragEnter,
-        accept: {
-            'image/jpeg': ['.jpg', '.jpeg'],
-            'image/png': ['.png'],
-            'image/gif': ['.gif'],
-            'image/bmp': ['.bmp'],
-            'image/webp': ['.webp'],
-            'image/svg+xml': ['.svg'],
-        },
+        accept,
     });
 
     return (
-        <div className="flex items-center">
-      <div
-        {...getRootProps()}
-        className={`max-h-96 border-dashed border-2 rounded-lg p-16 text-center flex items-center justify-center ${isDragActive ? 'bg-slate-100' : 'bg-slate-50'}`}
-      >
-        <input {...getInputProps()} /> 
-        <div className="text-xl">
-          {isDragActive ? (
-            <div className="flex flex-col items-center text-center">
-              <div>Drop your file here!</div>
-              {error && <div className="text-red-500 font-bold">{error}</div>}
+        <div className="flex items-center w-full">
+            <div
+                {...getRootProps()}
+                className={`w-full border-dashed border-2 rounded-lg p-16 text-center flex items-center justify-center ${isDragActive ? 'bg-slate-100' : 'bg-slate-50'}`}
+            >
+                <input {...getInputProps()} />
+                <div className="text-xl w-full">
+
+                    <div className="flex flex-col space-y-2">
+                        <CiImageOn className="text-primary w-full h-12" />
+                        <div className="opacity-70">
+                            { isDragActive ? (
+                                <div>
+                                    Here! Here! Here!
+                                </div>
+                            ) : (
+                                <div>
+                                    {message}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {localFile && <div>File: {localFile.name}</div>}
+                </div>
             </div>
-          ) : (
-            <div className="flex flex-col space-y-16">
-              <div>{ message }!</div>
-            </div>
-          )}
-          {localFile && <div>File: {localFile.name}</div>}
         </div>
-      </div>
-    </div>
     );
 }
 

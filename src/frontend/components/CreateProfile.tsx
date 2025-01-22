@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
+import FileUpload from "./FileUpload";
+import ProfileAvatar from "./ProfileAvatar";
 
 interface CreateProfileProps {
     setShowCreateProfile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +15,16 @@ interface CreateProfileProps {
 const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) => {
 
     const [ avatarLocalFile, setAvatarLocalFile ] = useState<File | null>(null);
+    const [ avatarUrl, setAvatarUrl ] = useState<string | null>(null);
+
+    const avatarFileTypes: string[] = [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/bmp',
+        'image/webp',
+        'image/svg+xml',
+    ];
     
     const formSchema = z.object({
         penName: z.string().max(30, {
@@ -31,6 +43,12 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
     
     useEffect(() => {
         form.setValue("avatarFile", avatarLocalFile);
+
+        if(avatarLocalFile instanceof File) {
+            const url = URL.createObjectURL(avatarLocalFile);
+            setAvatarUrl(url);
+        }
+
     }, [avatarLocalFile]);
     
     async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -68,6 +86,12 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
 
                             )}
                         />
+                        <div className="w-full flex items-center justify-center space-x-8">
+                            <FileUpload fileTypes={avatarFileTypes} message={'Drop or select a profile image!'} setFile={setAvatarLocalFile}/>
+                            <div className="w-1/3">
+                                <ProfileAvatar avatarUrl={avatarUrl}/>
+                            </div>
+                        </div>
                         <Button type="submit">Create</Button>
                     </form>
                 </Form>
