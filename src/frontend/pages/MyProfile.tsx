@@ -9,9 +9,9 @@ import { Author } from "../../types/story";
 import { getAuthorByEmail } from "../services/getAuthor";
 import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
-import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
 import Loading from "../components/Loading";
 import CreateProfile from "../components/CreateProfile";
+import ProfileAvatar from "../components/ProfileAvatar";
 
 const MyProfilePage = () => {
 
@@ -101,7 +101,7 @@ const MyProfilePage = () => {
                     </div>
 
                     <div className="flex items-center justify-center">
-                        <img src={DefaultAvatar} className="w-1/6"></img>
+                        <ProfileAvatar/>
                     </div>
 
                     <div className="w-full flex items-center justify-center">

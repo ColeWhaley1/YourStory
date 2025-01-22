@@ -33,7 +33,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileTypes, message, setFile }) 
 
     // convert input prop files to accept format
     const accept = fileTypes.reduce((acc, fileType) => {
-        const [extension] = fileType.split("/");
+        const [type, extension] = fileType.split("/");
         if (acc[fileType]) {
             acc[fileType].push(`.${extension}`);
         } else {
@@ -41,8 +41,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileTypes, message, setFile }) 
         }
         return acc;
     }, {} as Record<string, string[]>);
-
-    console.log(accept);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,

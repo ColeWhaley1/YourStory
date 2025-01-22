@@ -7,6 +7,7 @@ import { Input } from "./ui/input";
 import { useEffect, useState } from "react";
 import FileUpload from "./FileUpload";
 import ProfileAvatar from "./ProfileAvatar";
+import uploadFileToStorage from "../services/uploadFileToStorage";
 
 interface CreateProfileProps {
     setShowCreateProfile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +24,7 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
         'image/gif',
         'image/bmp',
         'image/webp',
-        'image/svg+xml',
+        'image/svg',
     ];
     
     const formSchema = z.object({
@@ -52,6 +53,22 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
     }, [avatarLocalFile]);
     
     async function onSubmit(values: z.infer<typeof formSchema>) {
+
+        if(values.avatarFile){
+            const avatarResponse = await uploadFileToStorage(values.avatarFile, "avatar");
+            const avatarLink = avatarResponse.link;
+            console.log(avatarLink);
+            const avatarUploadError = avatarResponse.error;
+            
+            if (avatarUploadError){
+                form.setError("avatarFile", {
+                    type: "manual",
+                    message: "There was a problem uploading your profile picture."
+                })
+            }
+        }
+
+
         setShowCreateProfile(false);
         // may need to re-fetch author
 
