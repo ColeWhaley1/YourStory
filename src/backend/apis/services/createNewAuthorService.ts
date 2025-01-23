@@ -4,7 +4,7 @@ interface CreateNewAuthorResponse {
     error: string | null
 }
 
-const createNewAuthorService = async (user_id: string, email: string, bio: string, pen_name: string): Promise<CreateNewAuthorResponse> => {
+const createNewAuthorService = async (user_id: string, email: string, bio: string, penName: string, avatarUrl: string): Promise<CreateNewAuthorResponse> => {
     try {
         
         const { error } = await supabase
@@ -13,7 +13,8 @@ const createNewAuthorService = async (user_id: string, email: string, bio: strin
                                     user_id,
                                     email,
                                     bio,
-                                    pen_name
+                                    penName,
+                                    avatarUrl
                                 }])
 
         if(error){

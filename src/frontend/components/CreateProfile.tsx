@@ -12,6 +12,7 @@ import { Textarea } from "./ui/textarea";
 import HintBox from "./HintBox";
 import createNewAuthor from "../services/createNewAuthor";
 import getUserSession, { UserSessionResponse } from "../services/getUserSession";
+import deleteFileFromStorage from "../services/deleteFileFromStorage";
 
 interface CreateProfileProps {
     setShowCreateProfile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -62,63 +63,57 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
     }, [avatarLocalFile]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-
         let avatarLink = null;
 
-        if (values.avatarFile) {
-            const avatarResponse = await uploadFileToStorage(values.avatarFile, "avatar");
-            avatarLink = avatarResponse.link;
-            const avatarUploadError = avatarResponse.error;
+        try {
 
-            if (avatarUploadError) {
-                form.setError("avatarFile", {
-                    type: "manual",
-                    message: "There was a problem uploading your profile picture."
-                })
+            const sessionResponse: UserSessionResponse = await getUserSession();
+
+            if (sessionResponse.error) {
+                throw new Error("can't get session");
             }
-        }
 
-        const sessionResponse: UserSessionResponse = await getUserSession();
+            const id = sessionResponse?.session?.user.id;
+            const email = sessionResponse?.session?.user.email;
 
-        if(sessionResponse.error){
-            form.setError("root", {
+            if (!id || !email) {
+                throw new Error("id or email missing");
+            }
+
+            if (values.avatarFile) {
+                const avatarResponse = await uploadFileToStorage(values.avatarFile, "avatar");
+                avatarLink = avatarResponse.link;
+                const avatarUploadError = avatarResponse.error;
+
+                if (avatarUploadError) {
+                    throw new Error("avatar upload error");
+                }
+            }
+
+            const newAuthorResponse = await createNewAuthor(id, email, values.bio, values.penName, avatarLink);
+
+            if (newAuthorResponse.error) {
+                throw new Error("new author creation error");
+            }
+
+            setShowCreateProfile(false);
+            location.reload();
+        } catch (error) {
+            form.setError("avatarFile", {
                 type: "manual",
-                message: "There was an error uploading your profile."
+                message: "There was a problem uploading your profile picture."
             });
-            return;
+            // consider deleting avatar file if exists upon error
         }
 
-        const id = sessionResponse?.session?.user.id;
-        const email = sessionResponse?.session?.user.email;
-
-        if (!id || !email){
-            form.setError("root", {
-                type: "manual",
-                message: "There was an error uploading your profile."
-            });
-            return;
-        }
-
-        const newAuthorResponse = await createNewAuthor(id, email, values.bio, values.penName);
-        console.log(newAuthorResponse);
-        if(newAuthorResponse.error){
-            form.setError("root", {
-                type: "manual",
-                message: "There was an error uploading your profile."
-            });
-            return;
-        }
-
-        setShowCreateProfile(false);
-        location.reload();
     }
 
     const hintBoxMessage = "Let's start by creating a profile. Be as anonymous as you'd like!";
 
     return (
         <div className="relative">
-            { showHint && (
-                <HintBox message={hintBoxMessage} header="Welcome to your profile page! 🎉" setShowHint={setShowHint}/>
+            {showHint && (
+                <HintBox message={hintBoxMessage} header="Welcome to your profile page! 🎉" setShowHint={setShowHint} />
             )}
             <div className={`px-12 py-2 ${showHint && 'blur-sm'}`}>
                 <div className="bg-stone-50 p-16 rounded-lg min-h-[85vh] flex justify-center">

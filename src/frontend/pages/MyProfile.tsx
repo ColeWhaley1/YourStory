@@ -97,11 +97,11 @@ const MyProfilePage = () => {
 
                 <div className="flex-col space-y-8">
                     <div className="flex items-center justify-center text-4xl space-x-4">
-                        <h1>{author.pen_name}</h1>
+                        <h1>{author.penName}</h1>
                     </div>
 
                     <div className="flex items-center justify-center">
-                        <ProfileAvatar/>
+                        <ProfileAvatar avatarUrl={author.avatarUrl}/>
                     </div>
 
                     <div className="w-full flex items-center justify-center">

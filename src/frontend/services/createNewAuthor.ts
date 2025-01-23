@@ -3,7 +3,7 @@ interface newAuthorResponse {
     error: string | null
 }
 
-const createNewAuthor = async (id: string, email: string, bio?: string, pen_name?: string): Promise<newAuthorResponse> => {
+const createNewAuthor = async (id: string, email: string, bio?: string, penName?: string, avatarUrl?: string | null): Promise<newAuthorResponse> => {
     try {
 
         const base_url = import.meta.env.VITE_API_BASE_URL;
@@ -17,7 +17,8 @@ const createNewAuthor = async (id: string, email: string, bio?: string, pen_name
                 id,
                 email,
                 bio,
-                pen_name,
+                penName,
+                avatarUrl
              })
         });
 

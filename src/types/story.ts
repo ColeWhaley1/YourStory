@@ -29,10 +29,12 @@ export interface Story {
 export interface Author {
     id: string,
     created_at: string,
-    pen_name: string,
+    penName: string,
     email: string,
     password: string,
     user_id: string,
+    bio?: string,
+    avatarUrl?: string,
 }
 
 export interface SignIn {
