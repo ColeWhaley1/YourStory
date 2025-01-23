@@ -4,14 +4,13 @@ import { useNavigate } from "react-router-dom";
 import signOut from "../services/signOut";
 import { Session } from "@supabase/supabase-js";
 import getUserSession from "../services/getUserSession";
-import authorExists from "../services/authorExists";
-import { Author } from "../../types/story";
-import { getAuthorByEmail } from "../services/getAuthor";
-import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
 import Loading from "../components/Loading";
 import CreateProfile from "../components/CreateProfile";
 import ProfileAvatar from "../components/ProfileAvatar";
+import ProfileStats from "../components/ProfileStats";
+import { Profile } from "../../types/profile";
+import getProfile, { ProfileResponse } from "../services/getProfile";
 
 const MyProfilePage = () => {
 
@@ -19,7 +18,7 @@ const MyProfilePage = () => {
     const navigate = useNavigate();
     const [session, setSession] = useState<Session | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [author, setAuthor] = useState<Author | null>(null);
+    const [profile, setProfile] = useState<Profile | null>(null);
     const [showCreateProfile, setShowCreateProfile] = useState<boolean>(false);
 
     useEffect(() => {
@@ -47,33 +46,19 @@ const MyProfilePage = () => {
     }, []);
 
     useEffect(() => {
-        const fetchAuthor = async () => {
-            const email = session?.user.email;
+        const fetchProfile = async () => {
+            if(session?.user.id){
+                const profileResponse: ProfileResponse = await getProfile(session?.user.id);
 
-            if (email) {
-                const authorExistsResponse = await authorExists(email);
-
-                if (authorExistsResponse.error) {
-                    setError(authorExistsResponse.error);
-                    return;
+                if (profileResponse.error){
+                    setError("Could not fetch profile");
                 }
 
-                if (authorExistsResponse.authorExists) {
-                    const authorResponse = await getAuthorByEmail(email);
-
-                    if (authorResponse.error) {
-                        setError(authorResponse.error);
-                        return;
-                    }
-
-                    setAuthor(authorResponse.author);
-                } else {
-                    setShowCreateProfile(true);
-                }
+                setProfile(profileResponse.profile);
             }
         }
 
-        fetchAuthor();
+        fetchProfile();
     }, [session]);
 
     const handleSignOut = async () => {
@@ -87,7 +72,7 @@ const MyProfilePage = () => {
         )
     }
 
-    if (!author) {
+    if (!profile) {
         return <Loading />
     }
 
@@ -97,20 +82,14 @@ const MyProfilePage = () => {
 
                 <div className="flex-col space-y-8">
                     <div className="flex items-center justify-center text-4xl space-x-4">
-                        <h1>{author.penName}</h1>
+                        <h1>{profile.author.penName}</h1>
                     </div>
 
                     <div className="flex items-center justify-center">
-                        <ProfileAvatar avatarUrl={author.avatarUrl}/>
+                        <ProfileAvatar avatarUrl={profile.author.avatarUrl}/>
                     </div>
 
-                    <div className="w-full flex items-center justify-center">
-                        <div className="flex space-x-12">
-                            <StatBox title="Stories" count={7} redirect="/my_stories" />
-                            <StatBox title="Followers" count={435} redirect="/followers" />
-                            <StatBox title="Following" count={243} redirect="/following" />
-                        </div>
-                    </div>
+                    <ProfileStats storiesCount={profile.stats.stories} followersCount={profile.stats.followers} followingCount={profile.stats.following}/>
 
                 </div>
             </div>

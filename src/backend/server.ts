@@ -9,6 +9,8 @@ import { uploadNewStoryController } from "./apis/controllers/uploadNewStoryContr
 import authorExistsController from "./apis/controllers/authorExistsController";
 import createNewAuthorController from "./apis/controllers/createNewAuthorController";
 import getAuthorController from "./apis/controllers/getAuthorController";
+import getProfileController from "./apis/controllers/getProfileController";
+import getStoriesCountController from "./apis/controllers/getStoriesCountController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -42,6 +44,13 @@ app.get("/api/auth/author_exists", authorExistsController);
 app.post("/api/author/new", createNewAuthorController);
 app.get("/api/auth/author", getAuthorController);
 
+// profile
+
+app.get("/api/profile", getProfileController);
+
+// stats
+
+app.get("/api/stats/stories", getStoriesCountController);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

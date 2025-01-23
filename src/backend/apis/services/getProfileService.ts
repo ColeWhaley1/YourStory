@@ -1,15 +1,20 @@
 import { getAuthorById } from "../../../frontend/services/getAuthor";
 import { Profile } from "../../../types/profile";
+import getFollowersCountService from "./getFollowersCountService";
+import getFollowingCountService from "./getFollowingCountService";
+import getStoriesCountService from "./getStoriesCountService";
 
 interface ProfileResponse {
     profile: Profile | null,
     error: string | null
 }
 
-const getProfileService = async (user_id: string): Promise<ProfileResponse> => {
+const getProfileService = async (id: string): Promise<ProfileResponse> => {
     try {
 
-        const authorResponse = await getAuthorById(user_id);
+        // get author data
+
+        const authorResponse = await getAuthorById(id);
         
         if (authorResponse.error){
             throw new Error("There was an error fetching the author.");
@@ -17,18 +22,51 @@ const getProfileService = async (user_id: string): Promise<ProfileResponse> => {
 
         const author = authorResponse.author;
 
-        // get avatar url
+        // get stories told count
 
-        // get stories told
+        const storiesCountResponse = await getStoriesCountService(id);
+
+        if(storiesCountResponse.error){
+            throw new Error(storiesCountResponse.error);
+        }
+
+        const stories = storiesCountResponse.count;
 
         // get follower count
 
+        const followersCountResponse = await getFollowersCountService(id);
+
+        if(followersCountResponse.error){
+            throw new Error(followersCountResponse.error);
+        }
+
+        const followers = followersCountResponse.count;
+
         // get following count
 
+        const followingCountResponse = await getFollowingCountService(id);
 
-        // CHANGE TO RETURN PROFILE
+        if(followingCountResponse.error){
+            throw new Error(followingCountResponse.error);
+        }
+
+        const following = followingCountResponse.count;
+
+        if ((!stories && stories != 0) || (!followers && followers != 0) || (!following && following != 0)){
+            throw new Error("Could not fetch stats");
+        }
+
+        const profile: Profile = {
+            author,
+            stats: {
+                stories,
+                followers,
+                following
+            }
+        }
+
         return {
-            profile: null,
+            profile,
             error: null
         }
         
