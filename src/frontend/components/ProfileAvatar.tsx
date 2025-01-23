@@ -7,7 +7,7 @@ interface ProfileAvatarProps {
 
 const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ avatarUrl, size="w-64 h-64" }) => {
   return (
-    <div className={`flex items-center justify-center rounded-full overflow-hidden ${size} p-2`}>
+    <div className={`flex items-center justify-center rounded-full overflow-hidden ${size}`}>
       <img
         src={avatarUrl ?? DefaultAvatar}
         alt="Profile Avatar"

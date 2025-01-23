@@ -10,6 +10,8 @@ import ProfileAvatar from "./ProfileAvatar";
 import uploadFileToStorage from "../services/uploadFileToStorage";
 import { Textarea } from "./ui/textarea";
 import HintBox from "./HintBox";
+import createNewAuthor from "../services/createNewAuthor";
+import getUserSession, { UserSessionResponse } from "../services/getUserSession";
 
 interface CreateProfileProps {
     setShowCreateProfile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,9 +63,11 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
 
+        let avatarLink = null;
+
         if (values.avatarFile) {
             const avatarResponse = await uploadFileToStorage(values.avatarFile, "avatar");
-            const avatarLink = avatarResponse.link;
+            avatarLink = avatarResponse.link;
             const avatarUploadError = avatarResponse.error;
 
             if (avatarUploadError) {
@@ -74,10 +78,39 @@ const CreateProfile: React.FC<CreateProfileProps> = ({ setShowCreateProfile }) =
             }
         }
 
+        const sessionResponse: UserSessionResponse = await getUserSession();
+
+        if(sessionResponse.error){
+            form.setError("root", {
+                type: "manual",
+                message: "There was an error uploading your profile."
+            });
+            return;
+        }
+
+        const id = sessionResponse?.session?.user.id;
+        const email = sessionResponse?.session?.user.email;
+
+        if (!id || !email){
+            form.setError("root", {
+                type: "manual",
+                message: "There was an error uploading your profile."
+            });
+            return;
+        }
+
+        const newAuthorResponse = await createNewAuthor(id, email, values.bio, values.penName);
+        console.log(newAuthorResponse);
+        if(newAuthorResponse.error){
+            form.setError("root", {
+                type: "manual",
+                message: "There was an error uploading your profile."
+            });
+            return;
+        }
 
         setShowCreateProfile(false);
-        // may need to re-fetch author
-
+        location.reload();
     }
 
     const hintBoxMessage = "Let's start by creating a profile. Be as anonymous as you'd like!";

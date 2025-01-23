@@ -77,7 +77,7 @@ const MyProfilePage = () => {
     }, [session]);
 
     const handleSignOut = async () => {
-        const response = await signOut();
+        await signOut();
     }
 
 

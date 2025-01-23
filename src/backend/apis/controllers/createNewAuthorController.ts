@@ -4,7 +4,7 @@ import createNewAuthorService from "../services/createNewAuthorService"
 const createNewAuthorController = async (req: Request, res: Response) => {
     try {
 
-        const { id, email, pen_name } = req.body
+        const { id, email, bio, pen_name } = req.body
 
         if (!id){
             throw new Error("Must have id to create new author.")
@@ -13,7 +13,7 @@ const createNewAuthorController = async (req: Request, res: Response) => {
             throw new Error("Email missing.")
         }
 
-        const response = await createNewAuthorService(id, email, pen_name);
+        const response = await createNewAuthorService(id, email, bio, pen_name == "" ? "Anonymous" : pen_name);
 
         if(response.error){
             throw new Error(response.error)
