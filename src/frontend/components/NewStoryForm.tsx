@@ -25,8 +25,29 @@ import uploadFileToStorage from "../services/uploadFileToStorage";
 import uploadNewStory from "../services/uploadNewStory";
 
 import { useNavigate } from 'react-router-dom';
+import { Session } from "@supabase/supabase-js";
+import getUserSession from "../services/getUserSession";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
+
+    const [session, setSession] = useState<Session | null>(null);
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            const sessionResponse = await getUserSession();
+
+            if (sessionResponse.error){
+                setFileError("Something went wrong fetching your session, please try signing in again.");
+                return;
+            }
+
+            if (sessionResponse.session) {
+                setSession(sessionResponse.session);
+            }
+        }
+
+        fetchSession();
+    }, []);
 
     const navigate = useNavigate();
 
@@ -116,8 +137,13 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
         genres.forEach(genre => genre.trim());
 
+        if(!session || !session.user || !session.user.id){
+            setFileError("Your session is not valid, please try again.");
+            return;
+        }
+
         const story: Story = {
-            author_id: "YduoBnw4BAKAyEVyTvTL", // THIS NEEDS TO CHANGE TO AUTHENTICATED USER ID
+            author_id: session?.user.id,
             description: values.description.trim(),
             story_file: storyLink,
             cover: coverLink,
@@ -175,7 +201,6 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             form.clearErrors("genre");
             form.setValue("genre", "");
         }
-        console.log(genreInput);
 
         setGenreInput("");
     }

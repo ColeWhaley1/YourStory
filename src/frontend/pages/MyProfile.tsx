@@ -4,20 +4,22 @@ import { useNavigate } from "react-router-dom";
 import signOut from "../services/signOut";
 import { Session } from "@supabase/supabase-js";
 import getUserSession from "../services/getUserSession";
-import authorExists from "../services/authorExists";
-import { Author } from "../../types/story";
-import getAuthor from "../services/getAuthor";
-import StatBox from "../components/StatBox";
 import { MdEdit } from "react-icons/md";
-import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
+import Loading from "../components/Loading";
+import CreateProfile from "../components/CreateProfile";
+import ProfileAvatar from "../components/ProfileAvatar";
+import ProfileStats from "../components/ProfileStats";
+import { Profile } from "../../types/profile";
+import getProfile, { ProfileResponse } from "../services/getProfile";
 
-const ProfilePage = () => {
+const MyProfilePage = () => {
 
     const isSignedIn = useAuthStatus();
     const navigate = useNavigate();
     const [session, setSession] = useState<Session | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [author, setAuthor] = useState<Author | null>(null);
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [showCreateProfile, setShowCreateProfile] = useState<boolean>(false);
 
     useEffect(() => {
         if (isSignedIn == false) {
@@ -44,74 +46,54 @@ const ProfilePage = () => {
     }, []);
 
     useEffect(() => {
-        const fetchAuthor = async () => {
-            const email = session?.user.email;
+        const fetchProfile = async () => {
+            if(session?.user.id){
+                const profileResponse: ProfileResponse = await getProfile(session?.user.id);
 
-            if (email) {
-                const authorExistsResponse = await authorExists(email);
-
-                if (authorExistsResponse.error) {
-                    setError(authorExistsResponse.error);
-                    return;
+                if (profileResponse.error){
+                    setError("Could not fetch profile");
                 }
 
-                if (authorExistsResponse.authorExists) {
-                    const authorResponse = await getAuthor(email);
-
-                    if (authorResponse.error) {
-                        setError(authorResponse.error);
-                        return;
-                    }
-
-                    setAuthor(authorResponse.author);
-                } else {
-                    // else provide screen for creating profile
-                }
+                setProfile(profileResponse.profile);
             }
         }
 
-        fetchAuthor();
+        fetchProfile();
     }, [session]);
 
     const handleSignOut = async () => {
-        // setLoading(true);
-        const response = await signOut();
-        // setLoading(false);
+        await signOut();
     }
 
-    if (!author) {
+
+    if (showCreateProfile) {
         return (
-            <div>
-                Loading...
-            </div>
+            <CreateProfile setShowCreateProfile={setShowCreateProfile}/>
         )
+    }
+
+    if (!profile) {
+        return <Loading />
     }
 
     return (
         <div className="px-12 py-2">
-            <div className="bg-stone-50 p-16 rounded-lg min-h-[680px]">
-
+            <div className="bg-stone-50 p-16 rounded-lg min-h-[85vh]">
 
                 <div className="flex-col space-y-8">
                     <div className="flex items-center justify-center text-4xl space-x-4">
-                        <h1>{author.pen_name}</h1>
+                        <h1>{profile.author.penName}</h1>
                     </div>
 
                     <div className="flex items-center justify-center">
-                        <img src={DefaultAvatar} className="w-1/6"></img>
+                        <ProfileAvatar avatarUrl={profile.author.avatarUrl}/>
                     </div>
 
-                    <div className="w-full flex items-center justify-center">
-                        <div className="flex space-x-12">
-                            <StatBox title="Stories" count={7} redirect="/my_stories" />
-                            <StatBox title="Followers" count={435} redirect="/followers" />
-                            <StatBox title="Following" count={243} redirect="/following" />
-                        </div>
-                    </div>
+                    <ProfileStats storiesCount={profile.stats.stories} followersCount={profile.stats.followers} followingCount={profile.stats.following}/>
 
                 </div>
             </div>
-            
+
             <button className="fixed bottom-6 right-6 rounded-full border-2 p-4 bg-white shadow-lg hover:shadow-2xl transition">
                 <MdEdit className="w-8 h-8" />
             </button>
@@ -123,4 +105,4 @@ const ProfilePage = () => {
     )
 }
 
-export default ProfilePage;
+export default MyProfilePage;

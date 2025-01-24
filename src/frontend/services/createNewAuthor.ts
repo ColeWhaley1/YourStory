@@ -3,7 +3,7 @@ interface newAuthorResponse {
     error: string | null
 }
 
-const createNewAuthor = async (id: string, email: string, pen_name?: string): Promise<newAuthorResponse> => {
+const createNewAuthor = async (id: string, email: string, bio?: string, penName?: string, avatarUrl?: string | null): Promise<newAuthorResponse> => {
     try {
 
         const base_url = import.meta.env.VITE_API_BASE_URL;
@@ -16,7 +16,9 @@ const createNewAuthor = async (id: string, email: string, pen_name?: string): Pr
             body: JSON.stringify({ 
                 id,
                 email,
-                pen_name
+                bio,
+                penName,
+                avatarUrl
              })
         });
 
@@ -36,7 +38,6 @@ const createNewAuthor = async (id: string, email: string, pen_name?: string): Pr
         }
         
     } catch (error: any) {
-        console.log(error);
         return {
             success: false,
             error: error.message
