@@ -3,7 +3,7 @@ import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuL
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
 import useAuthStatus from "../helpers/useAuthStatus";
 import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
-import GlobalLoading from "./GlobalLoading";  // Import GlobalLoading
+import GlobalLoading from "./GlobalLoading";
 import { useLoading } from "../contexts/loadingContext";
 
 interface props {
@@ -15,7 +15,6 @@ const Layout: React.FC<props> = ({ children }) => {
   const [isNavBarRemoved, setIsNavBarRemoved] = useState<boolean>(false);
 
   const isSignedIn = useAuthStatus();
-  console.log("user signed in: ", isSignedIn);
 
   const showNav = () => {
     setIsNavBarRemoved(false);

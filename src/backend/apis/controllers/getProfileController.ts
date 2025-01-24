@@ -1,18 +1,16 @@
 import {Request, Response} from "express";
 import getProfileService from "../services/getProfileService";
 
-
-
 interface QueryParams {
-    user_id: string
+    id: string
 }
 
 const getProfileController = async (req: Request, res: Response) => {
     try {
 
-        const { user_id } = req.query as unknown as QueryParams;
+        const { id } = req.query as unknown as QueryParams;
 
-        const response = await getProfileService(user_id);
+        const response = await getProfileService(id);
 
         if (response.error){
             throw new Error(response.error);

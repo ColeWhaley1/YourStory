@@ -1,5 +1,5 @@
-import { getAuthorById } from "../../../frontend/services/getAuthor";
 import { Profile } from "../../../types/profile";
+import getAuthorService from "./getAuthorService";
 import getFollowersCountService from "./getFollowersCountService";
 import getFollowingCountService from "./getFollowingCountService";
 import getStoriesCountService from "./getStoriesCountService";
@@ -14,13 +14,17 @@ const getProfileService = async (id: string): Promise<ProfileResponse> => {
 
         // get author data
 
-        const authorResponse = await getAuthorById(id);
+        const authorResponse = await getAuthorService(id);
         
         if (authorResponse.error){
             throw new Error("There was an error fetching the author.");
         }
 
         const author = authorResponse.author;
+
+        if (!author){
+            throw new Error("Could not fetch author info");
+        }
 
         // get stories told count
 

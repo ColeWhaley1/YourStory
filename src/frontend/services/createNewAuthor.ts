@@ -38,7 +38,6 @@ const createNewAuthor = async (id: string, email: string, bio?: string, penName?
         }
         
     } catch (error: any) {
-        console.log(error);
         return {
             success: false,
             error: error.message
