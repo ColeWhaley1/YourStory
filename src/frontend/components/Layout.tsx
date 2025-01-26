@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
 import useAuthStatus from "../helpers/useAuthStatus";
-import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
 import GlobalLoading from "./GlobalLoading";
 import { useLoading } from "../contexts/loadingContext";
+import ProfileAvatar from "./ProfileAvatar";
 
 interface props {
   children: (controls: { hideNav: () => void; showNav: () => void }) => React.ReactNode;
@@ -75,7 +75,7 @@ const Layout: React.FC<props> = ({ children }) => {
                   <div className="flex space-x-2 md:space-x-4 m-6 pr-4">
                     <NavigationMenuItem>
                       <NavigationMenuLink href="/my_profile">
-                        <img src={DefaultAvatar} alt="avatar" className="max-h-10" />
+                        <ProfileAvatar size="h-10 w-10"/>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   </div>
