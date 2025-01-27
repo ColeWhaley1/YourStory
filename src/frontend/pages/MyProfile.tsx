@@ -2,69 +2,32 @@ import { useEffect, useState } from "react";
 import useAuthStatus from "../helpers/useAuthStatus";
 import { useNavigate } from "react-router-dom";
 import signOut from "../services/signOut";
-import { Session } from "@supabase/supabase-js";
-import getUserSession from "../services/getUserSession";
 import { MdEdit } from "react-icons/md";
 import Loading from "../components/Loading";
 import CreateProfile from "../components/CreateProfile";
 import ProfileAvatar from "../components/ProfileAvatar";
 import ProfileStats from "../components/ProfileStats";
-import { Profile } from "../../types/profile";
-import getProfile, { ProfileResponse } from "../services/getProfile";
+import { useMyProfile } from "../contexts/myProfileContext";
 
 const MyProfilePage = () => {
 
     const isSignedIn = useAuthStatus();
     const navigate = useNavigate();
-    const [session, setSession] = useState<Session | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const [profile, setProfile] = useState<Profile | null>(null);
     const [showCreateProfile, setShowCreateProfile] = useState<boolean>(false);
 
+    const { profile } = useMyProfile();
+
     useEffect(() => {
+        console.log(profile);
         if (isSignedIn == false) {
             navigate("/sign_up");
             return;
         }
     }, [isSignedIn]);
 
-    useEffect(() => {
-        const fetchSession = async () => {
-            const sessionResponse = await getUserSession();
-
-            if (sessionResponse.error) {
-                setError(sessionResponse.error);
-                return;
-            }
-
-            if (sessionResponse.session) {
-                setSession(sessionResponse.session);
-            }
-        }
-
-        fetchSession();
-    }, []);
-
-    useEffect(() => {
-        const fetchProfile = async () => {
-            if(session?.user.id){
-                const profileResponse: ProfileResponse = await getProfile(session?.user.id);
-
-                if (profileResponse.error){
-                    setError("Could not fetch profile");
-                }
-
-                setProfile(profileResponse.profile);
-            }
-        }
-
-        fetchProfile();
-    }, [session]);
-
     const handleSignOut = async () => {
         await signOut();
     }
-
 
     if (showCreateProfile) {
         return (
@@ -86,7 +49,7 @@ const MyProfilePage = () => {
                     </div>
 
                     <div className="flex items-center justify-center">
-                        <ProfileAvatar avatarUrl={profile.author.avatarUrl}/>
+                        <ProfileAvatar/>
                     </div>
 
                     <ProfileStats storiesCount={profile.stats.stories} followersCount={profile.stats.followers} followingCount={profile.stats.following}/>

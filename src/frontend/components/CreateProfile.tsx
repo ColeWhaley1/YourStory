@@ -12,7 +12,6 @@ import { Textarea } from "./ui/textarea";
 import HintBox from "./HintBox";
 import createNewAuthor from "../services/createNewAuthor";
 import getUserSession, { UserSessionResponse } from "../services/getUserSession";
-import deleteFileFromStorage from "../services/deleteFileFromStorage";
 
 interface CreateProfileProps {
     setShowCreateProfile: React.Dispatch<React.SetStateAction<boolean>>;
