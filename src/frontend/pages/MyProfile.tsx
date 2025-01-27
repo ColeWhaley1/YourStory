@@ -49,7 +49,7 @@ const MyProfilePage = () => {
                     </div>
 
                     <div className="flex items-center justify-center">
-                        <ProfileAvatar avatarUrl={profile.author.avatarUrl}/>
+                        <ProfileAvatar/>
                     </div>
 
                     <ProfileStats storiesCount={profile.stats.stories} followersCount={profile.stats.followers} followingCount={profile.stats.following}/>

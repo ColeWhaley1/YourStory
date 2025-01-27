@@ -75,7 +75,9 @@ const Layout: React.FC<props> = ({ children }) => {
                   <div className="flex space-x-2 md:space-x-4 m-6 pr-4">
                     <NavigationMenuItem>
                       <NavigationMenuLink href="/my_profile">
-                        <ProfileAvatar size="h-10 w-10"/>
+                        <div className="transform transition-transform duration-200 ease-in-out hover:scale-150">
+                          <ProfileAvatar size="h-10 w-10"/>
+                        </div>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   </div>
