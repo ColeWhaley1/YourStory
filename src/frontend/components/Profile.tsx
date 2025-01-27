@@ -1,7 +1,7 @@
 import StatBox from "./StatBox";
-import DefaultAvatar from "../../assets/static_images/DefaultAvatar.png";
 import { useState } from "react";
 import { Profile } from "../../types/profile";
+import ProfileAvatar from "./ProfileAvatar";
 
 interface ProfileProps {
     user_id: string
@@ -19,7 +19,7 @@ const ProfileComponent: React.FC<ProfileProps> = ({ user_id }) => {
                 </div>
 
                 <div className="flex items-center justify-center">
-                    <img src={DefaultAvatar} className="w-1/6"></img>
+                    <ProfileAvatar avatarUrl={profile?.author.avatarUrl}/>
                 </div>
 
                 <div className="w-full flex items-center justify-center">
