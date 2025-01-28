@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Story } from "../../../types/story";
-import getUserSession from "../../services/getUserSession";
 import getSessionId from "../../services/getSessionId";
+import getStories from "../../services/getStories";
+import Loading from "../Loading";
 
 const StoriesList = () => {
 
@@ -19,6 +20,8 @@ const StoriesList = () => {
       
       const storiesResponse = await getStories(id);
 
+      console.log(storiesResponse)
+
       if(storiesResponse.error){
         throw new Error("Could not get your stories!");
       }
@@ -29,8 +32,14 @@ const StoriesList = () => {
     fetchStories();
   }, []);
 
+  if (!stories || stories.length == 0){
+    return (
+      <Loading/>
+    )
+  }
+
   return (
-    <div>ListStories</div>
+    <div>{stories[0].title}</div>
   )
 }
 
