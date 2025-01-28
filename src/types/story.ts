@@ -18,6 +18,7 @@ export interface StoryMockData {
 
 // this needs to be kept the same as the DB table "story"
 export interface Story {
+    id: string,
     author_id: string,
     description: string,
     story_file: string,

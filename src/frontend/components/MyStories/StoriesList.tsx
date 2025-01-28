@@ -3,6 +3,7 @@ import { Story } from "../../../types/story";
 import getSessionId from "../../services/getSessionId";
 import getStories from "../../services/getStories";
 import Loading from "../Loading";
+import StoryBullet from "./StoryBullet";
 
 const StoriesList = () => {
 
@@ -19,8 +20,6 @@ const StoriesList = () => {
       const id: string  = idResponse.id;
       
       const storiesResponse = await getStories(id);
-
-      console.log(storiesResponse)
 
       if(storiesResponse.error){
         throw new Error("Could not get your stories!");
@@ -39,7 +38,13 @@ const StoriesList = () => {
   }
 
   return (
-    <div>{stories[0].title}</div>
+    stories.map((story) => {
+      return (
+        <div key={story.id} className="w-full">
+            <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres}/>
+        </div>
+      )
+    })
   )
 }
 
