@@ -38,13 +38,15 @@ const StoriesList = () => {
   }
 
   return (
-    stories.map((story) => {
-      return (
-        <div key={story.id} className="w-full">
-            <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres}/>
-        </div>
-      )
-    })
+    <div className="flex-col space-y-4">
+        {stories.map((story) => {
+          return (
+              <div key={story.id} className="w-full">
+                  <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres}/>
+              </div>
+          )
+        })}
+    </div>
   )
 }
 

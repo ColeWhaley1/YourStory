@@ -1,4 +1,4 @@
-import React, { useState, Children, ReactNode, useEffect } from 'react';
+import React, { useState, Children, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type PageSliderProps = {

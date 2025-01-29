@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FillButton from '../widgets/FillButton';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../Loading';
 
 interface StoryBulletProps {
     id: string;
@@ -12,9 +13,23 @@ interface StoryBulletProps {
 const StoryBullet: React.FC<StoryBulletProps> = ({ id, title, cover, genres }) => {
     const navigate = useNavigate();
 
+    const [imageLoading, setImageLoading] = useState<boolean>(true);
+
+    const handleImageLoad = () => {
+        setImageLoading(false);
+    }
+
     return (
-        <div className="py-4 border w-full rounded-lg shadow-md bg-white max-h-52 flex items-center space-x-6">
-            <img src={cover} alt={title} className="max-h-44 object-cover rounded-lg m-4" /> {/* NEED TO ADD LOADER WHEN IMG NOT LOADED */}
+        <div className="py-4 border w-full rounded-lg shadow-md bg-white max-h-44 flex items-center space-x-6">
+
+            <div className='m-4'>
+                <div className={`${imageLoading ? "visible" : "hidden"}`}>
+                    <Loading size="h-24 w-24" lottieProportions=''/>
+                </div>
+
+                <img src={cover} alt={title} className={`max-h-36 object-cover rounded-lg ${!imageLoading ? "visible" : "hidden"}`} onLoad={handleImageLoad} />
+            </div>
+
 
             <div className='flex-1'>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
@@ -28,7 +43,7 @@ const StoryBullet: React.FC<StoryBulletProps> = ({ id, title, cover, genres }) =
                 </div>
             </div>
             <div className="pr-12">
-                <FillButton message='See More' handleClick={() => navigate(`/stories/${id}`)}/>
+                <FillButton message='See More' handleClick={() => navigate(`/stories/${id}`)} />
             </div>
         </div>
     );
