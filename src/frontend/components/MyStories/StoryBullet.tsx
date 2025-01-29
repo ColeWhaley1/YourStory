@@ -1,5 +1,5 @@
 import React from 'react';
-import FillButton from '../widgets/fillButton';
+import FillButton from '../widgets/FillButton';
 import { useNavigate } from 'react-router-dom';
 
 interface StoryBulletProps {
