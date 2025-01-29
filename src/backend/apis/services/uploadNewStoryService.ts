@@ -1,8 +1,8 @@
-import { Story } from "../../../types/story";
+import { UploadStory } from "../../../types/story";
 import supabase from "../../supabase";
 
 const uploadNewStoryService = async (
-    story: Story
+    story: UploadStory
 ): Promise<string | null> => {
     try {
         const { data, error } = await supabase

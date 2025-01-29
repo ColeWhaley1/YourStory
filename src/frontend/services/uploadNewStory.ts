@@ -1,4 +1,4 @@
-import { Story } from "../../types/story";
+import { UploadStory } from "../../types/story";
 
 interface NewStoryReturnType {
     id: string | null;
@@ -6,7 +6,7 @@ interface NewStoryReturnType {
 }
 
 const uploadNewStory = async (
-    story: Story,
+    story: UploadStory,
 ): Promise<NewStoryReturnType> => {
     try {
 

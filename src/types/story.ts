@@ -27,6 +27,15 @@ export interface Story {
     genres: string[]
 }
 
+export interface UploadStory {
+    author_id: string,
+    description: string,
+    story_file: string,
+    cover: string,
+    title: string,
+    genres: string[]
+}
+
 export interface Author {
     id: string,
     created_at: string,

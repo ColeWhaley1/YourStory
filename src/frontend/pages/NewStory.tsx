@@ -10,12 +10,12 @@ const NewStory = () => {
     const [storyFile, setStoryFile] = useState<File | null>(null);
     
     return (
-        <div className="flex flex-row justify-center m-10 space-x-12">
+        <div className="flex justify-center m-10 w-full">
             <div className="pl-16 flex items-center">
                 {
                     storyFile ? (
                         <div>
-                            <StoryReaderPreview file={storyFile} scale={0.8} setFile={setStoryFile}></StoryReaderPreview>
+                            <StoryReaderPreview file={storyFile} scale={.7} setFile={setStoryFile}></StoryReaderPreview>
                         </div>
                     ) :
                         (
@@ -29,7 +29,7 @@ const NewStory = () => {
                         )
                 }
             </div>
-            <div className="p-4 w-1/2 flex items-center justify-center">
+            <div className="p-4 flex items-center justify-center w-1/2">
                 <NewStoryForm storyFile={storyFile} />
             </div>
         </div>
