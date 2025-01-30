@@ -42,7 +42,7 @@ const StoryBullet: React.FC<StoryBulletProps> = ({ id, title, cover, genres }) =
                     ))}
                 </div>
             </div>
-            <div className="pr-12">
+            <div className="pr-6">
                 <FillButton message='See More' handleClick={() => navigate(`/stories/${id}`)} />
             </div>
         </div>
