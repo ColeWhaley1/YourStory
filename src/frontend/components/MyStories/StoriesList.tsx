@@ -5,6 +5,8 @@ import getStories from "../../services/getStories";
 import Loading from "../Loading";
 import StoryBullet from "./StoryBullet";
 import PaginationDots from "../widgets/PaginationDots";
+import { FaArrowLeft } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa6";
 
 const StoriesList = () => {
 
@@ -65,7 +67,7 @@ const StoriesList = () => {
   return (
       <div className="p-8 rounded-lg h-[85vh]">
         <div className="flex items-center">
-          <button className="pr-8" onClick={decrementPage}>Left</button>
+          <button className="pr-8" onClick={decrementPage}><FaArrowLeft /></button>
           <div className="flex-col space-y-4">
               {pageStories.map((story) => {
                 return (
@@ -75,7 +77,7 @@ const StoriesList = () => {
                 )
               })}
           </div>
-          <button className="pl-8" onClick={incrementPage}>Right</button>
+          <button className="pl-8" onClick={incrementPage}><FaArrowRight /></button>
         </div>
         <div className="w-full flex items-center justify-center p-6">
           <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}/>
