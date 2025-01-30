@@ -39,7 +39,7 @@ const Layout: React.FC<props> = ({ children }) => {
             }}
           >
             <NavigationMenu>
-              <NavigationMenuList className="flex justify-between w-full space-x-4">
+              <NavigationMenuList className="flex justify-between w-full space-x-4 outline outline-[#00000014]">
                 {/* Nav items. Left aligned */}
                 <div className="flex space-x-8 m-6">
                   <NavigationMenuItem>

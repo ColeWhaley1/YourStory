@@ -19,7 +19,7 @@ import ImageFileUpload from "./ImageFileUpload";
 import Lottie from "lottie-react";
 import Loading from "../../assets/lottie_animations/loading.json";
 import { FaCircleXmark } from "react-icons/fa6";
-import { Story } from "../../types/story";
+import { UploadStory } from "../../types/story";
 import RemovableLabel from "./widgets/RemovableLabel";
 import uploadFileToStorage from "../services/uploadFileToStorage";
 import uploadNewStory from "../services/uploadNewStory";
@@ -142,7 +142,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
             return;
         }
 
-        const story: Story = {
+        const story: UploadStory = {
             author_id: session?.user.id,
             description: values.description.trim(),
             story_file: storyLink,
@@ -297,7 +297,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         <FormItem>
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Textarea className="w-full" placeholder="ex. A tale of a large tree that was very green." {...field} />
+                                <Textarea className="w-full max-h-[200px]" placeholder="ex. A tale of a large tree that was very green." {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -305,7 +305,6 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                 />
                 {imagePreview ? (
                     <div className="mt-4">
-
                         {imagePreviewLoading &&
                             <div className="max-w-24">
                                 <Lottie animationData={Loading} />

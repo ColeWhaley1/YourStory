@@ -11,6 +11,7 @@ import createNewAuthorController from "./apis/controllers/createNewAuthorControl
 import getAuthorController from "./apis/controllers/getAuthorController";
 import getProfileController from "./apis/controllers/getProfileController";
 import getStoriesCountController from "./apis/controllers/getStoriesCountController";
+import getStoriesController from "./apis/controllers/getStoriesController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -27,8 +28,8 @@ app.get("/", (_req: Request, res: Response) => {
 
 // Story routes
 
+app.get("/api/stories", getStoriesController);
 app.get("/api/stories/:id", getStoryByIdController);
-
 app.post("/api/stories/new", uploadNewStoryController);
 
 // Supabase storage routes

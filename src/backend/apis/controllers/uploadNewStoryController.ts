@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import uploadNewStoryService from "../services/uploadNewStoryService";
-import { Story } from "../../../types/story";
+import { UploadStory } from "../../../types/story";
 
 interface Request_params {
-    story: Story
+    story: UploadStory
 }
 
 const uploadNewStoryController = async (
