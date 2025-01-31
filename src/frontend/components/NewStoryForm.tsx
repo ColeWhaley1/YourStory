@@ -185,6 +185,15 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
     }
 
     const addGenre = () => {
+        if((genreInput ?? "").length > 20){
+            form.setError("genre",
+                {
+                    type: "manual",
+                    message: "Max 20 characters"
+                }
+            )
+            return;
+        }
         if(genres.length >= 3){
             form.setError("genre",
                 {

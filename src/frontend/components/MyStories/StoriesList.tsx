@@ -7,6 +7,7 @@ import StoryBullet from "./StoryBullet";
 import PaginationDots from "../widgets/PaginationDots";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
+import Dropdown from "../widgets/Dropdown";
 
 const StoriesList = () => {
 
@@ -23,32 +24,32 @@ const StoriesList = () => {
   }
 
   const decrementPage = () => {
-    if(currentPage == 0){
+    if (currentPage == 0) {
       return;
     }
-    setCurrentPage((curr) => curr-1);
+    setCurrentPage((curr) => curr - 1);
   }
 
   const incrementPage = () => {
-    if(currentPage == totalPages-1){
+    if (currentPage == totalPages - 1) {
       return
     }
-    setCurrentPage((curr) => curr+1);
+    setCurrentPage((curr) => curr + 1);
   }
 
   useEffect(() => {
     const fetchStories = async () => {
       const idResponse = await getSessionId();
 
-      if(idResponse.error || !idResponse.id){
+      if (idResponse.error || !idResponse.id) {
         throw new Error("Could not fetch session.");
       }
 
-      const id: string  = idResponse.id;
-      
+      const id: string = idResponse.id;
+
       const storiesResponse = await getStories(id);
 
-      if(storiesResponse.error){
+      if (storiesResponse.error) {
         throw new Error("Could not get your stories!");
       }
 
@@ -58,32 +59,46 @@ const StoriesList = () => {
     fetchStories();
   }, []);
 
-  if (!stories || stories.length == 0){
+  if (!stories || stories.length == 0) {
     return (
-      <Loading/>
+      <Loading />
     )
   }
 
   return (
-      <div className="p-8 rounded-lg h-[85vh]">
-        <div className="flex items-center">
-          <button className="pr-8" onClick={decrementPage}><FaArrowLeft /></button>
-          <div className="flex-col space-y-4">
-              {pageStories.map((story) => {
-                return (
-                    <div key={story.id} className="w-full">
-                        <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres}/>
-                    </div>
-                )
-              })}
-          </div>
-          <button className="pl-8" onClick={incrementPage}><FaArrowRight /></button>
+    <div className="p-4 rounded-lg h-[86vh] flex flex-col justify-between bg-stone-50 shadow-md">
+      <div className="flex items-center justify-center pb-2">
+        <div className="flex-1">
+          <Dropdown name="Filter By"/>
         </div>
-        <div className="w-full flex items-center justify-center p-6">
-          <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}/>
+        <div className="flex-1 font-bold">
+          Your Stories
+        </div>
+        <div className="p-3 bg-white rounded-full border h-8 flex items-center justify-center">
+          Page {currentPage + 1}
         </div>
       </div>
-  )
-}
+      <div className="flex items-center flex-grow">
+        <button className="pr-8" onClick={decrementPage}>
+          <FaArrowLeft />
+        </button>
+        <div className="flex-col space-y-4 flex-grow">
+          {pageStories.map((story) => (
+            <div key={story.id} className="w-full">
+              <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres}/>
+            </div>
+          ))}
+        </div>
+        <button className="pl-8" onClick={incrementPage}>
+          <FaArrowRight />
+        </button>
+      </div>
+  
+      <div className="w-full flex items-center justify-center p-6">
+        <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}/>
+      </div>
+    </div>
+  );
+  }
 
 export default StoriesList

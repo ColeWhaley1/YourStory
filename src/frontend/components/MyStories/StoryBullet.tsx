@@ -23,7 +23,7 @@ const StoryBullet: React.FC<StoryBulletProps> = ({ id, title, cover, genres }) =
         <div className="py-4 border w-full rounded-lg shadow-md bg-white max-h-44 flex items-center space-x-6">
 
             <div className='m-4'>
-                <div className={`${imageLoading ? "visible" : "hidden"}`}>
+                <div className={`w-full h-full ${imageLoading ? "visible" : "hidden"}`}>
                     <Loading size="h-24 w-24" lottieProportions=''/>
                 </div>
 
