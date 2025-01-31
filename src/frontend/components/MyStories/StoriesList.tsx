@@ -71,9 +71,9 @@ const StoriesList = () => {
         <div className="flex-1">
           <Dropdown name="Filter By"/>
         </div>
-        <div className="flex-1 font-bold">
+        <h1 className="flex-1 font-bold">
           Your Stories
-        </div>
+        </h1>
         <div className="p-3 bg-white rounded-full border h-8 flex items-center justify-center">
           Page {currentPage + 1}
         </div>
@@ -85,7 +85,7 @@ const StoriesList = () => {
         <div className="flex-col space-y-4 flex-grow">
           {pageStories.map((story) => (
             <div key={story.id} className="w-full">
-              <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres}/>
+              <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres} rating={4.7}/>
             </div>
           ))}
         </div>
