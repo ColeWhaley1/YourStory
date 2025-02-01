@@ -7,7 +7,7 @@ import StoryBullet from "./StoryBullet";
 import PaginationDots from "../widgets/PaginationDots";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
-import Dropdown from "../widgets/Dropdown";
+import StoryFilterDropdown from "../widgets/Dropdown";
 
 const StoriesList = () => {
 
@@ -53,23 +53,95 @@ const StoriesList = () => {
         throw new Error("Could not get your stories!");
       }
 
-      setStories(storiesResponse.stories);
+      if(!storiesResponse.stories){
+        return;
+      }
+
+      const mostRecentStories = [...storiesResponse.stories]?.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+
+      setStories(mostRecentStories);
     }
 
     fetchStories();
   }, []);
 
-  if (!stories || stories.length == 0) {
+  useEffect(() => {
+    if (!stories) {
+      return;
+    }
+
+    stories.forEach((story) => {
+      const img = new Image();
+      img.src = story.cover;
+    });
+
+  }, [stories]);
+
+  const filterMostRecent = () => {
+    if (!stories) {
+      return;
+    }
+    setStories([...stories]?.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()));
+  }
+
+  const filterLeastRecent = () => {
+    if(!stories){
+      return;
+    }
+    setStories([...stories]?.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()));
+  }
+
+  const filterMostPopular = () => {
+    if(!stories){
+      return;
+    }
+    
+  }
+
+  const filterLeastPopular = () => {
+    if(!stories){
+      return;
+    }
+    
+  }
+
+  const handleSelection = (selection: string) => {
+
+    if(!stories){
+      return;
+    }
+
+    switch(selection){
+      case "Most Recent":
+        filterMostRecent();
+        break;
+      case "Least Recent":
+        filterLeastRecent();
+        break;
+      case "Most Popular":
+        filterMostPopular();
+        break;
+      case "Least Popular":
+        filterLeastPopular();
+        break;
+    }
+  }
+
+  if (stories === null) {
     return (
       <Loading />
     )
+  }
+
+  if(stories.length === 0){
+    // you have no stories
   }
 
   return (
     <div className="p-4 rounded-lg h-[86vh] flex flex-col justify-between bg-stone-50 shadow-md">
       <div className="flex items-center justify-center pb-2">
         <div className="flex-1">
-          <Dropdown name="Filter By"/>
+          <StoryFilterDropdown name="Filter By" handleSelection={handleSelection}/>
         </div>
         <h1 className="flex-1 font-bold">
           Your Stories
@@ -85,7 +157,7 @@ const StoriesList = () => {
         <div className="flex-col space-y-4 flex-grow">
           {pageStories.map((story) => (
             <div key={story.id} className="w-full">
-              <StoryBullet id={story.id} title={story.title} cover={story.cover} genres={story.genres} rating={4.7}/>
+              <StoryBullet story={story}/>
             </div>
           ))}
         </div>
@@ -93,12 +165,12 @@ const StoriesList = () => {
           <FaArrowRight />
         </button>
       </div>
-  
+
       <div className="w-full flex items-center justify-center p-6">
-        <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}/>
+        <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       </div>
     </div>
   );
-  }
+}
 
 export default StoriesList

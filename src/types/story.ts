@@ -24,7 +24,8 @@ export interface Story {
     story_file: string,
     cover: string,
     title: string,
-    genres: string[]
+    genres: string[],
+    created_at: string,
 }
 
 export interface UploadStory {
