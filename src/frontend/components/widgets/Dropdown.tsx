@@ -45,15 +45,15 @@ const StoryFilterDropdown: React.FC<DropdownProps> = ({ name, handleSelection })
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => handleClick("Most Popular")}>
+                    <DropdownMenuItem onClick={() => handleClick("Highest Rated")}>
                         <FaFireAlt className="text-[#ff7733]" />
-                        <span>Most Popular</span>
-                        {selected === "Most Popular" && <FaCheck className="ml-auto scale-[.6]"/>}
+                        <span>Highest Rated</span>
+                        {selected === "Highest Rated" && <FaCheck className="ml-auto scale-[.6]"/>}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleClick("Least Popular")}>
+                    <DropdownMenuItem onClick={() => handleClick("Lowest Rated")}>
                         <LuSnowflake className="text-blue-400" />
-                        <span>Least Popular</span>
-                        {selected === "Least Popular" && <FaCheck className="ml-auto scale-[.6]"/>}
+                        <span>Lowest Rated</span>
+                        {selected === "Lowest Rated" && <FaCheck className="ml-auto scale-[.6]"/>}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
             </DropdownMenuContent>

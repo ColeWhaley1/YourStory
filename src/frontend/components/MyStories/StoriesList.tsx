@@ -118,10 +118,10 @@ const StoriesList = () => {
       case "Least Recent":
         filterLeastRecent();
         break;
-      case "Most Popular":
+      case "Highest Rated":
         filterMostPopular();
         break;
-      case "Least Popular":
+      case "Lowest Rated":
         filterLeastPopular();
         break;
     }
