@@ -5,7 +5,7 @@ import NewStory from "./NewStory";
 const MyStoriesPage = () => {
 
     return (
-        <div className="h-[85vh]">
+        <div className="h-[89vh]">
             <PageSlider>
                 <UserStories/>
                 <NewStory/>
