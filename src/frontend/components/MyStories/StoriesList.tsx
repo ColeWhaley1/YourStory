@@ -8,6 +8,8 @@ import PaginationDots from "../widgets/PaginationDots";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa6";
 import StoryFilterDropdown from "../widgets/Dropdown";
+import { PiSmileySad } from "react-icons/pi";
+import { motion } from "framer-motion";
 
 const StoriesList = () => {
 
@@ -53,7 +55,7 @@ const StoriesList = () => {
         throw new Error("Could not get your stories!");
       }
 
-      if(!storiesResponse.stories){
+      if (!storiesResponse.stories) {
         return;
       }
 
@@ -85,33 +87,33 @@ const StoriesList = () => {
   }
 
   const filterLeastRecent = () => {
-    if(!stories){
+    if (!stories) {
       return;
     }
     setStories([...stories]?.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()));
   }
 
   const filterMostPopular = () => {
-    if(!stories){
+    if (!stories) {
       return;
     }
-    
+
   }
 
   const filterLeastPopular = () => {
-    if(!stories){
+    if (!stories) {
       return;
     }
-    
+
   }
 
   const handleSelection = (selection: string) => {
 
-    if(!stories){
+    if (!stories) {
       return;
     }
 
-    switch(selection){
+    switch (selection) {
       case "Most Recent":
         filterMostRecent();
         break;
@@ -133,15 +135,11 @@ const StoriesList = () => {
     )
   }
 
-  if(stories.length === 0){
-    // you have no stories
-  }
-
   return (
     <div className="p-4 rounded-lg h-[86vh] flex flex-col justify-between bg-stone-50 shadow-md">
       <div className="flex items-center justify-center pb-2">
         <div className="flex-1">
-          <StoryFilterDropdown name="Filter By" handleSelection={handleSelection}/>
+          <StoryFilterDropdown name="Filter By" handleSelection={handleSelection} />
         </div>
         <h1 className="flex-1 font-bold">
           Your Stories
@@ -150,26 +148,58 @@ const StoriesList = () => {
           Page {currentPage + 1}
         </div>
       </div>
-      <div className="flex items-center flex-grow">
-        <button className="pr-8" onClick={decrementPage}>
-          <FaArrowLeft />
-        </button>
-        <div className="flex-col space-y-4 flex-grow">
-          {pageStories.map((story) => (
-            <div key={story.id} className="w-full">
-              <StoryBullet story={story}/>
+      {
+        stories.length === 0 ? (
+          <motion.div 
+          className="min-w-[600px] flex-1 flex items-center justify-center -translate-y-8"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <div className="flex flex-col items-center text-center space-y-6 bg-white border-4 border-dashed border-stone-400 p-8 rounded-xl shadow-lg">
+            <motion.div
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: [0, -5, 0], opacity: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 8, duration: 0.6 }}
+            >
+              <PiSmileySad className="w-20 h-20 text-stone-500" />
+            </motion.div>
+    
+            <div className="space-y-3">
+              <h2 className="text-xl font-semibold text-stone-700">
+                It's so empty. Let's fix that!
+              </h2>
+              <p className="text-stone-500">
+                When you're ready, just click the button in the top right!
+              </p>
             </div>
-          ))}
-        </div>
-        <button className="pl-8" onClick={incrementPage}>
-          <FaArrowRight />
-        </button>
-      </div>
+          </div>
+        </motion.div>
+        ) : (
+          <div>
+            <div className="flex items-center flex-grow">
+              <button className="pr-8" onClick={decrementPage}>
+                <FaArrowLeft />
+              </button>
+              <div className="flex-col space-y-4 flex-grow">
+                {pageStories.map((story) => (
+                  <div key={story.id} className="w-full">
+                    <StoryBullet story={story} />
+                  </div>
+                ))}
+              </div>
+              <button className="pl-8" onClick={incrementPage}>
+                <FaArrowRight />
+              </button>
+            </div >
+            <div className="w-full flex items-center justify-center p-6">
+              <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            </div>
+          </div>
+        )
+      }
 
-      <div className="w-full flex items-center justify-center p-6">
-        <PaginationDots currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-      </div>
-    </div>
+    </div >
   );
 }
 
