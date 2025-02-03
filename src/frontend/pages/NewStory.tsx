@@ -11,7 +11,7 @@ const NewStory = () => {
     
     return (
         <div className="flex justify-center m-10 w-full">
-            <div className="pl-16 flex items-center">
+            <div className="pl-16 pt-16">
                 {
                     storyFile ? (
                         <div>

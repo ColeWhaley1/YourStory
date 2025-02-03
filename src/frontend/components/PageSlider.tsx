@@ -26,7 +26,7 @@ const PageSlider: React.FC<PageSliderProps> = ({ children }) => {
     };
 
     return (
-        <div className="relative w-full h-full overflow-hidden">
+        <div className="relative w-full h-full">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={pageIndex}
@@ -37,7 +37,7 @@ const PageSlider: React.FC<PageSliderProps> = ({ children }) => {
                         opacity: 0
                     }}
                     transition={{ duration: .25 }}
-                    className="absolute inset-0 flex items-center justify-center"
+                    className="absolute inset-0"
                 >
                     {pages[pageIndex]}
                 </motion.div>

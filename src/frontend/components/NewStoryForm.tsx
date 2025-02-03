@@ -244,7 +244,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-4/5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-4/5">
                 <FormField
                     control={form.control}
                     name="title"
