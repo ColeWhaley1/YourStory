@@ -85,7 +85,7 @@ const StoriesList = () => {
           </motion.div>
         ) : (
           <div className="flex flex-col flex-grow">
-            <div className="flex-grow">
+            <div className="flex-grow space-y-2">
               {pageStories.map((story) => (
                 <StoryBullet key={story.id} story={story} />
               ))}
