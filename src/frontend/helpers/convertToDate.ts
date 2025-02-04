@@ -1,4 +1,8 @@
-const convertToDate = (created_at: string): string => {
+const convertToDate = (created_at: string | null | undefined): string => {
+
+    if (!created_at){
+        return "Publish Date Unknown"
+    }
 
     const date = new Date(created_at);
     const options: Intl.DateTimeFormatOptions = { month: "short", day: "numeric", year: "numeric" };
