@@ -27,6 +27,7 @@ import uploadNewStory from "../services/uploadNewStory";
 import { useNavigate } from 'react-router-dom';
 import { Session } from "@supabase/supabase-js";
 import getUserSession from "../services/getUserSession";
+import DotLoader from "./widgets/DotLoader";
 
 const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
@@ -56,6 +57,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
     const [imagePreviewLoading, setImagePreviewLoading] = useState<boolean>(false);
     const [genreInput, setGenreInput] = useState<string | null>("");
     const [genres, setGenres] = useState<string[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const formSchema = z.object({
         title: z.string().min(2, {
@@ -96,73 +98,83 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
 
-        if (!storyFile) {
-            setFileError("You forgot the most important part! Upload your story first!");
-            return;
+        try {
+
+            setIsSubmitting(true);
+    
+            if (!storyFile) {
+                setFileError("You forgot the most important part! Upload your story first!");
+                return;
+            }
+    
+            setFileError(null);
+    
+            // 1. upload story and image to file storage, return both links
+    
+            const storyResponse = await uploadFileToStorage(storyFile, "story");
+            const storyLink = storyResponse.link;
+            const storyUploadError = storyResponse.error;
+    
+            if(storyUploadError){
+                setFileError(storyUploadError);
+                return;
+            }
+    
+            if(!storyLink){
+                setFileError("Something went wrong uploading your story! Please try again!");
+                return;
+            }
+    
+            const coverResponse = await uploadFileToStorage(form.getValues("cover"), "cover");
+            const coverLink = coverResponse.link;
+            const coverUploadError = coverResponse.error;
+    
+            if(coverUploadError){
+                setFileError(coverUploadError);
+                return;
+            }
+    
+            if(!coverLink){
+                setFileError("Something went wrong uploading your cover!");
+                return;
+            }
+    
+            // 2. call service to add new story row by passing in Story obj as param
+    
+            genres.forEach(genre => genre.trim());
+    
+            if(!session || !session.user || !session.user.id){
+                setFileError("Your session is not valid, please try again.");
+                return;
+            }
+    
+            const story: UploadStory = {
+                author_id: session?.user.id,
+                description: values.description.trim(),
+                story_file: storyLink,
+                cover: coverLink,
+                title: values.title.trim(),
+                genres: genres,
+            }
+    
+            const response = await uploadNewStory(story);
+    
+            if(response.error){
+                setFileError(response.error);
+                return;
+            }
+            
+            // 3. display success animation
+    
+            const new_story_id = response.id;
+    
+            navigate("/success_screen", { state: { reroute_to: `/stories/${new_story_id}` } });
+        } catch (error) {
+            setFileError("Something went wrong uploading your story.");
         }
-
-        setFileError(null);
-
-        // 1. upload story and image to file storage, return both links
-
-        const storyResponse = await uploadFileToStorage(storyFile, "story");
-        const storyLink = storyResponse.link;
-        const storyUploadError = storyResponse.error;
-
-        if(storyUploadError){
-            setFileError(storyUploadError);
-            return;
+        finally {
+            setIsSubmitting(false);
         }
-
-        if(!storyLink){
-            setFileError("Something went wrong uploading your story! Please try again!");
-            return;
-        }
-
-        const coverResponse = await uploadFileToStorage(form.getValues("cover"), "cover");
-        const coverLink = coverResponse.link;
-        const coverUploadError = coverResponse.error;
-
-        if(coverUploadError){
-            setFileError(coverUploadError);
-            return;
-        }
-
-        if(!coverLink){
-            setFileError("Something went wrong uploading your cover!");
-            return;
-        }
-
-        // 2. call service to add new story row by passing in Story obj as param
-
-        genres.forEach(genre => genre.trim());
-
-        if(!session || !session.user || !session.user.id){
-            setFileError("Your session is not valid, please try again.");
-            return;
-        }
-
-        const story: UploadStory = {
-            author_id: session?.user.id,
-            description: values.description.trim(),
-            story_file: storyLink,
-            cover: coverLink,
-            title: values.title.trim(),
-            genres: genres,
-        }
-
-        const response = await uploadNewStory(story);
-
-        if(response.error){
-            setFileError(response.error);
-            return;
-        }
-        
-        // 3. display success animation
-
-        const new_story_id = response.id;
-
-        navigate("/success_screen", { state: { reroute_to: `/stories/${new_story_id}` } });
     }
 
     useEffect(() => {
@@ -232,7 +244,7 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-4/5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-4/5">
                 <FormField
                     control={form.control}
                     name="title"
@@ -356,7 +368,16 @@ const NewStoryForm = ({ storyFile }: { storyFile: File | null }) => {
                         <div className="text-red-500">{fileError}</div>
                     )
                 }
-                <Button type="submit">Submit</Button>
+                <div className="flex items-center space-x-4">    
+                    <Button type="submit">Submit</Button>
+                    {
+                        isSubmitting && (
+                            <div className="scale-75">
+                                <DotLoader/>
+                            </div>
+                        )
+                    }
+                </div>
             </form>
         </Form>
     );

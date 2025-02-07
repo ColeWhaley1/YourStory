@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Story } from "../../types/story";
+import { Author, Story } from "../../types/story";
 import RightArrowWhite from "../../assets/lottie_animations/right_arrow_white.json";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import NotFound from "../../assets/lottie_animations/not_found.json";
@@ -16,6 +16,9 @@ import {
     CarouselPrevious,
 } from "../components/ui/shadcnCarousel";
 import React from "react";
+import convertToDate from "../helpers/convertToDate";
+import getSessionId from "../services/getSessionId";
+import { getAuthorById } from "../services/getAuthor";
 
 interface StoryPageProps {
     hideNav: () => void;
@@ -33,6 +36,7 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
     const [storyFile, setStoryFile] = useState<File | null>(null);
     const [couldNotLoadStory, setCouldNotLoadStory] = useState<boolean>(false);
     const [isPullingBookUp, setIsPullingBookUp] = useState<boolean>(false);
+    const [author, setAuthor] = useState<Author | null>(null);
 
     const readMore = () => {
         if (nextButtonRef.current) {
@@ -97,6 +101,34 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         setStory(story);
         setIsLoading(false);
     };
+
+    useEffect(() => {
+        const fetchAuthor = async() => {
+            
+            try {
+                const idResponse = await getSessionId();
+        
+                if(idResponse.error || !idResponse.id){
+                    throw new Error("Could not get id.");
+                }
+        
+                const authorResponse = await getAuthorById(idResponse.id);
+
+                if(authorResponse.error || !authorResponse.author){
+                    throw new Error("Could not get author.");
+                }
+
+                setAuthor(authorResponse.author);
+            } catch (error: any) {
+                console.error(error.message)
+            }
+        }
+
+        fetchAuthor();
+
+    }, []);
+
+    
 
     useEffect(() => {
         fetchStory(id);
@@ -173,11 +205,14 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
                                         className="rounded-xl shadow-lg max-h-[25rem]"
                                     />
                                 </div>
-                                <div className="text-black pt-4 w-2/3">
-                                    <h1 className="text-2xl">{story?.title}</h1>
-                                    <h2 className="opacity-70 text-sm">
-                                        by {story?.author_id}
+                                <div className="text-black pt-4 w-full">
+                                    <h1 className="text-3xl">{story?.title}</h1>
+                                    <h2 className="opacity-70 text-md">
+                                        by {author?.penName ?? "Anonymous"}
                                     </h2>
+                                    <h3 className="opacity-50 text-sm">
+                                        {convertToDate(story?.created_at)}
+                                    </h3>
                                     <div className="pt-2">
                                         <p>{story?.description}</p>
                                     </div>
