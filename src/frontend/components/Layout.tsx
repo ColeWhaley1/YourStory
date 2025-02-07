@@ -6,6 +6,7 @@ import useAuthStatus from "../helpers/useAuthStatus";
 import GlobalLoading from "./GlobalLoading";
 import { useLoading } from "../contexts/loadingContext";
 import ProfileAvatar from "./ProfileAvatar";
+import { useMyProfile } from "../contexts/myProfileContext";
 
 interface props {
   children: (controls: { hideNav: () => void; showNav: () => void }) => React.ReactNode;
@@ -24,6 +25,8 @@ const Layout: React.FC<props> = ({ children }) => {
     setIsNavBarVisible(true);
   };
   const hideNav = () => setIsNavBarVisible(false);
+
+  const { profile } = useMyProfile();
 
   return (
     <div>
@@ -88,7 +91,7 @@ const Layout: React.FC<props> = ({ children }) => {
                   <NavigationMenuItem>
                     <button onClick={() => navigate("/my_profile")}>
                       <div className="transform transition-transform duration-200 ease-in-out hover:scale-150">
-                        <ProfileAvatar size="h-10 w-10" />
+                        <ProfileAvatar size="h-10 w-10" avatarUrl={profile?.author.avatarUrl}/>
                       </div>
                     </button>
                   </NavigationMenuItem>

@@ -19,6 +19,7 @@ const ProfileComponent: React.FC<ProfileProps> = ({ user_id }) => {
                 </div>
 
                 <div className="flex items-center justify-center">
+                    {profile?.author.avatarUrl}
                     <ProfileAvatar avatarUrl={profile?.author.avatarUrl}/>
                 </div>
 
