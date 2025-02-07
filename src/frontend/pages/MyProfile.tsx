@@ -18,7 +18,6 @@ const MyProfilePage = () => {
     const { profile } = useMyProfile();
 
     useEffect(() => {
-        console.log(profile);
         if (isSignedIn == false) {
             navigate("/sign_up");
             return;
