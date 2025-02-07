@@ -64,7 +64,7 @@ const Layout: React.FC<props> = ({ children }) => {
               </div>
 
               {/* Log in and Sign Up. Right aligned */}
-              {!isSignedIn && (
+              {isSignedIn == false && (
                 <div className="flex space-x-2 md:space-x-4 m-8 pr-4">
                   <NavigationMenuItem>
                     <button
