@@ -11,23 +11,19 @@ interface FollowButtonProps {
 
 const FollowButton: React.FC<FollowButtonProps> = ({ targetId }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
-    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [isHovered, setIsHovered] = useState<boolean>(false);
+    const [justFollowed, setJustFollowed] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchFollowStatus = async () => {
             try {
                 const currentIdResponse = await getSessionId();
-
                 if (currentIdResponse.error || !currentIdResponse.id) {
                     throw new Error("Could not fetch session id.");
                 }
 
-                setCurrentUserId(currentIdResponse.id);
-
                 const followStatusResponse = await getFollowStatus(currentIdResponse.id, targetId);
-
                 if (followStatusResponse.error) {
                     throw new Error("Could not fetch follow status.");
                 }
@@ -41,29 +37,70 @@ const FollowButton: React.FC<FollowButtonProps> = ({ targetId }) => {
         fetchFollowStatus();
     }, []);
 
+    const handleClick = () => {
+        if (isFollowing) {
+            unfollow();
+        } else {
+            follow();
+        }
+    };
+
     const follow = () => {
-        // Implement follow logic
+        setIsFollowing(true);
+        setJustFollowed(true);
+
+        // try {
+        //     if (!currentUserId || !targetId) {
+        //         throw new Error("Failed to follow!");
+        //     }
+        //     const response = await followAuthor(currentUserId, targetId);
+        //     if (response.error) {
+        //         throw new Error("Failed to follow!");
+        //     }
+        // } catch (error) {
+        //     setIsFollowing(false);
+        // }
     };
 
     const unfollow = () => {
-        // Implement unfollow logic
+        setIsFollowing(false);
+
+        // try {
+        //     if (!currentUserId || !targetId) {
+        //         throw new Error("Failed to unfollow!");
+        //     }
+        //     const response = await unfollowAuthor(currentUserId, targetId);
+        //     if (response.error) {
+        //         throw new Error("Failed to unfollow!");
+        //     }
+        // } catch (error) {
+        //     setIsFollowing(true);
+        // }
     };
 
     return (
         <button
-            title={isFollowing ? (isHovered ? "Unfollow" : "Following") : "Follow"}
+            title={isFollowing ? (isHovered && !justFollowed ? "Unfollow" : "Following") : "Follow"}
             className={`cursor-pointer flex items-center ${
-                isFollowing ? "bg-green-500" : "bg-primary"
-            } hover:shadow-lg rounded-md duration-100 p-2 transform active:scale-110`}
+                isFollowing
+                    ? isHovered && !justFollowed
+                        ? "bg-red-400 outline outline-2 outline-red-500"
+                        : "bg-green-500"
+                    : "bg-primary"
+            } hover:shadow-lg rounded-md duration-100 p-2 transform active:scale-110 min-w-28 flex items-center justify-center`}
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={() => {
+                setIsHovered(false);
+                setJustFollowed(false);
+            }}
+            onClick={handleClick}
         >
             <div className="flex items-center justify-center space-x-2">
                 <div className="w-full h-full flex items-center justify-center text-white">
-                    {isFollowing ? (isHovered ? <FaTimes /> : <FaCheck />) : <IoPersonAdd />}
+                    {isFollowing ? (isHovered && !justFollowed ? <FaTimes /> : <FaCheck />) : <IoPersonAdd />}
                 </div>
                 <span className="text-md text-white font-bold pr-1">
-                    {isFollowing ? (isHovered ? "Unfollow" : "Following") : "Follow"}
+                    {isFollowing ? (isHovered && !justFollowed ? "Unfollow" : "Following") : "Follow"}
                 </span>
             </div>
         </button>
