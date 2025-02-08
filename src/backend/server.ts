@@ -12,6 +12,9 @@ import getAuthorController from "./apis/controllers/getAuthorController";
 import getProfileController from "./apis/controllers/getProfileController";
 import getStoriesCountController from "./apis/controllers/getStoriesCountController";
 import getStoriesController from "./apis/controllers/getStoriesController";
+import getFollowStatusController from "./apis/controllers/getFollowStatusController";
+import followAuthorController from "./apis/controllers/followAuthorController";
+import unfollowAuthorController from "./apis/controllers/unfollowAuthorController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -48,6 +51,10 @@ app.get("/api/auth/author", getAuthorController);
 // profile
 
 app.get("/api/profile", getProfileController);
+app.get("/api/profile/follow_status", getFollowStatusController);
+
+app.post("/api/profile/follow", followAuthorController);
+app.delete("/api/profile/unfollow", unfollowAuthorController);
 
 // stats
 

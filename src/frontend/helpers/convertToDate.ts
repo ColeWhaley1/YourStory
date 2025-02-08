@@ -1,7 +1,7 @@
 const convertToDate = (created_at: string | null | undefined): string => {
 
     if (!created_at){
-        return "Publish Date Unknown"
+        return "Unknown"
     }
 
     const date = new Date(created_at);
