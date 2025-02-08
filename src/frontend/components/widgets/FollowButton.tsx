@@ -4,6 +4,8 @@ import { FaCheck } from "react-icons/fa6";
 import getSessionId from "../../services/getSessionId";
 import getFollowStatus from "../../services/getFollowStatus";
 import { FaTimes } from "react-icons/fa";
+import followAuthor from "../../services/followAuthor";
+import unfollowAuthor from "../../services/unfollowAuthor";
 
 interface FollowButtonProps {
     targetId: string;
@@ -12,6 +14,7 @@ interface FollowButtonProps {
 const FollowButton: React.FC<FollowButtonProps> = ({ targetId }) => {
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [justFollowed, setJustFollowed] = useState<boolean>(false);
 
@@ -22,6 +25,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({ targetId }) => {
                 if (currentIdResponse.error || !currentIdResponse.id) {
                     throw new Error("Could not fetch session id.");
                 }
+
+                setCurrentUserId(currentIdResponse.id);
 
                 const followStatusResponse = await getFollowStatus(currentIdResponse.id, targetId);
                 if (followStatusResponse.error) {
@@ -45,37 +50,37 @@ const FollowButton: React.FC<FollowButtonProps> = ({ targetId }) => {
         }
     };
 
-    const follow = () => {
+    const follow = async () => {
         setIsFollowing(true);
         setJustFollowed(true);
 
-        // try {
-        //     if (!currentUserId || !targetId) {
-        //         throw new Error("Failed to follow!");
-        //     }
-        //     const response = await followAuthor(currentUserId, targetId);
-        //     if (response.error) {
-        //         throw new Error("Failed to follow!");
-        //     }
-        // } catch (error) {
-        //     setIsFollowing(false);
-        // }
+        try {
+            if (!currentUserId || !targetId) {
+                throw new Error("Failed to follow!");
+            }
+            const response = await followAuthor(currentUserId, targetId);
+            if (response.error) {
+                throw new Error("Failed to follow!");
+            }
+        } catch (error) {
+            setIsFollowing(false);
+        }
     };
 
-    const unfollow = () => {
+    const unfollow = async () => {
         setIsFollowing(false);
 
-        // try {
-        //     if (!currentUserId || !targetId) {
-        //         throw new Error("Failed to unfollow!");
-        //     }
-        //     const response = await unfollowAuthor(currentUserId, targetId);
-        //     if (response.error) {
-        //         throw new Error("Failed to unfollow!");
-        //     }
-        // } catch (error) {
-        //     setIsFollowing(true);
-        // }
+        try {
+            if (!currentUserId || !targetId) {
+                throw new Error("Failed to unfollow!");
+            }
+            const response = await unfollowAuthor(currentUserId, targetId);
+            if (response.error) {
+                throw new Error("Failed to unfollow!");
+            }
+        } catch (error) {
+            setIsFollowing(true);
+        }
     };
 
     return (
