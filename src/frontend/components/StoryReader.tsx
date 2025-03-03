@@ -137,7 +137,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
             </div>
             <div className="relative">
 
-                <div className="border-2 border-primary border-offset-8 rounded-sm w-screen max-w-[95vw] max-h-[88vh] bg-gray-200 overflow-hidden">
+                <div className="border-2 border-primary border-offset-8 rounded-sm w-screen max-w-[95vw] max-h-[100vh] bg-gray-200 overflow-hidden p-2">
                     <Document
                         file={file}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -151,7 +151,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                                 <Lottie animationData={Loading} className="max-w-24" />
                             </div>
                         }
-                        className="transform -translate-y-5"
+                        className="transform "
                     >
                         <div className="flex items-center justify-center relative">
                             {/* Show current and next page side by side */}
