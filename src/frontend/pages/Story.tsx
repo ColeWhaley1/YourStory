@@ -152,6 +152,17 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         };
     }, []);
 
+    useEffect(() => {
+        if (!isPullingBookUp) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto"; 
+        }
+    
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [isPullingBookUp]);
 
     if (couldNotLoadStory)
         return (
@@ -179,7 +190,7 @@ const StoryPage: React.FC<StoryPageProps> = ({ hideNav, showNav }) => {
         >
             <CarouselContent>
                 <CarouselItem>
-                    <div className="flex justify-center pt-8 w-screen h-screen">
+                    <div className="flex justify-center pt-32 w-screen">
                         <div className="py-16 px-24 bg-slate-100 rounded-md shadow-md w-3/5 h-fit">
                             <div className="flex space-x-10 items-center">
                                 <div className="w-full">
