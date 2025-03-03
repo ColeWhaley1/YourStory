@@ -5,6 +5,8 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import { FaArrowCircleLeft, FaArrowCircleRight } from "react-icons/fa";
 import Loading from "../../assets/lottie_animations/loading.json";
 import Lottie from 'lottie-react';
+import { FaExpand } from "react-icons/fa";
+import { CgMinimize } from "react-icons/cg";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -25,6 +27,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     const [pageNumber, setPageNumber] = useState<number>(1);
     const [pageInput, setPageInput] = useState<string>('1');
     const [fadeIn, setFadeIn] = useState<boolean>(false);
+    const [isPdfExpanded, setIsPdfExpanded] = useState<boolean>(false);
 
     const onDocumentLoadSuccess = ({ numPages }: DocumentLoadEvent) => {
         setNumPages(numPages);
@@ -79,15 +82,15 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if(e.key === "ArrowLeft"){
-                if(pageNumber == 2){
+            if (e.key === "ArrowLeft") {
+                if (pageNumber == 2) {
                     goToPage(pageNumber - 1);
                     return;
                 }
                 goToPage(pageNumber - 2);
             }
-            if(e.key === "ArrowRight"){
-                if(numPages && pageNumber == (numPages - 1)){
+            if (e.key === "ArrowRight") {
+                if (numPages && pageNumber == (numPages - 1)) {
                     goToPage(numPages)
                 }
                 goToPage(pageNumber + 2);
@@ -101,6 +104,13 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
         })
     })
 
+    const expandPdf = () => {
+        setIsPdfExpanded(true);
+    }
+
+    const shrinkPdf = () => {
+        setIsPdfExpanded(false);
+    }
 
     const isNextPageAvailable = pageNumber + 1 <= (numPages ?? 0);
     const isPreviousPageAvailable = pageNumber > 1;
@@ -108,34 +118,46 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
     return (
         <div>
             <div className="flex justify-center pb-4">
-                <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
-                    <button
-                        disabled={!isPreviousPageAvailable}
-                        onClick={() => goToPage(pageNumber - 2)}
-                    >
-                        <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
-                    </button>
-                    <div className="flex items-center">
-                        <p>Page</p>
-                        <input
-                            type="text"
-                            className="w-8 text-center border-2 border-primary rounded-lg mx-1 focus:outline-none"
-                            value={pageInput}
-                            onChange={onPageInputChange}
-                            onBlur={onPageInputBlur}
-                            onKeyDown={onPageInputKeyDown}
-                        />
-                        <p>of {numPages}</p>
-                    </div>
-                    <button
-                        disabled={!isNextPageAvailable}
-                        onClick={() => goToPage(pageNumber + 2)}
-                    >
-                        <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
-                    </button>
-                </div>
+                {
+                    !isPdfExpanded && (
+                        <div className="flex space-x-8 justify-center bg-gray-100 rounded-full p-4">
+                            <button
+                                disabled={!isPreviousPageAvailable}
+                                onClick={() => goToPage(pageNumber - 2)}
+                            >
+                                <FaArrowCircleLeft id="left-arrow-icon" className="text-secondary w-6 h-6" />
+                            </button>
+                            <div className="flex items-center">
+                                <p>Page</p>
+                                <input
+                                    type="text"
+                                    className="w-8 text-center border-2 border-primary rounded-lg mx-1 focus:outline-none"
+                                    value={pageInput}
+                                    onChange={onPageInputChange}
+                                    onBlur={onPageInputBlur}
+                                    onKeyDown={onPageInputKeyDown}
+                                />
+                                <p>of {numPages}</p>
+                            </div>
+                            <button
+                                disabled={!isNextPageAvailable}
+                                onClick={() => goToPage(pageNumber + 2)}
+                            >
+                                <FaArrowCircleRight id="right-arrow-icon" className="text-secondary w-6 h-6" />
+                            </button>
+                        </div>
+                    )
+                }
             </div>
             <div className="relative">
+
+                <button className='absolute right-3 top-3 z-10' onClick={isPdfExpanded ? shrinkPdf : expandPdf}>
+                    {isPdfExpanded ? (
+                        <CgMinimize className='w-5 h-5'/>
+                    ) : (
+                        <FaExpand className='w-4 h-4' />
+                    )}
+                </button>
 
                 <div className="border-2 border-primary border-offset-8 rounded-sm w-screen max-w-[95vw] max-h-[100vh] bg-gray-200 overflow-hidden p-2">
                     <Document
@@ -157,7 +179,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                             {/* Show current and next page side by side */}
                             <div className={`z-20 ${fadeIn ? 'fade' : ''}`} style={{ display: 'flex', flexDirection: 'row' }}>
                                 <div className="w-1/2">
-                                    <Page pageNumber={pageNumber} scale={scale}/>
+                                    <Page pageNumber={pageNumber} scale={scale} />
                                 </div>
                                 {isNextPageAvailable && (
                                     <div className="w-1/2">
