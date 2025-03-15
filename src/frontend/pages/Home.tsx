@@ -136,14 +136,6 @@ const HomePage = () => {
     fetchNewStories();
   }, []);
 
-  if(!newStories){
-    return (
-      <div>
-  
-      </div>
-    );
-  }
-
   return (
     <>
       <Carousel title="New Releases" category="new" stories={newStories}></Carousel>

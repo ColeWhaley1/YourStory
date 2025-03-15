@@ -16,7 +16,7 @@ const getStoriesSortedService = async (
         let { data, error } = await supabase
         .from("story")
         .select("*")
-        .order(sortedBy)
+        .order(sortedBy, { ascending })
         .limit(top)
         
         if(error) {
@@ -26,7 +26,7 @@ const getStoriesSortedService = async (
         const stories: Story[] = data || [];
         
         return {
-            stories: ascending as boolean ? stories : stories.reverse(),
+            stories: stories,
             error: null
         };
         
