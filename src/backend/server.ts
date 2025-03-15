@@ -15,6 +15,7 @@ import getStoriesController from "./apis/controllers/getStoriesController";
 import getFollowStatusController from "./apis/controllers/getFollowStatusController";
 import followAuthorController from "./apis/controllers/followAuthorController";
 import unfollowAuthorController from "./apis/controllers/unfollowAuthorController";
+import getStoriesSortedController from "./apis/controllers/getStoriesSortedController";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -32,6 +33,7 @@ app.get("/", (_req: Request, res: Response) => {
 // Story routes
 
 app.get("/api/stories", getStoriesController);
+app.get("/api/stories/sorted", getStoriesSortedController);
 app.get("/api/stories/:id", getStoryByIdController);
 app.post("/api/stories/new", uploadNewStoryController);
 

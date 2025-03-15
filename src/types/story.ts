@@ -1,4 +1,4 @@
-export interface StoryInfo {
+export interface HomePageStories {
     id: string,
     title: string,
     author: string,

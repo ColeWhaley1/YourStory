@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { StoryInfo } from "../../../types/story";
+import { HomePageStories } from "../../../types/story";
 
 import { FaAngleLeft, FaAngleRight, FaStar } from "react-icons/fa";
 
@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 interface CarouselProps {
     title: string;
     category: string;
-    stories: StoryInfo[];
+    stories: HomePageStories[];
 }
 
 const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
