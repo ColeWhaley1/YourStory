@@ -153,7 +153,7 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
 
                 <button className='absolute right-3 top-3 z-10' onClick={isPdfExpanded ? shrinkPdf : expandPdf}>
                     {isPdfExpanded ? (
-                        <CgMinimize className='w-5 h-5'/>
+                        <CgMinimize className='w-5 h-5' />
                     ) : (
                         <FaExpand className='w-4 h-4' />
                     )}
@@ -182,9 +182,12 @@ const StoryReader: React.FC<StoryReaderProps> = ({ file, scale = 1 }) => {
                                     <Page pageNumber={pageNumber} scale={scale} />
                                 </div>
                                 {isNextPageAvailable && (
-                                    <div className="w-1/2">
-                                        <Page pageNumber={pageNumber + 1} scale={scale} />
-                                    </div>
+                                    <>
+                                        <div className='w-[2px] bg-gray-200'></div>
+                                        <div className="w-1/2">
+                                            <Page pageNumber={pageNumber + 1} scale={scale} />
+                                        </div>
+                                    </>
                                 )}
                             </div>
 
