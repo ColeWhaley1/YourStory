@@ -7,7 +7,8 @@ import plane from "../../assets/placeholder_images/plane.jpg";
 import whale from "../../assets/placeholder_images/whale.jpg";
 import tree from "../../assets/placeholder_images/tree.jpeg";
 import hacker from "../../assets/placeholder_images/hacker.jpg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import getStoriesSorted from "../services/getStoriesSorted";
 
 export const stories: HomePageStories[] = [
   {
@@ -117,12 +118,22 @@ export const stories: HomePageStories[] = [
   },
 ];
 
-const newStories: HomePageStories[] = [];
-
 const HomePage = () => {
 
+  const [newStories, setNewStories] = useState<HomePageStories[]>([]);
+
   useEffect(() => {
-    
+    const fetchNewStories = async () => {
+      const result = await getStoriesSorted("created_at", false, 10);
+
+      if(result.error){
+        // implement error notification system
+      } else {
+        setNewStories(result.stories);
+      }
+    }
+
+    fetchNewStories();
   }, []);
 
   if(!newStories){
@@ -135,7 +146,7 @@ const HomePage = () => {
 
   return (
     <>
-      <Carousel title="New Releases" category="new" stories={stories}></Carousel>
+      <Carousel title="New Releases" category="new" stories={newStories}></Carousel>
       <Carousel title="Top Rated" category="top_rated" stories={stories}></Carousel>
       <Carousel title="Top Authors" category="top_authors" stories={stories}></Carousel>
     </>
