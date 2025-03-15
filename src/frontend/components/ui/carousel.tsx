@@ -91,7 +91,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                                     <div key={item.id} className="carousel-item max-w-xs" style={{ scrollSnapAlign: 'none' }}>
                                         <Link to={`/stories/${item.id}`}>
                                             <div className="relative">
-                                                <img src={item.img} alt={item.title} className="rounded-lg h-48 w-full" />
+                                                <img src={item.cover} alt={item.title} className="rounded-lg h-48 w-full" />
                                                 <div className="absolute flex justify-center items-center right-0 bottom-0 max-h-10 m-1 p-2 rounded-2xl bg-black opacity-70 text-white">
                                                     <div className="flex items-center space-x-1 max-h-10">
                                                         <div className="relative">

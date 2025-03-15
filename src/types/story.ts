@@ -2,7 +2,7 @@ export interface HomePageStories {
     id: string,
     title: string,
     author: string,
-    img: string,
+    cover: string,
     rating?: number,
 }
 
