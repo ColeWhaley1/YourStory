@@ -87,17 +87,26 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                                         <div className="absolute flex justify-center items-center right-0 bottom-0 max-h-10 m-1 p-2 rounded-2xl bg-black opacity-70 text-white">
                                             <div className="flex items-center space-x-1 max-h-10">
                                                 <div className="relative">
-                                                    {item.rating >= 4.7 && (
-                                                        <div className="absolute -z-10 transform -translate-y-9 -translate-x-1.5 w-20 overflow-visible">
-                                                            <Lottie animationData={Flame} />
-                                                        </div>
-                                                    )}
-                                                    <div className="flex items-center space-x-1.5 max-h-10">
-                                                        <div>{item.rating}</div>
-                                                        <div className={`transform -translate-y-0.5 max-h-8 max-w-8 ${item.rating >= 4.7 ? 'opacity-90' : ''}`}>
-                                                            <FaStar />
-                                                        </div>
-                                                    </div>
+                                                    {item.rating ? (
+                                                            <>
+                                                                {item.rating >= 4.7 && (
+                                                                    <div className="absolute -z-10 transform -translate-y-9 -translate-x-1.5 w-20 overflow-visible">
+                                                                        <Lottie animationData={Flame} />
+                                                                    </div>
+                                                                )}
+                                                                <div className="flex items-center space-x-1.5 max-h-10">
+                                                                    <div>{item.rating}</div>
+                                                                    <div className={`transform -translate-y-0.5 max-h-8 max-w-8 ${item.rating >= 4.7 ? 'opacity-90' : ''}`}>
+                                                                        <FaStar />
+                                                                    </div>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <div>
+                                                                No ratings
+                                                            </div>
+                                                        )
+                                                    }
                                                 </div>
                                             </div>
 

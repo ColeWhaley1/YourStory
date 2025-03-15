@@ -14,7 +14,7 @@ export const stories: StoryInfo[] = [
     title: 'The Enchanted Forest',
     author: 'Alice Green',
     img: tree,
-    rating: 4.8,
+
   },
   {
     id: '2',

@@ -3,7 +3,7 @@ export interface StoryInfo {
     title: string,
     author: string,
     img: string,
-    rating: number,
+    rating?: number,
 }
 
 // might remove or edit since this is just being used for mock stories
