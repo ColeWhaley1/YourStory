@@ -14,15 +14,15 @@ import { LuSnowflake } from "react-icons/lu";
 
 interface DropdownProps {
     name: string;
-    handleSelection: (selection: string) => void;
+    onSelect: (selection: string) => void;
 }
 
-const StoryFilterDropdown: React.FC<DropdownProps> = ({ name, handleSelection }) => {
-    const [selected, setSelected] = useState<string>("Most Recent");
+const StoryFilterDropdown: React.FC<DropdownProps> = ({ name, onSelect }) => {
+    const [selected, setSelected] = useState<string>("Newest");
 
     const handleClick = (selection: string) => {
         setSelected(selection);
-        handleSelection(selection);
+        onSelect(selection);
     };
 
     return (
@@ -32,15 +32,15 @@ const StoryFilterDropdown: React.FC<DropdownProps> = ({ name, handleSelection })
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={() => handleClick("Most Recent")}>
+                    <DropdownMenuItem onClick={() => handleClick("Newest")}>
                         <IoTime />
-                        <span>Most Recent</span>
-                        {selected === "Most Recent" && <FaCheck className="ml-auto scale-[.6]"/>}
+                        <span>Newest</span>
+                        {selected === "Newest" && <FaCheck className="ml-auto scale-[.6]"/>}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleClick("Least Recent")}>
+                    <DropdownMenuItem onClick={() => handleClick("Oldest")}>
                         <IoTime className="rotate-180" />
-                        <span>Least Recent</span>
-                        {selected === "Least Recent" && <FaCheck className="ml-auto scale-[.6]"/>}
+                        <span>Oldest</span>
+                        {selected === "Oldest" && <FaCheck className="ml-auto scale-[.6]"/>}
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

@@ -1,9 +1,10 @@
-export interface StoryInfo {
+export interface HomePageStories {
     id: string,
     title: string,
     author: string,
-    img: string,
+    cover: string,
     rating?: number,
+    created_at?: string,
 }
 
 // might remove or edit since this is just being used for mock stories

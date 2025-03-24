@@ -1,5 +1,5 @@
 import Carousel from "../components/ui/carousel";
-import { StoryInfo } from "../../types/story";
+import { HomePageStories } from "../../types/story";
 
 // placeholder image imports
 import rj from "../../assets/placeholder_images/rj.jpeg";
@@ -7,119 +7,145 @@ import plane from "../../assets/placeholder_images/plane.jpg";
 import whale from "../../assets/placeholder_images/whale.jpg";
 import tree from "../../assets/placeholder_images/tree.jpeg";
 import hacker from "../../assets/placeholder_images/hacker.jpg";
+import { useEffect, useState } from "react";
+import getStoriesSorted from "../services/getStoriesSorted";
+import Loading from "../components/Loading";
 
-export const stories: StoryInfo[] = [
+export const stories: HomePageStories[] = [
   {
     id: '1',
     title: 'The Enchanted Forest',
     author: 'Alice Green',
-    img: tree,
+    cover: tree,
 
   },
   {
     id: '2',
     title: 'Space Odyssey',
     author: 'James Skywalker',
-    img: plane,
+    cover: plane,
     rating: 4.5,
   },
   {
     id: '3',
     title: 'Mystery of the Lost City',
     author: 'Sandra Night',
-    img: hacker,
+    cover: hacker,
     rating: 4.9,
   },
   {
     id: '4',
     title: 'Journey to the Deep',
     author: 'Robert Ocean',
-    img: whale,
+    cover: whale,
     rating: 4.6,
   },
   {
     id: '5',
     title: 'Desert Mirage',
     author: 'Nina Sands',
-    img: hacker,
+    cover: hacker,
     rating: 4.7,
   },
   {
     id: '6',
     title: 'The Dark Caverns',
     author: 'Tom Shade',
-    img: rj,
+    cover: rj,
     rating: 3.2,
   },
   {
     id: '7',
     title: 'Galactic Chronicles',
     author: 'Lucy Star',
-    img: whale,
+    cover: whale,
     rating: 4.1,
   },
   {
     id: '8',
     title: 'The Silent Forest',
     author: 'Mark Timber',
-    img: tree,
+    cover: tree,
     rating: 3.9,
   },
   {
     id: '9',
     title: 'Mountains Beyond',
     author: 'Eli Peaks',
-    img: rj,
+    cover: rj,
     rating: 4.3,
   },
   {
     id: '10',
     title: 'Whispers in the Wind',
     author: 'Lily Breeze',
-    img: whale,
+    cover: whale,
     rating: 2.8,
   },
   {
     id: '11',
     title: 'The Forgotten Island',
     author: 'Sam Shores',
-    img: hacker,
+    cover: hacker,
     rating: 3.5,
   },
   {
     id: '12',
     title: 'Shadows of the Past',
     author: 'Diana Mist',
-    img: tree,
+    cover: tree,
     rating: 2.4,
   },
   {
     id: '13',
     title: 'Echoes of Eternity',
     author: 'Paul Time',
-    img: plane,
+    cover: plane,
     rating: 4.0,
   },
   {
     id: '14',
     title: 'The Broken Mirror',
     author: 'Helen Glass',
-    img: rj,
+    cover: rj,
     rating: 3.7,
   },
   {
     id: '15',
     title: 'Voyage to Nowhere',
     author: 'Isaac Sailor',
-    img: whale,
+    cover: whale,
     rating: 2.9,
   },
 ];
 
 const HomePage = () => {
+
+  const [newStories, setNewStories] = useState<HomePageStories[]>([]);
+
+  useEffect(() => {
+    const fetchNewStories = async () => {
+      const result = await getStoriesSorted("created_at", false, 10);
+
+      if(result.error){
+        // TODO: implement error notification system
+      } else {
+        setNewStories(result.stories);
+      }
+    }
+
+    fetchNewStories();
+  }, []);
+
+  if(newStories.length == 0){
+    return (
+      <Loading/>
+    )
+  }
+
   return (
     <>
-      <Carousel title="New Releases" category="new" stories={stories}></Carousel>
+      <Carousel title="New Releases" category="new" stories={newStories}></Carousel>
       <Carousel title="Top Rated" category="top_rated" stories={stories}></Carousel>
       <Carousel title="Top Authors" category="top_authors" stories={stories}></Carousel>
     </>

@@ -12,11 +12,13 @@ import { motion } from "framer-motion";
 
 const StoriesList = () => {
   const [stories, setStories] = useState<Story[] | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<String>("Newest");
   const maxStoriesPerPage: number = 3;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const storiesLength: number = stories?.length || 0;
   const totalPages: number = Math.ceil(storiesLength / maxStoriesPerPage);
   const pageStories = stories?.slice(currentPage * maxStoriesPerPage, (currentPage + 1) * maxStoriesPerPage) || [];
+  
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const decrementPage = () => setCurrentPage((curr) => Math.max(0, curr - 1));
@@ -49,12 +51,47 @@ const StoriesList = () => {
     };
   }, [currentPage, totalPages]);
 
+  useEffect(() => {
+    if (!stories) {
+      return;
+    }
+  
+    const sortedStories = [...stories];
+  
+    switch (selectedFilter) {
+      case "Newest":
+        sortedStories.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        break;
+  
+      case "Oldest":
+        sortedStories.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        break;
+  
+      case "Highest Rated":
+        // TODO: implement
+        break;
+  
+      case "Lowest Rated":
+        // TODO: implement
+        break;
+  
+      default:
+        break;
+    }
+  
+    setStories(sortedStories);
+  }, [selectedFilter]);
+
+  const onSelect = (selection: string) => {
+    setSelectedFilter(selection);
+  }
+
   if (stories === null) return <Loading />;
 
   return (
     <div className="p-4 rounded-lg h-[86vh] flex flex-col bg-stone-50 shadow-md">
       <div className="flex items-center justify-between pb-4">
-        <StoryFilterDropdown name="Filter By" handleSelection={() => {}} />
+        <StoryFilterDropdown name="Filter By" onSelect={onSelect}/>
         <h1 className="font-bold">Your Stories</h1>
         <div className="p-3 bg-white rounded-full border h-8 flex items-center justify-center">
           Page {currentPage + 1}
