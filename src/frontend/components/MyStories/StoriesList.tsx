@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 
 const StoriesList = () => {
   const [stories, setStories] = useState<Story[] | null>(null);
-  const [selectedFilter, setSelectedFilter] = useState<String>("Most Recent");
+  const [selectedFilter, setSelectedFilter] = useState<String>("Newest");
   const maxStoriesPerPage: number = 3;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const storiesLength: number = stories?.length || 0;
@@ -52,10 +52,35 @@ const StoriesList = () => {
   }, [currentPage, totalPages]);
 
   useEffect(() => {
-    
-    // sort stories based on filter
-    
-  }, [selectedFilter])
+    if (!stories) {
+      return;
+    }
+  
+    const sortedStories = [...stories];
+  
+    switch (selectedFilter) {
+      case "Newest":
+        sortedStories.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        break;
+  
+      case "Oldest":
+        sortedStories.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+        break;
+  
+      case "Highest Rated":
+        // TODO: implement
+        break;
+  
+      case "Lowest Rated":
+        // TODO: implement
+        break;
+  
+      default:
+        break;
+    }
+  
+    setStories(sortedStories);
+  }, [selectedFilter]);
 
   const onSelect = (selection: string) => {
     setSelectedFilter(selection);

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import getStoriesFilteredService from '../services/getStoriesSortedService';
+import getStoriesSortedService from '../services/getStoriesSortedService';
 
 interface RequestParams {
     sortedBy: string,
@@ -16,7 +16,7 @@ const getStoriesSortedController = async (
         const {sortedBy, top} = req.query as unknown as RequestParams;
         const ascending = req.query.ascending == "true" || req.query.ascending == "True";
 
-        const response = await getStoriesFilteredService(sortedBy, ascending, top);
+        const response = await getStoriesSortedService(sortedBy, ascending, top);
 
         if(response.error){
             throw new Error(response.error);
