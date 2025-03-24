@@ -10,12 +10,14 @@ import MyProfilePage from "./frontend/pages/MyProfile";
 import ProfilePage from "./frontend/pages/ProfilePage";
 import { LoadingProvider } from "./frontend/contexts/loadingContext";
 import { MyProfileProvider } from "./frontend/contexts/myProfileContext";
+import { NotificationProvider } from "./frontend/contexts/notificationContext";
 
 function App() {
   return (
     <MyProfileProvider>
       <Router>
         <LoadingProvider>
+          <NotificationProvider>
             <Layout>
               {
                 ({ hideNav, showNav }) => (
@@ -24,14 +26,15 @@ function App() {
                     <Route path="/sign_up" element={<SignUpPage />} />
                     <Route path="/log_in" element={<LogInPage />} />
                     <Route path="/my_stories" element={<MyStoriesPage />} />
-                    <Route path="/stories/:id" element={<Story hideNav = {hideNav} showNav = {showNav} />}></Route>
-                    <Route path="/success_screen" element={<SuccessPage/>}></Route>
-                    <Route path="/my_profile" element = {<MyProfilePage/>}></Route>
-                    <Route path="/profile" element = {<ProfilePage/>}></Route>
+                    <Route path="/stories/:id" element={<Story hideNav={hideNav} showNav={showNav} />}></Route>
+                    <Route path="/success_screen" element={<SuccessPage />}></Route>
+                    <Route path="/my_profile" element={<MyProfilePage />}></Route>
+                    <Route path="/profile" element={<ProfilePage />}></Route>
                   </Routes>
                 )
               }
             </Layout>
+          </NotificationProvider>
         </LoadingProvider>
       </Router>
     </MyProfileProvider>

@@ -10,6 +10,7 @@ import hacker from "../../assets/placeholder_images/hacker.jpg";
 import { useEffect, useState } from "react";
 import getStoriesSorted from "../services/getStoriesSorted";
 import Loading from "../components/Loading";
+import { useNotification } from "../contexts/notificationContext";
 
 export const stories: HomePageStories[] = [
   {
@@ -123,12 +124,15 @@ const HomePage = () => {
 
   const [newStories, setNewStories] = useState<HomePageStories[]>([]);
 
+  const { showNotification } = useNotification();
+
   useEffect(() => {
     const fetchNewStories = async () => {
       const result = await getStoriesSorted("created_at", false, 10);
 
+      showNotification("success", "notify message");
       if(result.error){
-        // TODO: implement error notification system
+        // TODO: error notif
       } else {
         setNewStories(result.stories);
       }
