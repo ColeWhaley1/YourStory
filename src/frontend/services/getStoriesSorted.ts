@@ -23,8 +23,6 @@ const getStoriesSorted = async (
             throw new Error("Error fetching stories");
         }
 
-        console.log(data)
-
         return {
             stories: data.stories,
             error: null

@@ -14,15 +14,15 @@ import { LuSnowflake } from "react-icons/lu";
 
 interface DropdownProps {
     name: string;
-    handleSelection: (selection: string) => void;
+    onSelect: (selection: string) => void;
 }
 
-const StoryFilterDropdown: React.FC<DropdownProps> = ({ name, handleSelection }) => {
+const StoryFilterDropdown: React.FC<DropdownProps> = ({ name, onSelect }) => {
     const [selected, setSelected] = useState<string>("Most Recent");
 
     const handleClick = (selection: string) => {
         setSelected(selection);
-        handleSelection(selection);
+        onSelect(selection);
     };
 
     return (

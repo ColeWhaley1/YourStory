@@ -4,6 +4,7 @@ export interface HomePageStories {
     author: string,
     cover: string,
     rating?: number,
+    created_at?: string,
 }
 
 // might remove or edit since this is just being used for mock stories

@@ -10,6 +10,7 @@ import Flame from '../../../assets/lottie_animations/flame.json';
 
 import { Link } from "react-router-dom";
 import Loading from "../Loading";
+import convertToDate from "../../helpers/convertToDate";
 
 interface CarouselProps {
     title: string;
@@ -123,7 +124,7 @@ const Carousel: React.FC<CarouselProps> = ({ title, category, stories }) => {
                                             <div className="flex">
                                                 <div className="mt-3 ml-2">
                                                     <h2 className="font-bold text-lg">{item.title}</h2>
-                                                    <h3 className="text-gray-400 text-sm">by {item.author}</h3>
+                                                    <h3 className="text-gray-400 text-sm">{convertToDate(item.created_at)}</h3>
                                                 </div>
                                             </div>
                                         </Link>
