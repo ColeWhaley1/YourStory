@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import Notification from "../components/Notification";
 
-export type NotificationType = "error" | "success" | "neutral";
+export type NotificationType = "error" | "success" | "info";
 
 interface NotificationContextType {
     isVisible: boolean,
@@ -18,7 +18,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 
 export const NotificationProvider = ({ children } : { children: ReactNode }) => {
     const [isVisible, setIsVisible] = useState(false);
-    const [notificationType, setNotificationType] = useState<NotificationType>('neutral');
+    const [notificationType, setNotificationType] = useState<NotificationType>('info');
     const [message, setMessage] = useState<string>("");
     const [lifespan, setLifespan] = useState<number | undefined>(undefined);
     const [action, setAction] = useState<(() => void) | undefined>(undefined);
