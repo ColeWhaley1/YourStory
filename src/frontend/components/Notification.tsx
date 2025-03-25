@@ -20,21 +20,24 @@ const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationT
 
     useEffect(() => {
 
-        const notificationEnteringTimeout = setTimeout(() => {
-            setIsEntering(false);
-        }, 700);
-
         let lifespanTimeout: NodeJS.Timeout;
 
-        // if (lifespan != undefined && lifespan != null) {
-        //     lifespanTimeout = setTimeout(() => {
-        //         onCloseNotification();
-        //     }, lifespan * 1000);
-        // }
+        const notificationEnteringTimeout = setTimeout(() => {
+            setIsEntering(false);
+
+
+            if (lifespan != undefined && lifespan != null) {
+                lifespanTimeout = setTimeout(() => {
+                    onCloseNotification();
+                }, lifespan * 1000);
+            }
+
+        }, 700);
+
 
         return () => {
             clearTimeout(notificationEnteringTimeout);
-            // clearTimeout(lifespanTimeout);
+            clearTimeout(lifespanTimeout);
         };
     });
 
@@ -144,7 +147,7 @@ const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationT
                 {lifespan != undefined && lifespan != null && (
                     <div className="flex items-center justify-center">
                         <div className="w-11/12">
-                            <ProgressBar timeInSeconds={lifespan} progressColor={getProgressColor()}/>
+                            <ProgressBar timeInSeconds={lifespan} progressColor={getProgressColor()} isActive={!isEntering}/>
                         </div>
                     </div>
                 )}

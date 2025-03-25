@@ -4,12 +4,15 @@ interface ProgressBarProps {
   timeInSeconds: number;
   countUp?: boolean;
   progressColor?: string;
+  isActive: boolean;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ timeInSeconds, countUp = false, progressColor = "bg-blue-500" }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ timeInSeconds, countUp = false, progressColor = "bg-blue-500", isActive }) => {
   const [progress, setProgress] = useState(countUp ? 0 : 100);
 
   useEffect(() => {
+    if (!isActive) return;
+    
     let startTime = Date.now();
     
     const interval = setInterval(() => {
@@ -26,7 +29,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ timeInSeconds, countUp = fals
     }, 100);
 
     return () => clearInterval(interval);
-  }, [timeInSeconds, countUp]);
+  }, [timeInSeconds, countUp, isActive]);
 
   return (
     <div className="w-full h-1 bg-gray-300 rounded overflow-hidden">

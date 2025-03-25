@@ -129,12 +129,9 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNewStories = async () => {
       const result = await getStoriesSorted("created_at", false, 10);
-
-      const action = () => { console.log("action") }
-      showNotification("info", "Your story has been shared with the world!", 10, action, "Awesome!");
-
+    
       if(result.error){
-        // TODO: error notif
+        showNotification("error", "An error occurred fetching some stories", undefined, () => { window.location.reload(); }, "Try again?");
       } else {
         setNewStories(result.stories);
       }
