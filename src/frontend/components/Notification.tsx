@@ -18,6 +18,7 @@ const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationT
     const [isEntering, setIsEntering] = useState<boolean>(true);
 
     useEffect(() => {
+
         const notificationEnteringTimeout = setTimeout(() => {
             setIsEntering(false);
         }, 700);
@@ -123,10 +124,11 @@ const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationT
                     <div>
                         {message}
                     </div>
+
                     {
-                        action != undefined && (        
-                            <button className="bg-white h-6 w-12 rounded-md opacity-50 text-white">
-                                <div>
+                        action && (        
+                            <button className="bg-white h-6 w-12 rounded-md opacity-50" onClick={action}>
+                                <div className="opacity-100 text-white">
                                     Retry?
                                 </div>
                             </button>

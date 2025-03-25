@@ -16,26 +16,33 @@ interface NotificationContextType {
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 
-export const NotificationProvider = ({ children } : { children: ReactNode }) => {
+export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [notificationType, setNotificationType] = useState<NotificationType>('info');
     const [message, setMessage] = useState<string>("");
     const [lifespan, setLifespan] = useState<number | undefined>(undefined);
     const [action, setAction] = useState<(() => void) | undefined>(undefined);
-    
-    const showNotification = (notificationType: NotificationType, message: string, lifespan: number | undefined = undefined, action: (() => void) | undefined = undefined) => {
+
+    const showNotification = (notificationType: NotificationType, message: string, lifespan: number | undefined = undefined, action: (() => void) | undefined) => {
         setNotificationType(notificationType);
         setMessage(message);
         setLifespan(lifespan);
-        setAction(action);
+        setAction(() => action);
         setIsVisible(true);
     }
 
     return (
-        <NotificationContext.Provider value={{isVisible, setIsVisible, notificationType, message, lifespan, action, showNotification}}>
+        <NotificationContext.Provider value={{ isVisible, setIsVisible, notificationType, message, lifespan, action, showNotification }}>
             {
                 isVisible && (
-                    <Notification isVisible={isVisible} setIsVisible={setIsVisible} notificationType={notificationType} message={message} lifespan={lifespan} action={action}/>
+                    <Notification
+                        isVisible={isVisible}
+                        setIsVisible={setIsVisible}
+                        notificationType={notificationType}
+                        message={message}
+                        lifespan={lifespan}
+                        action={action}
+                    />
                 )
             }
             {children}
@@ -46,7 +53,7 @@ export const NotificationProvider = ({ children } : { children: ReactNode }) => 
 export const useNotification = () => {
     const context = useContext(NotificationContext);
 
-    if(!context){
+    if (!context) {
         throw new Error("Context does not exist for useNotification!");
     }
 
