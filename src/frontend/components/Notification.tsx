@@ -10,9 +10,10 @@ interface NotificationProps {
     message: string,
     lifespan: number | undefined,
     action?: (() => void) | undefined,
+    actionTitle?: string | undefined
 }
 
-const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationType, message, lifespan, action }) => {
+const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationType, message, lifespan, action, actionTitle }) => {
 
     const [isExiting, setIsExiting] = useState<boolean>(false);
     const [isEntering, setIsEntering] = useState<boolean>(true);
@@ -127,9 +128,9 @@ const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationT
 
                     {
                         action && (        
-                            <button className="bg-white h-6 w-12 rounded-md opacity-50" onClick={action}>
-                                <div className="opacity-100 text-white">
-                                    Retry?
+                            <button className="bg-white rounded-md bg-opacity-30 hover:scale-110 transition-transform duration-300" onClick={action}>
+                                <div className="p-2 text-sm">
+                                    {actionTitle}
                                 </div>
                             </button>
                         )

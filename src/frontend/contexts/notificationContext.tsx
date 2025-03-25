@@ -10,7 +10,8 @@ interface NotificationContextType {
     message: string,
     lifespan?: number,
     action?: () => void,
-    showNotification: (notificationType: NotificationType, message: string, lifespan?: number | undefined, action?: (() => void) | undefined) => void,
+    actionTitle?: string,
+    showNotification: (notificationType: NotificationType, message: string, lifespan?: number | undefined, action?: (() => void) | undefined, actionTitle?: string | undefined) => void,
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -22,17 +23,19 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     const [message, setMessage] = useState<string>("");
     const [lifespan, setLifespan] = useState<number | undefined>(undefined);
     const [action, setAction] = useState<(() => void) | undefined>(undefined);
+    const [actionTitle, setActionTitle] = useState<string | undefined>(undefined);
 
-    const showNotification = (notificationType: NotificationType, message: string, lifespan: number | undefined = undefined, action: (() => void) | undefined) => {
+    const showNotification = (notificationType: NotificationType, message: string, lifespan: number | undefined = undefined, action: (() => void) | undefined, actionTitle: string | undefined) => {
         setNotificationType(notificationType);
         setMessage(message);
         setLifespan(lifespan);
         setAction(() => action);
         setIsVisible(true);
+        setActionTitle(actionTitle);
     }
 
     return (
-        <NotificationContext.Provider value={{ isVisible, setIsVisible, notificationType, message, lifespan, action, showNotification }}>
+        <NotificationContext.Provider value={{ isVisible, setIsVisible, notificationType, message, lifespan, action, actionTitle, showNotification }}>
             {
                 isVisible && (
                     <Notification
@@ -42,6 +45,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
                         message={message}
                         lifespan={lifespan}
                         action={action}
+                        actionTitle={actionTitle}
                     />
                 )
             }
