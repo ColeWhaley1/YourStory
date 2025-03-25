@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NotificationType } from "../contexts/notificationContext";
 import { IoCloseOutline } from "react-icons/io5";
+import ProgressBar from "./widgets/progressBar";
 
 interface NotificationProps {
     isVisible: boolean,
@@ -11,7 +12,7 @@ interface NotificationProps {
     action?: (() => void) | undefined,
 }
 
-const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, notificationType, message, lifespan, action }) => {
+const Notification: React.FC<NotificationProps> = ({ setIsVisible, notificationType, message, lifespan, action }) => {
 
     const [isExiting, setIsExiting] = useState<boolean>(false);
     const [isEntering, setIsEntering] = useState<boolean>(true);
@@ -21,8 +22,32 @@ const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, no
             setIsEntering(false);
         }, 700);
 
-        return () => clearTimeout(notificationEnteringTimeout);
+        let lifespanTimeout: NodeJS.Timeout;
+
+        // if (lifespan != undefined && lifespan != null) {
+        //     lifespanTimeout = setTimeout(() => {
+        //         onCloseNotification();
+        //     }, lifespan * 1000);
+        // }
+
+        return () => {
+            clearTimeout(notificationEnteringTimeout);
+            // clearTimeout(lifespanTimeout);
+        };
     });
+
+    const getProgressColor = () => {
+        switch (notificationType){
+            case "success":
+                return "bg-[#00d391]";
+            case "info":
+                return "bg-[#00bdff]";
+            case "error":
+                return "bg-[#ff627c]";
+            default:
+                return "bg-[#00bdff]";
+        }
+    }
 
     const getNotificationStyle = () => {
         switch (notificationType) {
@@ -78,17 +103,17 @@ const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, no
 
     return (
         <div className={`absolute top-4 w-full flex justify-center z-50 ${isEntering
+            ?
+            "transform -translate-y-40 transition-transform duration-700"
+            :
+            isExiting
                 ?
-                "transform -translate-y-40 transition-transform duration-300"
+                "transform -translate-y-40 transition-transform duration-700"
                 :
-                isExiting
-                    ?
-                    "transform -translate-y-40 transition-transform duration-700"
-                    :
-                    "transform translate-y-0 transition-transform duration-300"
+                "transform translate-y-0 transition-transform duration-700"
             }`
         }>
-            <div className="opacity-90">
+            <div className="opacity-90 space-y-1">
                 <div className={getNotificationStyle()}>
 
                     <div>
@@ -98,12 +123,28 @@ const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, no
                     <div>
                         {message}
                     </div>
+                    {
+                        action != undefined && (        
+                            <button className="bg-white h-6 w-12 rounded-md opacity-50 text-white">
+                                <div>
+                                    Retry?
+                                </div>
+                            </button>
+                        )
+                    }
 
                     <button className="hover:scale-150 transition-transform duration-300" onClick={onCloseNotification}>
                         <IoCloseOutline size={18} />
                     </button>
 
                 </div>
+                {lifespan != undefined && lifespan != null && (
+                    <div className="flex items-center justify-center">
+                        <div className="w-11/12">
+                            <ProgressBar timeInSeconds={lifespan} progressColor={getProgressColor()}/>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

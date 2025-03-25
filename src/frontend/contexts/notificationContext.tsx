@@ -29,12 +29,6 @@ export const NotificationProvider = ({ children } : { children: ReactNode }) => 
         setLifespan(lifespan);
         setAction(action);
         setIsVisible(true);
-
-        if(lifespan != undefined){
-            setTimeout(() => {
-                setIsVisible(false);
-            }, lifespan * 1000);
-        }
     }
 
     return (
