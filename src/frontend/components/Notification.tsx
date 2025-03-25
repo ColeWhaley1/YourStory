@@ -22,7 +22,7 @@ const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, no
         }, 700);
 
         return () => clearTimeout(notificationEnteringTimeout);
-    })
+    });
 
     const getNotificationStyle = () => {
         switch (notificationType) {
@@ -73,7 +73,7 @@ const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, no
 
         setTimeout(() => {
             setIsVisible(false);
-        }, 3000)
+        }, 1000);
     }
 
     return (
@@ -105,7 +105,7 @@ const Notification: React.FC<NotificationProps> = ({ isVisible, setIsVisible, no
 
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 

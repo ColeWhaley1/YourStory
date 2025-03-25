@@ -130,7 +130,7 @@ const HomePage = () => {
     const fetchNewStories = async () => {
       const result = await getStoriesSorted("created_at", false, 10);
 
-      showNotification("error", "Fail!");
+      showNotification("success", "Your story has been shared with the world!");
       if(result.error){
         // TODO: error notif
       } else {
